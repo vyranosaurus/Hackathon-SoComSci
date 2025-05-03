@@ -15,12 +15,17 @@ function App() {
       element: <HomePage />
     },
     {
-      path: "/queue",
+      // Modify the path to include the :serviceId parameter
+      path: "/queue/:serviceId", // <-- Changed this line
       element: <QueuePage />
     }
+    // You could also keep the exact /queue path if you want a default view:
+    // {
+    //   path: "/queue",
+    //   element: <QueuePage /> // Maybe a page showing a list of services?
+    // }
   ]);
 
-  
 
   return <RouterProvider router={router} />;
 }

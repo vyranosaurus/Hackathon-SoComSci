@@ -1,0 +1,133 @@
+/* Modify the existing .priority-indicator rule in your ../HospitalPage.css file */
+
+.patient-avatar {
+    position: relative; /* Essential for absolute positioning of children */
+    display: inline-block; /* Or block, depending on your layout */
+    /* Add padding or margin here if the indicator overlaps with surrounding content */
+     padding: 5px; /* Example padding to make space for the indicator */
+  }
+  
+  /* CSS for the Numbered Indicator (Always Shows for ALL patients) */
+  /* This now uses the .priority-indicator class */
+  .priority-indicator {
+    position: absolute;
+    /* Position at the bottom right - adjust as needed */
+    bottom: 0;
+    right: 0;
+    background-color: #555; /* Default color for the number circle (e.g., a neutral gray) */
+    color: white; /* Text color for the number */
+    border-radius: 50%; /* Makes it a circle */
+    width: 20px; /* Adjust size to fit the number */
+    height: 20px; /* Adjust size */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    font-size: 12px; /* Adjust font size for the number */
+    font-weight: bold;
+    border: 1px solid white; /* Optional border */
+     /* Adjust transform to fine-tune positioning outside the avatar */
+    transform: translate(5px, 5px); /* Example: move 5px right and 5px down */
+    z-index: 1; /* Ensure it appears above the avatar */
+    padding: 0; /* Remove any default padding */
+    line-height: 1; /* Helps vertical centering of the number */
+    min-width: 20px; /* Ensure minimum width even for single digits */
+    text-align: center; /* Ensure text alignment */
+  }
+  
+  /* Optional: Override background color for Urgent/Critical indicators */
+  /* This changes the circle color based on urgency */
+  .patient-item.item-urgent .priority-indicator {
+      background-color: orange; /* Urgent color for the number circle */
+  }
+  
+  .patient-item.item-critical .priority-indicator {
+      background-color: red; /* Critical color for the number circle */
+  }
+  
+  /* Ensure patient-item and patient-avatar have appropriate layout properties */
+  .patient-item {
+      display: flex; /* Assuming patient-item is a flex container */
+      align-items: center; /* Align items vertically */
+      /* other styles for patient-item */
+      margin-bottom: 15px; /* Add space between list items */
+      padding: 10px; /* Add padding inside list items */
+      border-bottom: 1px solid #eee; /* Optional separator line */
+  }
+  
+  .patient-avatar {
+      /* Add margin or padding if needed */
+      margin-right: 15px; /* Example space between avatar and info */
+      flex-shrink: 0; /* Prevent avatar from shrinking */
+  }
+  
+  .patient-info {
+      flex-grow: 1; /* Allow info section to take up available space */
+      /* other styles for patient-info */
+  }
+  
+  .patient-name {
+      display: flex; /* Use flexbox for name and tag */
+      align-items: center;
+      font-weight: bold;
+      margin-bottom: 3px;
+  }
+  
+  .patient-tag {
+      margin-left: 8px; /* Space between name and tag */
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem; /* Smaller font for tag */
+      font-weight: normal;
+      color: white;
+  }
+  
+  .patient-tag.tag-urgent {
+      background-color: orange;
+  }
+  
+  .patient-tag.tag-critical {
+      background-color: red;
+  }
+  
+  .patient-condition {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 5px;
+  }
+  
+  .patient-date {
+      font-size: 0.8rem;
+      color: #999;
+  }
+  
+  /* Ensure the button styling is correct */
+  button {
+      margin-left: 10px; /* Space between info and button */
+      flex-shrink: 0; /* Prevent button from shrinking */
+  }
+  
+  /* Basic styles for header and container */
+  .queue-header {
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      margin-bottom: 1rem;
+  }
+  
+  .back-arrow {
+      cursor: pointer;
+      margin-right: 1rem;
+  }
+  
+  .horizontal-line {
+      border-bottom: 1px solid #ccc;
+      margin: 0 1rem 1rem;
+  }
+  
+  .queue-page-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh; /* Example: make container fill the viewport height */
+  }
+  
+  /* Add styles for BottomNavigation if needed */
