@@ -14,7 +14,7 @@ const BottomNavigation = () => {
         <Search className="nav-icon" />
         <span>Search</span>
       </button>
-      <button onClick={() => navigate("/queue")} className="nav-item">
+      <button onClick={() => navigate("/hospital")} className="nav-item">
         <PlusSquare className="nav-icon" />
         <span>Hospital</span>
       </button>
