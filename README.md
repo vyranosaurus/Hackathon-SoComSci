@@ -1,7 +1,7 @@
 # SoComSci Hackathon Project
 
 This is a full-stack application built with React, Spring Boot, and PostgreSQL for the SoComSci Hackathon.
-
+roor
 ## Project Structure
 
 - `/backend` - Spring Boot backend
