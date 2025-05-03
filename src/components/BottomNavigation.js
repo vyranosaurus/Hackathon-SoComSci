@@ -10,7 +10,7 @@ const BottomNavigation = () => {
         <Home className="nav-icon" />
         <span>Home</span>
       </button>
-      <button onClick={() => navigate("/")} className="nav-item">
+      <button onClick={() => navigate("/search")} className="nav-item">
         <Search className="nav-icon" />
         <span>Search</span>
       </button>
