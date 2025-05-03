@@ -264,7 +264,7 @@ function HospitalPage() {
                        <ArrowLeft size={20} color="white" />
                     </div>
                     <div style={{textAlign: 'center', flexGrow: 1}}>
-                         <h1 style={{color: 'white', fontSize: '1.5rem', margin: 0}}>{selectedHospital.name}</h1>
+                         <h1 style={{color: 'black', fontSize: '1.5rem', margin: 0}}>{selectedHospital.name}</h1>
                          {/* Location below name for clarity */}
                          <p style={{color: '#ccc', fontSize: '0.9rem', margin: '5px 0 0 0'}}>{selectedHospital.location}</p>
                     </div>
@@ -320,6 +320,17 @@ function HospitalPage() {
                  ) : (
                      // --- Display Services for Selected Hospital ---
                      <>
+
+                     <img
+                                src={selectedHospital.imageUrl}
+                                alt={`${selectedHospital.name} Image`}
+                                className="hospital-detail-image" // Add a class for styling
+                                style={{
+                                    maxWidth: '100%', // Make image responsive
+                                    height: 'auto',
+                                    display: 'block', // Center the image
+                                }}
+                            />
                        <div className="horizontal-line"></div> {/* Visual separator */}
 
                        <div className="search-bar">

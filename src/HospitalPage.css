@@ -264,6 +264,11 @@ span1{
     color: #000000;
 }
 
+.queue-header{
+    margin:0;
+    height:10%;
+    background-color: #FFFFFF;
+}
 .queue-button {
     background-color: #0b6d5c; /* Green background */
     color: #ffffff; /* White text */
