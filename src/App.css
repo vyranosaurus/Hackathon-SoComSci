@@ -646,3 +646,65 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
 }
+/* src/App.css or src/index.css */
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5; /* Match the container background */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Basic style for the root App div */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure app takes at least full height */
+}
+
+
+/* Bottom Navigation Styles (using the .bottom-navigation class defined in HospitalPage.css) */
+/* These styles will apply if BottomNavigation is rendered inside a flex container that allows it to take up space */
+.bottom-navigation {
+  width: 100%; /* Full width of parent */
+  max-width: 500px; /* Match the container's max-width */
+  margin: 0 auto; /* Center horizontally */
+  background-color: #ffffff;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  z-index: 40; /* Ensure it's above main content but below modals */
+}
+
+.nav-item {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.nav-item .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-bottom: 0.125rem;
+  stroke-width: 2; /* Default stroke for lucide icons */
+}
+
+/* Example active state for the first item */
+.nav-item:first-child {
+   color: #3b82f6;
+}

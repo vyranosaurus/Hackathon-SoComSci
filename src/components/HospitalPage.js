@@ -1,188 +1,143 @@
+// HospitalPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import '../HospitalPage.css'; // Assuming your CSS is here
-import BottomNavigation from './BottomNavigation';
+import '../HospitalPage.css'; // Make sure your CSS file is in the correct path
+import BottomNavigation from './BottomNavigation'; // Assuming this component exists
+import { ArrowLeft, Search, Menu } from "lucide-react"; // Import icons
 
-// !!! WARNING !!!
-// STORING API KEYS DIRECTLY IN FRONTEND CODE IS EXTREMELY INSECURE.
-// THIS IS FOR DEMONSTRATION PURPOSES ONLY.
-// FOR A REAL APPLICATION, USE A BACKEND TO CALL THE GEMINI API.
-const GEMINI_API_KEY = 'AIzaSyA8hUcwgPS4OsIKhe-XZvQVyPYzOhmrpBM'; // <--- REPLACE WITH YOUR ACTUAL API KEY
-// !!! WARNING !!!
-
-// Define a unique ID for this hospital.
-const HOSPITAL_ID = 'pgh-manila';
-
-// Helper function to get data from localStorage
-const getQueueData = (hospitalId) => {
-    const data = localStorage.getItem(`hospitalQueue_${hospitalId}`);
-    try {
-        return data ? JSON.parse(data) : {};
-    } catch (error) {
-        console.error("Error parsing queue data from localStorage:", error);
-        return {};
-    }
-};
-
-// Helper function to save data to localStorage
-const saveQueueData = (hospitalId, data) => {
-    localStorage.setItem(`hospitalQueue_${hospitalId}`, JSON.stringify(data));
-};
-
-// Sample service data - replace with actual data if needed
-const services = [
-    {
-        id: 'cardiology',
-        name: 'Cardiologist',
-        rating: 4.8,
-        description: 'Consult with a heart specialist. Cardiologists diagnose, treat, and prevent conditions affecting your heart and blood vessels.',
-        imageUrl: 'https://www.concilio.com/wp-content/uploads/cardiologie-concilio-votre-conciergerie-medicale_718x452.jpg?x44843'
-    },
-    {
-        id: 'familymed',
-        name: 'Family Med Doctor',
-        rating: 4.9,
-        description: 'Consult with a doctor for your general health needs. Physicians provide primary care for individuals and families of all ages.',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdG5w64b42a0Oo4yL1nNdAESYpt8N97Yylyg&s'
-    },
-    {
-        id: 'rehab',
-        name: 'Rehabilitation Doctor',
-        rating: 4.8,
-        description: 'Consult a specialist focused on restoring function and mobility. Rehab doctors treat conditions causing pain or limiting movement due to injury etc.',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE_n2KiII2j14bQI9dszr8MCFa9PexrCIGrg&s'
-    },
-];
-
-// Async function to call Gemini API directly from frontend
-// !!! WARNING: INSECURE PRACTICE FOR PRODUCTION / SENSITIVE DATA !!!
-const classifyConcernWithGemini = async (concern) => {
-    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY') {
-        console.error("Gemini API key is not set.");
-        alert("Gemini API key is not configured.");
-        return null; // Return null to indicate failure or missing key
-    }
-    if (!concern || concern.trim() === '') {
-        console.warn("No concern provided for classification.");
-        return 'Not specified'; // Or a default urgency if concern is empty
-    }
-
-    // The endpoint for Gemini API text generation
-    // Ensure the model name is correct if you're using a different one
-    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-001:generateContent?key=${GEMINI_API_KEY}`; // Or gemini-1.0-pro, etc.
-
-    // Prompt the model to classify into your exact categories
-    const prompt = `Classify the following medical concern into one of these exact categories: 'Not urgent', 'Urgent', 'Critical'. Respond ONLY with the category name. Do not include any other text or punctuation. Concern: "${concern.trim()}"`;
-
-    try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: prompt }]
-                }],
-                // Optional: Add generation config for stricter output
-                generationConfig: {
-                     temperature: 0, // Aim for deterministic output
-                     maxOutputTokens: 20 // Limit output length
-                }
-            }),
-        });
-
-        if (!response.ok) {
-            const errorDetail = await response.json();
-            console.error("Gemini API error:", response.status, errorDetail);
-            const errorMessage = errorDetail.error ? errorDetail.error.message : 'Unknown API error';
-            // Alert the user about the API failure
-            alert(`Gemini API call failed: ${response.status} - ${errorMessage}. Booking will be marked as 'Not specified'.`);
-            return 'Not specified'; // Return a default or error value if API fails
-        }
-
-        const data = await response.json();
-        console.log("Gemini API Response:", data);
-
-        // Attempt to extract the classification text
-        const classificationText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-
-        if (classificationText) {
-            // Normalize the classification text to match your predefined categories
-            const lowerCaseClassification = classificationText.toLowerCase();
-
-             // Check for exact matches or clear inclusion
-            if (lowerCaseClassification === 'critical') return 'Critical';
-            if (lowerCaseClassification === 'urgent') return 'Urgent';
-            if (lowerCaseClassification === 'not urgent') return 'Not urgent';
-
-            // If the response doesn't exactly match, log a warning and return a default
-            console.warn("Gemini returned unexpected classification format:", classificationText);
-            alert(`AI returned unexpected classification "${classificationText}". Booking will be marked as 'Not specified'.`);
-            return 'Not specified'; // Handle cases where the AI response is not one of your categories
-        } else {
-            // Handle cases where the response structure is not as expected
-            console.warn("Gemini response did not contain expected text content structure.", data);
-             alert("AI classification failed: Unexpected response format. Booking will be marked as 'Not specified'.");
-            return 'Not specified';
-        }
-
-    } catch (error) {
-        console.error("Error calling Gemini API:", error);
-         alert(`Failed to call Gemini API: ${error.message}. Booking will be marked as 'Not specified'.`);
-        return 'Not specified'; // Return a default or error value if fetch fails
-    }
-};
-
+// *** Define your backend API base URL ***
+// !!! IMPORTANT: Update this with your actual backend URL and port !!!
+const BACKEND_API_URL = 'http://localhost:8080/api'; // Default Spring Boot port
 
 function HospitalPage() {
     const navigate = useNavigate();
 
+    const [hospitals, setHospitals] = useState([]);
+    const [selectedHospital, setSelectedHospital] = useState(null);
+    const [services, setServices] = useState([]); // Services for the selected hospital
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-    const [selectedService, setSelectedService] = useState(null);
+    const [selectedServiceToBook, setSelectedServiceToBook] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         age: '',
-        number: '',
+        phoneNumber: '',
         concern: '',
-        // Removed urgency field from formData state
         hasMedicalCard: false,
         medicalCardCompany: '',
         medicalCardNumber: '',
         medicalCardName: '',
     });
-    const [allQueueData, setAllQueueData] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
-    const [isClassifying, setIsClassifying] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoadingHospitals, setIsLoadingHospitals] = useState(true);
+    const [isLoadingServices, setIsLoadingServices] = useState(false);
+    const [hospitalError, setHospitalError] = useState(null);
+    const [serviceError, setServiceError] = useState(null);
 
-
+    // Effect to fetch the list of hospitals when the component mounts
     useEffect(() => {
-        setAllQueueData(getQueueData(HOSPITAL_ID));
-    }, []);
+        const fetchHospitals = async () => {
+            setIsLoadingHospitals(true);
+            setHospitalError(null);
+            try {
+                const response = await fetch(`${BACKEND_API_URL}/hospitals`);
 
-    const filteredServices = services.filter(service =>
-        service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        service.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    let errorDetail = { message: `HTTP Error: ${response.status}` };
+                    try {
+                        errorDetail = JSON.parse(errorBody);
+                    } catch (parseError) {
+                         errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
+                    }
+                    console.error("Backend API Error (Hospitals):", response.status, errorDetail);
+                    setHospitalError(`Failed to load hospitals: ${errorDetail.message || response.statusText}`);
+                    setHospitals([]);
+                    return;
+                }
+                const data = await response.json();
+                setHospitals(data);
+            } catch (error) {
+                console.error("Error fetching hospitals:", error);
+                setHospitalError(`Failed to connect to backend: ${error.message}`);
+                 setHospitals([]);
+            } finally {
+                setIsLoadingHospitals(false);
+            }
+        };
+
+        fetchHospitals();
+    }, [BACKEND_API_URL]); // Add BACKEND_API_URL to dependencies
+
+    // Effect to fetch services when a hospital is selected
+    useEffect(() => {
+        if (selectedHospital) {
+            const fetchServices = async () => {
+                setIsLoadingServices(true);
+                setServiceError(null);
+                 setServices([]); // Clear previous services
+                try {
+                    // Fetch services using the hospitalId from the selected hospital
+                    const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services`);
+                    if (!response.ok) {
+                         const errorBody = await response.text();
+                         let errorDetail = { message: `HTTP Error: ${response.status}` };
+                         try {
+                             errorDetail = JSON.parse(errorBody);
+                         } catch (parseError) {
+                             errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
+                         }
+                         console.error("Backend API Error (Services):", response.status, errorDetail);
+                         setServiceError(`Failed to load services: ${errorDetail.message || response.statusText}`);
+                         setServices([]);
+                         return;
+                    }
+                    const data = await response.json();
+                    setServices(data);
+                } catch (error) {
+                    console.error("Error fetching services:", error);
+                    setServiceError(`Failed to connect to service list: ${error.message}`);
+                     setServices([]);
+                } finally {
+                    setIsLoadingServices(false);
+                }
+            };
+
+            fetchServices();
+        } else {
+            setServices([]); // Clear services if no hospital is selected
+        }
+    }, [selectedHospital, BACKEND_API_URL]); // Rerun when selectedHospital or BACKEND_API_URL changes
+
+    // Handle selecting a hospital from the list
+    const handleSelectHospital = (hospital) => {
+         setSelectedHospital(hospital);
+         // Optionally scroll to the services section after selecting a hospital
+         // const servicesSection = document.getElementById('services-section');
+         // if(servicesSection) servicesSection.scrollIntoView({ behavior: 'smooth' });
+    };
 
     const handleConsult = (service) => {
-        setSelectedService(service);
-         // Reset form data (urgency field is no longer in state)
-         setFormData({
-             name: '',
-             age: '',
-             number: '',
-             concern: '',
-             hasMedicalCard: false,
-             medicalCardCompany: '',
-             medicalCardNumber: '',
-             medicalCardName: '',
-         });
+        if (!selectedHospital) {
+            alert("Please select a hospital first.");
+            return;
+        }
+        setSelectedServiceToBook(service);
+        // Reset form data for a new booking
+        setFormData({
+            name: '', age: '', phoneNumber: '', concern: '',
+            hasMedicalCard: false, medicalCardCompany: '', medicalCardNumber: '', medicalCardName: '',
+        });
         setIsFormModalOpen(true);
     };
 
     const handleViewQueue = (service) => {
-        navigate(`/queue/${service.id}`);
+        if (!selectedHospital) {
+             alert("Please select a hospital first.");
+             return;
+         }
+        // Navigate to the queue page, passing hospital and service IDs in the URL
+        navigate(`/queue/${selectedHospital.hospitalId}/${service.serviceId}`);
     };
 
     const handleFormChange = (e) => {
@@ -193,302 +148,300 @@ function HospitalPage() {
         });
     };
 
-    // Handle submitting the booking form AND trigger AI classification
+    // Handle submitting the booking form and sending data to the backend
     const handleSubmitBooking = async () => {
-        if (!selectedService) return;
+        if (!selectedHospital || !selectedServiceToBook) return; // Should not happen if modal is opened correctly
 
         // Basic form validation
-        if (!formData.name || !formData.age || !formData.concern || !formData.number) {
-             alert("Please fill in all required fields (Name, Age, Phone Number, Concern).");
-             return;
+        if (!formData.name || !formData.age || !formData.concern || !formData.phoneNumber) {
+            alert("Please fill in all required fields (Name, Age, Phone Number, Concern).");
+            return;
         }
-
-        setIsClassifying(true); // Start classifying indicator
-        console.log("Initiating AI classification for concern:", formData.concern);
-
-        // Call the AI classification function
-        const aiClassifiedUrgency = await classifyConcernWithGemini(formData.concern);
-
-        setIsClassifying(false); // End classifying indicator
-
-        // Use the AI classification result for the booking urgency
-        // If classification failed or returned null/undefined, use 'Not specified' or handle as an error
-        const finalUrgency = aiClassifiedUrgency || 'Not specified'; // Default to 'Not specified' if AI fails
+         if (formData.hasMedicalCard && (!formData.medicalCardCompany || !formData.medicalCardNumber || !formData.medicalCardName)) {
+             alert("Please fill in all medical card details.");
+             return;
+         }
 
 
-        // Create a new booking entry
-        const newBooking = {
-            ...formData, // Includes name, age, number, concern, medical card details
-            hospitalId: HOSPITAL_ID, // Store the hospital ID
-            serviceId: selectedService.id, // Store the service ID
-            timestamp: new Date().toISOString(), // Add a timestamp
-            urgency: finalUrgency, // <-- Set the urgency field using the AI classification
-            // aiUrgency field is now redundant as it's the main urgency
+        setIsSubmitting(true);
+        console.log("Submitting booking data to backend:", formData);
+        // Prepare the booking data to send to the backend
+        const bookingDataToSend = {
+            ...formData, // Includes name, age, phoneNumber, concern, medical card details
+            // Hospital and Service are linked on the backend using the IDs from the path
+            // timestamp is set server-side, no need to send from client
+            // urgency and urgentPriorityScore are set by AI on backend
         };
 
-        // Update the queue data state and localStorage
-        const updatedQueueData = { ...allQueueData };
-        if (!updatedQueueData[selectedService.id]) {
-            updatedQueueData[selectedService.id] = [];
+        // --- Call your backend API endpoint to add the booking ---
+        // Use hospitalId and serviceId from the selected items in the URL path
+        const addBookingEndpoint = `${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services/${selectedServiceToBook.serviceId}/bookings`;
+        try {
+            const response = await fetch(addBookingEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Include any necessary authentication headers for your backend
+                },
+                body: JSON.stringify(bookingDataToSend),
+            });
+
+            if (!response.ok) {
+                 const errorBody = await response.text();
+                 let errorDetail = { message: `HTTP Error: ${response.status}` };
+                 try {
+                     errorDetail = JSON.parse(errorBody);
+                 } catch (parseError) {
+                      errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
+                 }
+                 console.error("Backend API Error (Booking):", response.status, errorDetail);
+                 alert(`Failed to submit booking: ${errorDetail.message || response.statusText}`);
+                 setIsSubmitting(false);
+                 return;
+            }
+
+            const result = await response.json();
+            console.log("Booking successfully submitted:", result);
+             // Optionally, navigate to the queue page after successful booking
+            alert("Booking submitted successfully! Urgency classified and queue updated.");
+             navigate(`/queue/${selectedHospital.hospitalId}/${selectedServiceToBook.serviceId}`);
+
+
+        } catch (error) {
+            console.error("Error calling backend API:", error);
+            alert(`Failed to connect to booking service: ${error.message}`);
+        } finally {
+            setIsSubmitting(false);
+            // Close the modal and reset the form regardless of backend success/failure
+            setIsFormModalOpen(false);
+            setFormData({
+                name: '', age: '', phoneNumber: '', concern: '',
+                hasMedicalCard: false, medicalCardCompany: '', medicalCardNumber: '', medicalCardName: '',
+            });
+            setSelectedServiceToBook(null);
         }
-        updatedQueueData[selectedService.id].push(newBooking);
-
-        setAllQueueData(updatedQueueData);
-        saveQueueData(HOSPITAL_ID, updatedQueueData);
-        console.log("Booking submitted with AI classified urgency:", finalUrgency, newBooking);
-
-        // Close the modal and reset the form
-        setIsFormModalOpen(false);
-        setFormData({
-            name: '',
-            age: '',
-            number: '',
-            concern: '',
-            hasMedicalCard: false,
-            medicalCardCompany: '',
-            medicalCardNumber: '',
-            medicalCardName: '',
-        });
-        setSelectedService(null);
-
-        // Optionally navigate to the queue page after booking
-        // navigate(`/queue/${selectedService.id}`); // Uncomment if you want to auto-navigate
     };
 
     // Handle closing the modal
     const closeModal = () => {
         setIsFormModalOpen(false);
-         // Reset form data when form modal closes
-         setFormData({
-             name: '',
-             age: '',
-             number: '',
-             concern: '',
-             hasMedicalCard: false,
-             medicalCardCompany: '',
-             medicalCardNumber: '',
-             medicalCardName: '',
-         });
+        setFormData({
+            name: '', age: '', phoneNumber: '', concern: '',
+            hasMedicalCard: false, medicalCardCompany: '', medicalCardNumber: '', medicalCardName: '',
+        });
+        setSelectedServiceToBook(null);
     };
+
+     const handleBackToHospitals = () => {
+         setSelectedHospital(null); // Go back to hospital list view
+         setSearchTerm(''); // Clear search when going back
+     };
+
+    // Filter services based on search term
+    const filteredServices = services.filter(service =>
+        service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        service.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="hospital-container">
+            {/* Header Section (Conditionally rendered) */}
+            {!selectedHospital ? (
+                 <header className="header">
+                     {/* You can add back arrow here if there was a previous page before hospital list */}
+                     <div className="location-info">
+                        {/* Assuming your location icon is used here */}
+                         <svg className="icon location-icon" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" /></svg>
+                         <span>Your Location Info Here</span> {/* Update this */}
+                     </div>
+                     <div className="profile-picture"></div> {/* Add profile picture or icon */}
+                 </header>
+            ) : (
+                // Header for hospital+service view
+                 <header className="queue-header mt-6" style={{ position: 'relative' }}>
+                    {/* Back button */}
+                    <div className="back-arrow" onClick={handleBackToHospitals} style={{ position: 'absolute', left: '1rem' }}>
+                       <ArrowLeft size={20} color="white" />
+                    </div>
+                    <div style={{textAlign: 'center', flexGrow: 1}}>
+                         <h1 style={{color: 'white', fontSize: '1.5rem', margin: 0}}>{selectedHospital.name}</h1>
+                         {/* Location below name for clarity */}
+                         <p style={{color: '#ccc', fontSize: '0.9rem', margin: '5px 0 0 0'}}>{selectedHospital.location}</p>
+                    </div>
+                </header>
+            )}
 
-            {/* Scrollable Content Area */}
-            <div className="scrollable-content" style={{marginTop:'.5rem'}}>
-             {/* Header Section */}
-             <div className="header">
-                 <div className="location-info">
-                     <svg xmlns="http://www.w3.org/2000/svg" className="icon location-icon" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                     </svg>
-                     <span1>Taft Ave, Ermita, Manila, 1000 Metro Manila</span1>
-                 </div>
-                 <div className="profile-picture"></div>
-             </div>
 
-             {/* Hospital Banner Section */}
-             <div className="hbanner" style={{alignItems: 'center', justifyContent: 'center',width: '100%', margin:'0rem', height: '30%', backgroundImage: `url('https://i0.wp.com/up.edu.ph/wp-content/uploads/2020/03/20200323-Philippine-General-Hospital_0.jpg?fit=1398%2C1048&ssl=1')` }}>
-                 <div className="banner-overlay" style ={{alignItems: 'center', justifyContent: 'center', inset: 0}}></div>
-                 <div className="hbanner-content" style ={{alignItems: 'center', justifyContent: 'center', inset: 0}}>
-                     <h1 className="banner-title">Philippine General Hospital</h1>
-                     <p className="banner-subtitle">PGH: Healthcare for Every Filipino.</p>
-                      <button className="book-now-button" type="button" onClick={() => alert('Select a service below to book!')}>
-                          Book Now!
-                      </button>
-                 </div>
-             </div>
-             {/* Search Bar Section */}
-             <div className="search-bar">
-                 <svg xmlns="http://www.w3.org/2000/svg" className="icon menu-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                 </svg>
-                 <input
-                     type="text"
-                     placeholder="Search for healthcare services..."
-                     className="search-input"
-                     value={searchTerm}
-                     onChange={(e) => setSearchTerm(e.target.value)}
-                 />
-                 <svg xmlns="http://www.w3.org/2000/svg" className="icon search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                 </svg>
-             </div>
+            <div className="scrollable-content" style={{marginTop: selectedHospital ? '0rem' : '.5rem'}}> {/* Adjust margin based on header */}
+                 {!selectedHospital ? (
+                     // --- Display List of Hospitals ---
+                     <>
+                        {/* Hospital List Banner */}
+                         <div className="hbanner" style={{backgroundImage: `url('https://images.unsplash.com/photo-1586096041783-d24933255a36?fit=crop&w=1000&q=80')` }}> {/* Generic Hospital Banner */}
+                            <div className="banner-overlay"></div>
+                            <div className="hbanner-content">
+                                <h1 className="banner-title">Find a Hospital</h1>
+                                <p className="banner-subtitle">Select a hospital to view services.</p>
+                                {/* Book Now button is less relevant here */}
+                            </div>
+                        </div>
 
-             {/* Service List Section */}
-             <div className="service-list">
-                 {filteredServices.length === 0 ? (
-                     <p>No services found matching your search.</p>
-                 ) : (
-                     filteredServices.map(service => (
-                         <div key={service.id} className="service-card">
-                             <img src={service.imageUrl} alt={service.name} className="service-image" />
-                             <div className="service-details">
-                                 <div>
-                                     <div className="service-rating">
-                                         <span className="star-icon">★</span>
-                                         <span className="rating-value">{service.rating}</span>
-                                         <h3 className="service-name">{service.name}</h3>
-                                     </div>
-                                     <p className="service-description">{service.description}</p>
-                                 </div>
-                                 <div className="service-buttons">
-                                     <button
-                                          className="button queue-button"
-                                          type="button"
-                                          onClick={() => handleViewQueue(service)}
-                                      >
-                                          View Queue
-                                      </button>
-                                      <button
-                                           className="button consult-button"
-                                           type="button"
-                                           onClick={() => handleConsult(service)}
-                                       >
-                                           Consult
-                                       </button>
-                                 </div>
-                             </div>
+                        {/* Optional: Search bar for hospitals could go here */}
+                        <div className="search-bar" style={{justifyContent: 'center', boxShadow: 'none'}}>
+                             <p style={{margin: 0, fontSize: '1.1rem', fontWeight: 'bold', color: '#333'}}>Available Hospitals</p>
                          </div>
-                     ))
+
+
+                        <div className="service-list"> {/* Reusing service-list class for hospital list styling */}
+                             {isLoadingHospitals && <p style={{textAlign: 'center'}}>Loading hospitals...</p>}
+                             {hospitalError && <p style={{textAlign: 'center', color: 'red'}}>Error loading hospitals: {hospitalError}</p>}
+                             {!isLoadingHospitals && !hospitalError && hospitals.length === 0 && (
+                                 <p style={{textAlign: 'center'}}>No hospitals available.</p>
+                            )}
+                             {hospitals.map(hospital => (
+                                 <div key={hospital.id} className="service-card" onClick={() => handleSelectHospital(hospital)} style={{cursor: 'pointer'}}> {/* Use service-card for styling, make clickable */}
+                                    <img src={hospital.imageUrl || 'https://via.placeholder.com/150'} alt={hospital.name} className="service-image" />
+                                     <div className="service-details">
+                                         <div>
+                                            <h3 className="service-name">{hospital.name}</h3>
+                                             <p className="service-description">{hospital.location}</p>
+                                         </div>
+                                         <div className="service-buttons" style={{justifyContent: 'flex-start'}}> {/* Adjust button alignment */}
+                                             {/* Use handleSelectHospital to view services when clicking the button */}
+                                             <button className="button consult-button" type="button" onClick={(e) => { e.stopPropagation(); handleSelectHospital(hospital); }}> {/* Prevent card click when button clicked */}
+                                                 View Services
+                                             </button>
+                                         </div>
+                                     </div>
+                                 </div>
+                             ))}
+                         </div>
+                    </>
+                 ) : (
+                     // --- Display Services for Selected Hospital ---
+                     <>
+                       <div className="horizontal-line"></div> {/* Visual separator */}
+
+                       <div className="search-bar">
+                           {/* Assuming menu icon was for a side drawer, if not needed remove */}
+                            {/* <Menu className="icon menu-icon" /> */}
+                            <Search className="icon search-icon" /> {/* Use search icon */}
+                           <input
+                               type="text"
+                               placeholder={`Search services at ${selectedHospital.name}...`} // More specific placeholder
+                               className="search-input"
+                               value={searchTerm}
+                               onChange={(e) => setSearchTerm(e.target.value)}
+                           />
+                       </div>
+
+                         <div className="service-list" id="services-section"> {/* Services List for selected hospital */}
+                             {isLoadingServices && <p style={{textAlign: 'center'}}>Loading services...</p>}
+                             {serviceError && <p style={{textAlign: 'center', color: 'red'}}>Error loading services: {serviceError}</p>}
+                              {!isLoadingServices && !serviceError && filteredServices.length === 0 ? (
+                                <p style={{textAlign: 'center'}}>No services found matching your search or available at this hospital.</p>
+                             ) : (
+                                !isLoadingServices && !serviceError && filteredServices.map(service => (
+                                     <div key={service.id} className="service-card" style={{cursor: 'default'}}> {/* Remove card cursor */}
+                                         <img src={service.imageUrl || 'https://via.placeholder.com/100'} alt={service.name} className="service-image" />
+                                         <div className="service-details">
+                                             <div>
+                                                 {/* Rating and Name */}
+                                                 <div className="service-rating">
+                                                    <span className="star-icon">★</span>
+                                                     <span className="rating-value">{service.rating?.toFixed(1) || 'N/A'}</span>
+                                                     <h3 className="service-name">{service.name}</h3>
+                                                 </div>
+                                                 {/* Description */}
+                                                <p className="service-description">{service.description}</p>
+                                             </div>
+                                            {/* Buttons */}
+                                             <div className="service-buttons">
+                                                 <button
+                                                    className="button queue-button"
+                                                    type="button"
+                                                     onClick={() => handleViewQueue(service)}
+                                                  >
+                                                     View Queue
+                                                 </button>
+                                                 <button
+                                                      className="button consult-button"
+                                                      type="button"
+                                                      onClick={() => handleConsult(service)}
+                                                  >
+                                                      Consult
+                                                  </button>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 ))
+                             )}
+                         </div>
+                       </>
                  )}
-             </div>
-            </div> {/* Closing scrollable-content div */}
+            </div>
 
-
-            {/* Consultation Form Modal */}
+            {/* Booking Modal (remains similar, but uses selectedServiceToBook and selectedHospital) */}
             {isFormModalOpen && (
                  <div className="modal-overlay">
-                     <div className="modal-content">
-                         <h2 className="modal-title">Book Consultation for {selectedService?.name}</h2>
+                    <div className="modal-content">
+                         <h2 className="modal-title">Book Consultation for {selectedServiceToBook?.name} at {selectedHospital?.name}</h2>
                          <form className="modal-form">
-                              {/* Removed Urgency Level Dropdown */}
-                              <div className="form-group">
+                            <div className="form-group">
                                   <label htmlFor="name" className="form-label">Name</label>
-                                  <input
-                                       type="text"
-                                       id="name"
-                                       name="name"
-                                       value={formData.name}
-                                       onChange={handleFormChange}
-                                       className="form-input"
-                                       required
-                                   />
-                              </div>
+                                  <input type="text" id="name" name="name" value={formData.name} onChange={handleFormChange} className="form-input" required />
+                            </div>
                               <div className="form-group">
                                   <label htmlFor="age" className="form-label">Age</label>
-                                  <input
-                                       type="number"
-                                       id="age"
-                                       name="age"
-                                       value={formData.age}
-                                       onChange={handleFormChange}
-                                       className="form-input"
-                                       required
-                                   />
+                                <input type="number" id="age" name="age" value={formData.age} onChange={handleFormChange} className="form-input" required min="0" max="120" /> {/* Added min/max */}
                               </div>
                               <div className="form-group">
-                                  <label htmlFor="number" className="form-label">Phone Number</label>
-                                  <input
-                                       type="tel"
-                                       id="number"
-                                       name="number"
-                                       value={formData.number}
-                                       onChange={handleFormChange}
-                                       className="form-input"
-                                       required
-                                   />
+                                <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+                                  <input type="tel" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleFormChange} className="form-input" required />
                               </div>
-                               <div className="form-group">
-                                   <label htmlFor="concern" className="form-label">Concern</label>
-                                   <textarea
-                                        id="concern"
-                                        name="concern"
-                                        value={formData.concern}
-                                        onChange={handleFormChange}
-                                        rows="3"
-                                        className="form-input"
-                                        required
-                                    ></textarea>
+                                <div className="form-group">
+                                   <label htmlFor="concern" className="form-label">Concern / Reason for Visit</label> {/* More descriptive label */}
+                                   <textarea id="concern" name="concern" value={formData.concern} onChange={handleFormChange} rows="3" className="form-input" required ></textarea>
+                                    <p className="text-sm text-gray-600 mt-1 mb-2">
+                                        (Urgency and queue position will be determined by AI upon submission)
+                                    </p>
                                </div>
 
-                               <div className="form-group checkbox-group">
-                                   <input
-                                        type="checkbox"
-                                        id="hasMedicalCard"
-                                        name="hasMedicalCard"
-                                        checked={formData.hasMedicalCard}
-                                        onChange={handleFormChange}
-                                        className="form-checkbox"
-                                    />
+                                <div className="form-group checkbox-group">
+                                    <input type="checkbox" id="hasMedicalCard" name="hasMedicalCard" checked={formData.hasMedicalCard} onChange={handleFormChange} className="form-checkbox" />
                                    <label htmlFor="hasMedicalCard" className="checkbox-label">Have Medical Card?</label>
-                               </div>
+                            </div>
 
                                {formData.hasMedicalCard && (
                                    <div className="medical-card-fields">
-                                       <div className="form-group">
+                                        <p style={{fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 'bold'}}>Medical Card Details:</p> {/* Added title */}
+                                        <div className="form-group">
                                            <label htmlFor="medicalCardCompany" className="form-label">Medical Card Company</label>
-                                           <input
-                                                type="text"
-                                                id="medicalCardCompany"
-                                                name="medicalCardCompany"
-                                                value={formData.medicalCardCompany}
-                                                onChange={handleFormChange}
-                                                className="form-input"
-                                                required={formData.hasMedicalCard}
-                                            />
+                                            <input type="text" id="medicalCardCompany" name="medicalCardCompany" value={formData.medicalCardCompany} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
                                        </div>
                                        <div className="form-group">
-                                           <label htmlFor="medicalCardNumber" className="form-label">Card Number</label>
-                                           <input
-                                                type="text"
-                                                id="medicalCardNumber"
-                                                name="medicalCardNumber"
-                                                value={formData.medicalCardNumber}
-                                                onChange={handleFormChange}
-                                                className="form-input"
-                                                required={formData.hasMedicalCard}
-                                            />
-                                       </div>
-                                       <div className="form-group">
-                                           <label htmlFor="medicalCardName" className="form-label">Name on Card</label>
-                                           <input
-                                                type="text"
-                                                id="medicalCardName"
-                                                name="medicalCardName"
-                                                value={formData.medicalCardName}
-                                                onChange={handleFormChange}
-                                                className="form-input"
-                                                required={formData.hasMedicalCard}
-                                            />
-                                       </div>
+                                            <label htmlFor="medicalCardNumber" className="form-label">Card Number</label>
+                                            <input type="text" id="medicalCardNumber" name="medicalCardNumber" value={formData.medicalCardNumber} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="medicalCardName" className="form-label">Name on Card</label>
+                                           <input type="text" id="medicalCardName" name="medicalCardName" value={formData.medicalCardName} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
+                                        </div>
                                    </div>
-                               )}
+                                )}
 
-                              <div className="modal-buttons">
-                                  <button
-                                       type="button"
-                                       className="button cancel-button"
-                                       onClick={closeModal}
-                                       disabled={isClassifying} // Disable cancel while classifying
-                                   >
-                                       Cancel
-                                   </button>
-                                   <button
-                                        type="button"
-                                        className="button submit-button"
-                                        onClick={handleSubmitBooking}
-                                        disabled={isClassifying} // Disable submit button while classifying
-                                   >
-                                        {isClassifying ? 'Classifying...' : 'Submit Booking'}
+                            <div className="modal-buttons">
+                                  <button type="button" className="button cancel-button" onClick={closeModal} disabled={isSubmitting}>Cancel</button>
+                                   <button type="button" className="button submit-button" onClick={handleSubmitBooking} disabled={isSubmitting}>
+                                        {isSubmitting ? 'Submitting...' : 'Submit Booking'}
                                    </button>
                               </div>
                          </form>
-                     </div>
+                       </div>
                  </div>
              )}
-
-            <BottomNavigation/>
+            {/* Bottom Navigation is now rendered globally in App.js or other root component */}
+            {/* <BottomNavigation /> */}
         </div>
     );
 }

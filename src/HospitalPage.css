@@ -1,9 +1,7 @@
-/* HospitalPage.css */
 
 /* Import Montserrat font from Google Fonts */
 /* You can also add the <link tag in your public/index.html <head> */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-
 /* Apply Montserrat font to the body or a main container */
 body {
     font-family: 'Montserrat', sans-serif;
@@ -77,7 +75,7 @@ body {
 .banner-overlay {
     position: absolute; /* Position over the image */
     justify-content: center;
-    
+
     align-items: center; /* Center items horizontally */
     inset: 0; /* Cover the entire banner */
     background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
@@ -137,8 +135,8 @@ body {
         display: none;
     }
     /* Hide scrollbar for IE, Edge, Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
 
@@ -158,7 +156,7 @@ body {
 }
 
 .search-input {
-    margin-top: 1rem;
+    /* margin-top: 1rem; Remove this margin */
     flex-grow: 1; /* Allow input to grow */
     padding: 0.5rem; /* Padding */
     border: 1px solid #d1d5db; /* Light gray border */
@@ -166,6 +164,7 @@ body {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Subtle shadow */
     outline: none; /* Remove default outline */
     font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
+    margin-left: 0.75rem; /* Add space to the left of the input */
 }
 
 .search-input:focus {
@@ -175,7 +174,7 @@ body {
 
 .search-icon {
     color: #6b7280; /* Gray color */
-    margin-left: 0.75rem; /* Space to the left */
+    /* margin-left: 0.75rem; Remove this margin */
 }
 
 /* Service List Styling */
@@ -274,12 +273,14 @@ span1{
     background-color: #004630; /* Darker green on hover */
 }
 
-.consult-button { background-image: linear-gradient(to right, #800000, #bd3049);
+.consult-button {
+    background-image: linear-gradient(to right, #800000, #bd3049); /* Red gradient */
     color: #ffffff; /* White text */
 }
 
 .consult-button:hover {
-    background-image: #ffffff; /* Darker red on hover */
+    /* Consider a slightly different gradient or solid color for hover */
+    opacity: 0.9; /* Example: subtle opacity change */
 }
 
 
@@ -301,12 +302,8 @@ span1{
     padding: 1.5rem; /* Padding */
     width: 100%; /* Full width */
     max-width: 26rem; /* Maximum width (sm) */
-}
-
-.queue-modal-content {
-    max-height: 80vh; /* Max height for queue modal */
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Stack vertically */
+    max-height: 90vh; /* Limit modal height */
+    overflow-y: auto; /* Add scroll if content is too long */
 }
 
 .modal-title {
@@ -361,6 +358,7 @@ span1{
     border-color: #d1d5db; /* Light gray border */
     border-radius: 0.25rem; /* Slightly rounded */
     outline: none; /* Remove default outline */
+    margin-right: 0.5rem; /* Space between checkbox and label */
 }
 
 .form-checkbox:focus {
@@ -369,7 +367,7 @@ span1{
 
 
 .checkbox-label {
-    margin-left: 0.5rem; /* Space to the left */
+    /* margin-left: 0.5rem; Removed as margin added to checkbox */
     font-size: 0.875rem; /* Small font size (sm) */
     color: #111827; /* Dark text */
     font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
@@ -383,6 +381,7 @@ span1{
     display: flex; /* Use flexbox */
     flex-direction: column; /* Stack vertically */
     gap: 1rem; /* Space between fields */
+    border: 1px solid #e5e7eb; /* Add a subtle border */
 }
 
 
@@ -393,104 +392,25 @@ span1{
     gap: 0.75rem; /* Space between buttons */
 }
 
-.button {
-    padding: 0.5rem 1rem; /* Padding */
-    font-size: 0.7rem; /* Small font size (sm) */
-    font-weight: 600; /* Semi-bold font */
-    border-radius: 0.375rem; /* Rounded corners */
-    border: none; /* No border */
-    cursor: pointer; /* Indicate clickable */
-    transition: background-color 0.2s ease-in-out; /* Smooth transition */
-    font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
-    outline: none; /* Remove outline */
-}
-
-.button:focus {
-    outline: none; /* Ensure no outline on focus */
-}
+/* Reusing button styles from above */
 
 
-
-.consult-button {
-    background-color: #dc2626; /* Red background */
+.cancel-button {
+    background-color: #6b7280; /* Gray background */
     color: #ffffff; /* White text */
 }
 
-.consult-button:hover {
-    background-color: #b91c1c; /* Darker red on hover */
+.cancel-button:hover {
+    background-color: #4b5563; /* Darker gray on hover */
 }
 
-/* Queue List Styling */
-.queue-list {
-     flex-grow: 1; /* Allow list to take remaining space */
-     overflow-y: auto; /* Enable vertical scrolling */
-     max-height: calc(80vh - 10rem); /* Adjust max height based on modal content */
+.submit-button {
+     background-image: linear-gradient(to right, #10b981, #059669); /* Green gradient */
+     color: #ffffff;
 }
 
-.queue-items {
-    list-style: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-    border-top: 1px solid #e5e7eb; /* Top border for the first item */
+.submit-button:hover {
+    /* Consider a different gradient or solid color for hover */
+    opacity: 0.9; /* Example: subtle opacity change */
 }
 
-.queue-item {
-    padding: 1rem 0; /* Vertical padding */
-    border-bottom: 1px solid #e5e7eb; /* Bottom border */
-}
-
-.queue-item-label {
-    font-weight: 600; /* Semi-bold label */
-}
-
-.queue-item-medical-card {
-    font-size: 0.875rem; /* Small font size */
-    color: #4b5563; /* Gray text */
-    margin-top: 0.25rem; /* Space above */
-}
-
-.queue-item-timestamp {
-    font-size: 0.75rem; /* Extra small font size */
-    color: #6b7280; /* Darker gray text */
-    margin-top: 0.25rem; /* Space above */
-}
-
-
-/* Bottom Navigation Placeholder Styling */
-.bottom-navigation-placeholder {
-    position: fixed; /* Fixed position */
-    bottom: 0; /* Stick to the bottom */
-    left: 0; /* Align to the left */
-    right: 0; /* Align to the right */
-    margin: 0 auto; /* Center horizontally */
-    max-width: 500px; /* Match the container's max-width */
-    background-color: #ffffff; /* White background */
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Shadow above */
-    height: 3.5rem; /* Height of the navigation bar */
-    display: flex; /* Use flexbox */
-    align-items: center; /* Vertically center items */
-    justify-content: space-around; /* Space out navigation items */
-    border-top: 1px solid #e5e7eb; /* Top border */
-    z-index: 40; /* Ensure it's above main content but below modals */
-}
-
-.nav-item {
-    text-align: center; /* Center text */
-    font-size: 0.75rem; /* Extra small font size */
-    color: #6b7280; /* Gray text color */
-    display: flex; /* Use flexbox */
-    flex-direction: column; /* Stack icon and text vertically */
-    align-items: center; /* Center items horizontally */
-    cursor: pointer; /* Indicate clickable */
-    font-family: 'Montserrat', sans-serif; /* Apply Montserrat font */
-}
-
-.nav-item .icon {
-    width: 1.5rem; /* Icon size */
-    height: 1.5rem; /* Icon size */
-    margin-bottom: 0.125rem; /* Small space below icon */
-}
-
-.nav-item:first-child {
-    color: #3b82f6; /* Blue color for the active/home item */
-}

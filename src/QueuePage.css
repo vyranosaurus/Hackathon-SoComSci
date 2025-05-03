@@ -1,19 +1,120 @@
-/* Modify the existing .priority-indicator rule in your ../HospitalPage.css file */
+
+.queue-page-container {
+    /* Additional styles for the queue page container if needed */
+     padding-bottom: 3.5rem; /* Ensure space for bottom navigation */
+}
+
+.queue-header {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    background-color: #800000; /* Match consult button gradient start color */
+    color: white;
+    height: 60px; /* Fixed height for header */
+     flex-shrink: 0; /* Prevent header from shrinking */
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.queue-header h1 {
+    font-size: 1.2rem; /* Adjusted font size for queue title */
+    margin: 0;
+    flex-grow: 1; /* Allow title to take space */
+    text-align: center;
+}
+
+.queue-header .back-arrow {
+    cursor: pointer;
+    margin-right: 1rem;
+     width: 20px; /* Explicit width for back arrow container */
+     height: 20px; /* Explicit height */
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     position: relative; /* Ensure positioning context if needed */
+     left: 0; /* Reset left positioning if set elsewhere */
+     transform: none; /* Reset transform if set elsewhere */
+}
+
+.horizontal-line {
+    border-bottom: 1px solid #ccc;
+    margin: 0 1rem 1rem;
+}
+
+.queue-list-container {
+     flex-grow: 1; /* Allow this section to take remaining space */
+     overflow-y: auto; /* Enable vertical scrolling */
+     padding: 0 1rem; /* Add horizontal padding */
+     /* Hide scrollbar */
+     &::-webkit-scrollbar { display: none; }
+     -ms-overflow-style: none;
+     scrollbar-width: none;
+}
+
+
+.patient-list {
+    list-style: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    /* border-top: 1px solid #e5e7eb; Removed, handled by item borders */
+}
+
+.patient-item {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Align items vertically */
+    padding: 15px 0; /* Vertical padding */
+    border-bottom: 1px solid #eee; /* Bottom border */
+    gap: 15px; /* Space between items */
+     background-color: #fff; /* Default background */
+     transition: background-color 0.2s ease-in-out; /* Smooth transition */
+}
+
+.patient-item:first-child {
+    border-top: none; /* Remove top border for the first item */
+}
+
+/* Add background color for different urgency levels */
+.patient-item.item-critical {
+    background-color: #ffebee; /* Light red background */
+    border-color: #ef9a9a; /* Slightly darker red border */
+}
+
+.patient-item.item-urgent {
+     background-color: #fff3e0; /* Light orange background */
+     border-color: #ffcc80; /* Slightly darker orange border */
+}
+
+/* Add a class for not urgent if you want specific styling */
+.patient-item.item-not-urgent {
+    /* background-color: #e8f5e9; Light green background */
+    /* border-color: #a5d6a7; Slightly darker green border */
+}
+
 
 .patient-avatar {
     position: relative; /* Essential for absolute positioning of children */
-    display: inline-block; /* Or block, depending on your layout */
+    display: inline-block;
     /* Add padding or margin here if the indicator overlaps with surrounding content */
-     padding: 5px; /* Example padding to make space for the indicator */
-  }
-  
+     flex-shrink: 0; /* Prevent avatar from shrinking */
+     width: 40px; /* Set a fixed width for avatar container */
+     height: 40px; /* Set a fixed height for avatar container */
+     border-radius: 50%; /* Make avatar container round */
+     overflow: hidden; /* Hide overflow from the round container */
+}
+
+.patient-avatar img {
+     display: block; /* Remove extra space below image */
+     width: 100%; /* Make image fill the container */
+     height: 100%; /* Make image fill the container */
+     object-fit: cover; /* Cover the area */
+}
+
   /* CSS for the Numbered Indicator (Always Shows for ALL patients) */
   /* This now uses the .priority-indicator class */
   .priority-indicator {
-    position: absolute;
-    /* Position at the bottom right - adjust as needed */
-    bottom: 0;
-    right: 0;
+    position: absolute; /* Position at the bottom right - adjust as needed */
+    bottom: -5px; /* Adjusted position */
+    right: -5px; /* Adjusted position */
     background-color: #555; /* Default color for the number circle (e.g., a neutral gray) */
     color: white; /* Text color for the number */
     border-radius: 50%; /* Makes it a circle */
@@ -25,53 +126,45 @@
     font-size: 12px; /* Adjust font size for the number */
     font-weight: bold;
     border: 1px solid white; /* Optional border */
-     /* Adjust transform to fine-tune positioning outside the avatar */
-    transform: translate(5px, 5px); /* Example: move 5px right and 5px down */
+    /* transform: translate(5px, 5px); Removed as using bottom/right directly */
     z-index: 1; /* Ensure it appears above the avatar */
     padding: 0; /* Remove any default padding */
     line-height: 1; /* Helps vertical centering of the number */
     min-width: 20px; /* Ensure minimum width even for single digits */
     text-align: center; /* Ensure text alignment */
   }
-  
+
   /* Optional: Override background color for Urgent/Critical indicators */
   /* This changes the circle color based on urgency */
-  .patient-item.item-urgent .priority-indicator {
-      background-color: orange; /* Urgent color for the number circle */
-  }
-  
-  .patient-item.item-critical .priority-indicator {
+   .priority-indicator.indicator-critical {
       background-color: red; /* Critical color for the number circle */
   }
-  
-  /* Ensure patient-item and patient-avatar have appropriate layout properties */
-  .patient-item {
-      display: flex; /* Assuming patient-item is a flex container */
-      align-items: center; /* Align items vertically */
-      /* other styles for patient-item */
-      margin-bottom: 15px; /* Add space between list items */
-      padding: 10px; /* Add padding inside list items */
-      border-bottom: 1px solid #eee; /* Optional separator line */
+
+  .priority-indicator.indicator-urgent {
+      background-color: orange; /* Urgent color for the number circle */
   }
-  
-  .patient-avatar {
-      /* Add margin or padding if needed */
-      margin-right: 15px; /* Example space between avatar and info */
-      flex-shrink: 0; /* Prevent avatar from shrinking */
-  }
-  
+
+   .priority-indicator.indicator-not-urgent {
+       background-color: #0b6d5c; /* Greenish for not urgent */
+   }
+
+   .priority-indicator.indicator-default {
+        background-color: #6b7280; /* Gray for not specified */
+   }
+
+
   .patient-info {
       flex-grow: 1; /* Allow info section to take up available space */
       /* other styles for patient-info */
   }
-  
+
   .patient-name {
       display: flex; /* Use flexbox for name and tag */
       align-items: center;
       font-weight: bold;
       margin-bottom: 3px;
   }
-  
+
   .patient-tag {
       margin-left: 8px; /* Space between name and tag */
       padding: 2px 6px;
@@ -79,55 +172,48 @@
       font-size: 0.75rem; /* Smaller font for tag */
       font-weight: normal;
       color: white;
+      flex-shrink: 0; /* Prevent tag from shrinking */
   }
-  
+
   .patient-tag.tag-urgent {
       background-color: orange;
   }
-  
+
   .patient-tag.tag-critical {
       background-color: red;
   }
-  
+
   .patient-condition {
       font-size: 0.9rem;
       color: #666;
       margin-bottom: 5px;
   }
-  
+
   .patient-date {
       font-size: 0.8rem;
       color: #999;
+      flex-shrink: 0; /* Prevent date from shrinking */
+      text-align: right; /* Align date to the right */
+      margin-left: 10px; /* Space between info and date */
   }
-  
+
   /* Ensure the button styling is correct */
-  button {
-      margin-left: 10px; /* Space between info and button */
+  .view-button { /* Use the specific class */
+      margin-left: 10px; /* Space between info/date and button */
       flex-shrink: 0; /* Prevent button from shrinking */
-  }
-  
-  /* Basic styles for header and container */
-  .queue-header {
-      display: flex;
-      align-items: center;
-      padding: 0 1rem;
-      margin-bottom: 1rem;
-  }
-  
-  .back-arrow {
+      padding: 5px 10px; /* Adjusted padding */
+      font-size: 0.8rem; /* Adjusted font size */
+      background-color: #3b82f6; /* Blue button */
+      color: white;
+      border-radius: 4px;
+      border: none;
       cursor: pointer;
-      margin-right: 1rem;
+      transition: background-color 0.2s ease-in-out;
   }
-  
-  .horizontal-line {
-      border-bottom: 1px solid #ccc;
-      margin: 0 1rem 1rem;
-  }
-  
-  .queue-page-container {
-      display: flex;
-      flex-direction: column;
-      height: 100vh; /* Example: make container fill the viewport height */
-  }
-  
+   .view-button:hover {
+       background-color: #2563eb; /* Darker blue on hover */
+   }
+
+
   /* Add styles for BottomNavigation if needed */
+  /* Assuming BottomNavigation component is placed outside .hospital-container */
