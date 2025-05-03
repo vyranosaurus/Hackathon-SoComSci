@@ -451,8 +451,7 @@ function HospitalPage() {
                        </div>
                  </div>
              )}
-            {/* Bottom Navigation is now rendered globally in App.js or other root component */}
-            {/* <BottomNavigation /> */}
+          <BottomNavigation/>
         </div>
     );
 }
