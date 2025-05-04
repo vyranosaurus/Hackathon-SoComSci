@@ -332,7 +332,7 @@ function HospitalPage() {
                                       <div className="result-content"> {/* Use result-content class */}
                                          <img src={hospital.imageUrl || 'https://via.placeholder.com/150'} alt={hospital.name} className="result-image" /> {/* Use result-image class */}
                                           <div className="result-details"> {/* Use result-details class */}
-                                              <h3 className="result-name" style = {{ width: '90%'}}>{hospital.name}
+                                              <h3 className="result-name" style = {{ width: '98%'}}>{hospital.name}
                                               {hospital.free && <span className="free-tag"> #FREE</span>}</h3> {/* Use result-name class */}
                                               <p className="result-location">{hospital.location}</p> {/* Use result-location class */}
                                          </div>
