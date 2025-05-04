@@ -193,11 +193,7 @@ function SearchPage() {
                     </div>
                 )}
                 <h1 className="search-title" style= {{display: 'flex', width: '90%',}}>
-                <div className="back-arrow" onClick={() => navigate(`/hospital`)} style = {{marginRight: '5%', marginTop: '0'
-                }}> {/* Simple back to home for now */}
-                          <ArrowLeft size={20} color="white" />
-                          
-                     </div>
+        
                      
                     {selectedHospital ? `Services` : 'Check Queues'}
                 </h1>
