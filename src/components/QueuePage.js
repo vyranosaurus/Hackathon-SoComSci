@@ -156,7 +156,7 @@ const QueuePage = () => {
     return (
         <div className="container hospital-container queue-page-container">
             <header className="queue-header mt-6">
-                <div className="back-arrow" onClick={() => navigate(`/hospital`)}>
+                <div className="back-arrow" onClick={() => navigate(`/hospital`)} style = {{marginRight: '2%'}}>
                     <ArrowLeft size={20} color="white" />
                 </div>
                 <h1 style = {{color: 'white', width: '100%', margin: 0}}>{serviceName}</h1>
@@ -183,7 +183,6 @@ const QueuePage = () => {
                     </div>
                 ) : bookings.length === 0 ? (
                     <div className="emptyState">
-                        <FaCheckCircle className="emptyStateIcon" />
                     </div>
                 ) : (
                     <div className="patientsList">
