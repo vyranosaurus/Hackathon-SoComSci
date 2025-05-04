@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import '../SearchPage.css'; // Import the SearchPage CSS file
 import BottomNavigation from './BottomNavigation'; // Import the BottomNavigation component
 import { FaArrowLeft, FaSearch, FaChevronRight, FaClock, FaHospital } from "react-icons/fa"; // Import icons
-
+import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; 
 const BACKEND_API_URL = 'http://localhost:8080/api';
 
 function SearchPage() {
@@ -192,7 +192,13 @@ function SearchPage() {
                         <FaArrowLeft size={16} />
                     </div>
                 )}
-                <h1 className="search-title">
+                <h1 className="search-title" style= {{display: 'flex', width: '90%',}}>
+                <div className="back-arrow" onClick={() => navigate(`/hospital`)} style = {{marginRight: '5%', marginTop: '0'
+                }}> {/* Simple back to home for now */}
+                          <ArrowLeft size={20} color="white" />
+                          
+                     </div>
+                     
                     {selectedHospital ? `Services` : 'Check Queues'}
                 </h1>
             </header>

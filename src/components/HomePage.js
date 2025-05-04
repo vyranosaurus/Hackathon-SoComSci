@@ -31,7 +31,9 @@ const HomePage = () => {
       <div className="features-section">
         <h2>Our Services</h2>
         <div className="features-container">
-          <div className="feature-card" onClick={() => navigate("/search")}>
+          <div className="feature-card" 
+          //onClick={() => navigate("/search")}
+          >
             <div className="feature-icon">
               <FaUserMd size={24} />
             </div>
@@ -39,7 +41,9 @@ const HomePage = () => {
             <p>Priority based on urgency</p>
           </div>
           
-          <div className="feature-card" onClick={() => navigate("/search")}>
+          <div className="feature-card" 
+          //onClick={() => navigate("/search")}
+          >
             <div className="feature-icon">
               <FaHospital size={24} />
             </div>
@@ -47,7 +51,9 @@ const HomePage = () => {
             <p>Find closest hospitals</p>
           </div>
           
-          <div className="feature-card" onClick={() => navigate("/search")}>
+          <div className="feature-card" 
+          //onClick={() => navigate("/search")}
+          >
             <div className="feature-icon">
               <FaCalendarAlt size={24} />
             </div>
@@ -55,7 +61,9 @@ const HomePage = () => {
             <p>Schedule doctor visits</p>
           </div>
           
-          <div className="feature-card" onClick={() => navigate("/search")}>
+          <div className="feature-card" 
+          //onClick={() => navigate("/search")}
+          >
             <div className="feature-icon">
               <FaAmbulance size={24} />
             </div>
@@ -65,7 +73,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="banner" onClick={() => navigate("/search")}>
+      <div className="banner" onClick={() => navigate("/hospital")}>
         <div className="banner-content">
           <h3>Smart Queue System</h3>
           <p>Priority based on urgency, not arrival time</p>
