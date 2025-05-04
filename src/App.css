@@ -1,11 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* Custom CSS Variables */
 :root {
-  --primary-maroon: #8B0000;
-  --primary-maroon-light: #a52a2a;
-  --primary-maroon-dark: #660000;
+  --primary-maroon: #800000;
+  --primary-maroon-light: #9A1919;
+  --primary-maroon-dark: #600000;
   --white: #ffffff;
   --light-gray: #f5f5f5;
   --medium-gray: #e0e0e0;
@@ -13,6 +10,7 @@
   --black: #333333;
 }
 
+/* Base styles */
 * {
   margin: 0;
   padding: 0;

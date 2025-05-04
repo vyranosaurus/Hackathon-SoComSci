@@ -5,7 +5,6 @@ import '../SearchPage.css'; // Import the SearchPage CSS file
 import BottomNavigation from './BottomNavigation'; // Import the BottomNavigation component
 import { FaArrowLeft, FaSearch, FaChevronRight, FaClock, FaHospital } from "react-icons/fa"; // Import icons
 
-// Backend API base URL - update this with your actual backend URL
 const BACKEND_API_URL = 'http://localhost:8080/api';
 
 function SearchPage() {

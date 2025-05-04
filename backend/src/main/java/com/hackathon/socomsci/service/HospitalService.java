@@ -51,5 +51,36 @@ public class HospitalService {
         return hospital.getServices();
     }
 
-    // You might add methods to create/update hospitals or services
+    // Create a new hospital
+    public Hospital createHospital(Hospital hospital) {
+        // Make sure isFree field is included
+        // If not explicitly set, it will default to false
+        return hospitalRepository.save(hospital);
+    }
+
+    // Update an existing hospital
+    public Hospital updateHospital(String hospitalId, Hospital hospitalDetails) {
+        Hospital hospital = hospitalRepository.findByHospitalId(hospitalId)
+                .orElseThrow(() -> new RuntimeException("Hospital not found with ID: " + hospitalId));
+        
+        hospital.setName(hospitalDetails.getName());
+        hospital.setLocation(hospitalDetails.getLocation());
+        hospital.setImageUrl(hospitalDetails.getImageUrl());
+        
+        // Update isFree status
+        hospital.setFree(hospitalDetails.isFree());
+        
+        return hospitalRepository.save(hospital);
+    }
+    
+    // Toggle isFree status for a hospital
+    public Hospital toggleFreeStatus(String hospitalId) {
+        Hospital hospital = hospitalRepository.findByHospitalId(hospitalId)
+                .orElseThrow(() -> new RuntimeException("Hospital not found with ID: " + hospitalId));
+        
+        // Toggle the current status
+        hospital.setFree(!hospital.isFree());
+        
+        return hospitalRepository.save(hospital);
+    }
 }

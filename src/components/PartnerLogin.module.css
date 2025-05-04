@@ -1,0 +1,285 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+.header {
+  background-color: #800000;
+  color: white;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 1.5rem 1.5rem;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+}
+
+.backButton {
+  margin-right: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 9999px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backButton:hover, .backButton:active {
+  background-color: #600000;
+}
+
+.headerTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.mainContent {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  width: 100%;
+}
+
+.loginCard {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo {
+  width: 5rem;
+  height: 5rem;
+  background-color: #800000;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoIcon {
+  color: white;
+  font-size: 2rem;
+}
+
+.loginTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+  color: #1f2937;
+  margin-bottom: 1.25rem;
+}
+
+.highlight {
+  color: #800000;
+  font-weight: 900;
+  position: relative;
+  display: inline-block;
+}
+
+.highlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0.2rem;
+  width: 100%;
+  background-color: #800000;
+  border-radius: 0.25rem;
+  opacity: 0.3;
+}
+
+.errorMessage {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-left: 4px solid #ef4444;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  color: #4b5563;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #800000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: all 0.2s;
+  background-color: white;
+  font-size: 0.9rem;
+}
+
+.input:focus {
+  border-color: #800000;
+  box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.1);
+}
+
+.submitButton {
+  width: 100%;
+  background-color: #800000;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.submitButton:hover, .submitButton:active {
+  background-color: #600000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.submitButton:disabled {
+  background-color: #9a1919;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.8;
+}
+
+.forgotPassword {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.forgotPasswordLink {
+  color: #800000;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.forgotPasswordLink:hover {
+  text-decoration: underline;
+}
+
+/* Responsive styles for smaller devices */
+@media (max-width: 360px) {
+  .loginCard {
+    padding: 1.25rem;
+  }
+  
+  .logo {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  
+  .logoIcon {
+    font-size: 1.75rem;
+  }
+  
+  .input {
+    padding: 0.7rem 0.9rem 0.7rem 2.25rem;
+  }
+  
+  .submitButton {
+    padding: 0.8rem;
+  }
+}
+
+/* Add free services styles but keep them compatible with original design */
+.freeServicesBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(21, 128, 61, 0.1);
+  color: #15803d;
+  border-radius: 1rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.freeServicesIcon {
+  margin-right: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.paidServicesBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(185, 28, 28, 0.1);
+  color: #b91c1c;
+  border-radius: 1rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.paidServicesIcon {
+  margin-right: 0.25rem;
+  font-size: 0.75rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 
