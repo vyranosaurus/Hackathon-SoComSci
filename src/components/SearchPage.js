@@ -68,95 +68,83 @@ function SearchPage() {
             estimatedWaitTime: "10-15"
         }
     ];
+// Fetch hospitals when component mounts
+    useEffect(() => {
+            const fetchHospitals = async () => {
+                setIsLoadingHospitals(true);
+                setHospitalError(null);
+                try {
+                    // *** RESTORE actual API call ***
+                    const response = await fetch(`${BACKEND_API_URL}/hospitals`);
+    
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                        let errorDetail = { message: `HTTP Error: ${response.status}` };
+                        try {
+                            errorDetail = JSON.parse(errorBody);
+                        } catch (parseError) {
+                            errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
+                        }
+                        console.error("Backend API Error (Hospitals):", response.status, errorDetail);
+                        setHospitalError(`Failed to load hospitals: ${errorDetail.message || response.statusText}`);
+                        setHospitals([]); // Clear hospitals on error
+                        return;
+                    }
+                    const data = await response.json();
+                    // console.log("Fetched Hospitals Data:", data); // Optional: Keep for verification
+                    setHospitals(data);
+                } catch (error) {
+                    console.error("Error fetching hospitals:", error);
+                    setHospitalError(`Failed to connect to backend: ${error.message}`);
+                    setHospitals([]); // Clear hospitals on error
+                } finally {
+                    setIsLoadingHospitals(false);
+                }
+            };
+    
+            fetchHospitals();
+        }, [BACKEND_API_URL]); // Add dependency if not already there
 
-    // Fetch hospitals when component mounts
-    useEffect(() => {
-        const fetchHospitals = async () => {
-            setIsLoadingHospitals(true);
-            setHospitalError(null);
-            try {
-                // Comment out actual API call for now and use mock data
-                /*
-                const response = await fetch(`${BACKEND_API_URL}/hospitals`);
-                if (!response.ok) {
-                    const errorBody = await response.text();
-                    let errorDetail = { message: `HTTP Error: ${response.status}` };
-                    try {
-                        errorDetail = JSON.parse(errorBody);
-                    } catch (parseError) {
-                        errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
-                    }
-                    console.error("Backend API Error (Hospitals):", response.status, errorDetail);
-                    setHospitalError(`Failed to load hospitals: ${errorDetail.message || response.statusText}`);
-                    setHospitals([]);
-                    return;
-                }
-                const data = await response.json();
-                setHospitals(data);
-                */
-                
-                // Use mock data instead
-                setTimeout(() => {
-                    setHospitals(mockHospitals);
-                    setIsLoadingHospitals(false);
-                }, 500);
-            } catch (error) {
-                console.error("Error fetching hospitals:", error);
-                setHospitalError(`Failed to connect to backend: ${error.message}`);
-                setHospitals([]);
-                setIsLoadingHospitals(false);
-            }
-        };
-
-        fetchHospitals();
-    }, []);
-
-    // Fetch services when a hospital is selected
-    useEffect(() => {
-        if (selectedHospital) {
-            const fetchServices = async () => {
-                setIsLoadingServices(true);
-                setServiceError(null);
-                setServices([]);
-                try {
-                    // Comment out actual API call for now and use mock data
-                    /*
-                    const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}`);
-                    if (!response.ok) {
-                        const errorBody = await response.text();
-                        let errorDetail = { message: `HTTP Error: ${response.status}` };
-                        try {
-                            errorDetail = JSON.parse(errorBody);
-                        } catch (parseError) {
-                            errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
-                        }
-                        console.error("Backend API Error (Services):", response.status, errorDetail);
-                        setServiceError(`Failed to load services: ${errorDetail.message || response.statusText}`);
-                        setServices([]);
-                        return;
-                    }
-                    const data = await response.json();
-                    setServices(data);
-                    */
-                    
-                    // Use mock data instead
-                    setTimeout(() => {
-                        setServices(mockServices);
-                        setIsLoadingServices(false);
-                    }, 500);
-                } catch (error) {
-                    console.error("Error fetching services:", error);
-                    setServiceError(`Failed to connect to service list: ${error.message}`);
-                    setServices([]);
-                    setIsLoadingServices(false);
-                }
-            };
-
-            fetchServices();
-        } else {
-            setServices([]);
-        }
-    }, [selectedHospital]);
+ // Fetch services when a hospital is selected
+     useEffect(() => {
+            if (selectedHospital) {
+                const fetchServices = async () => {
+                    setIsLoadingServices(true);
+                    setServiceError(null);
+                    setServices([]); // Clear previous services
+                    try {
+                        // *** RESTORE actual API call (corrected endpoint) ***
+                        const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services`); // Use hospitalId from selectedHospital
+    
+                        if (!response.ok) {
+                            const errorBody = await response.text();
+                            let errorDetail = { message: `HTTP Error: ${response.status}` };
+                            try {
+                                errorDetail = JSON.parse(errorBody);
+                            } catch (parseError) {
+                                errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
+                            }
+                            console.error("Backend API Error (Services):", response.status, errorDetail);
+                            setServiceError(`Failed to load services: ${errorDetail.message || response.statusText}`);
+                            setServices([]); // Clear services on error
+                            return;
+                        }
+                        const data = await response.json();
+                        setServices(data);
+                    } catch (error) {
+                        console.error("Error fetching services:", error);
+                        setServiceError(`Failed to connect to service list: ${error.message}`);
+                        setServices([]); // Clear services on error
+                    } finally {
+                        setIsLoadingServices(false);
+                    }
+                };
+    
+                fetchServices();
+            } else {
+                setServices([]); // Clear services if no hospital is selected
+            }
+        }, [selectedHospital, BACKEND_API_URL]); // Add dependencies if not already there
 
     // Handle hospital selection
     const handleSelectHospital = (hospital) => {
@@ -205,7 +193,7 @@ function SearchPage() {
                     </div>
                 )}
                 <h1 className="search-title">
-                    {selectedHospital ? `Services at ${selectedHospital.name}` : 'Find Hospitals'}
+                    {selectedHospital ? `Services` : 'Check Queues'}
                 </h1>
             </header>
 
@@ -214,6 +202,8 @@ function SearchPage() {
                 <input
                     type="text"
                     className="search-input"
+                    style = {{paddingLeft: '10%'
+                    }}
                     placeholder={selectedHospital ? "Search services..." : "Search hospitals..."}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -251,7 +241,8 @@ function SearchPage() {
                                         <FaHospital size={20} />
                                     </div>
                                     <div className="result-details">
-                                        <h3 className="result-name">{hospital.name}</h3>
+                                        <h3 className="result-name" style = {{width : '90%'}}>{hospital.name}{hospital.free && <span className="free-tag">#Free</span>}</h3>
+
                                         <p className="result-location">{hospital.location}</p>
                                     </div>
                                 </div>

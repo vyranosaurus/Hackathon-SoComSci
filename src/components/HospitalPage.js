@@ -58,6 +58,7 @@ function HospitalPage() {
                     return;
                 }
                 const data = await response.json();
+                console.log("Fetched Hospitals Data:", data);
                 setHospitals(data);
             } catch (error) {
                 console.error("Error fetching hospitals:", error);
@@ -257,19 +258,26 @@ function HospitalPage() {
         <div className="hospital-container">
             {/* Header Section (Conditionally rendered) */}
             {!selectedHospital ? (
-                   <header className="search-header"> {/* Use search-header class from SearchPage */}
+                   <header className="search-header" style = {{position: 'absolute', zIndex: 1,
+                    width: '100%'
+                   }
+                   }> {/* Use search-header class from SearchPage */}
                        {/* Optional: Back button for the hospital list page if needed */}
                         {/* <div className="back-button" onClick={handleBackToPreviousPage}>
                            <ArrowLeft size={20} color="white" />
                         </div> */}
                        {/* Title in the header */}
-                        <div className="search-title">Find Hospitals</div> {/* Use search-title class from SearchPage */}
+                       <div className="back-arrow" 
+          onClick={() => navigate("/home")} style={{ position: 'absolute', left: '1rem', marginRight: '2%' }}>
+                           <ArrowLeft size={20} color="white" />
+                        </div>
+                        <div className="search-title" style = {{marginLeft: '10%'}}>Find Hospitals</div> {/* Use search-title class from SearchPage */}
                         {/* Optional: Menu icon if needed */}
                        {/* <Menu className="icon menu-icon" /> */}
                    </header>
             ) : (
                 // Header for hospital+service view - Keep the original header structure
-                   <header className="queue-header mt-6" style={{ position: 'relative' }}>
+                   <header className="queue-header mt-6" style={{ position: 'absolute', zIndex: 1, width: '100%' }}>
                        {/* Back button */}
                         <div className="back-arrow" onClick={handleBackToHospitals} style={{ position: 'absolute', left: '1rem' }}>
                            <ArrowLeft size={20} color="white" />
@@ -285,12 +293,12 @@ function HospitalPage() {
             )}
 
 
-            <div className="scrollable-content" style={{marginTop: selectedHospital ? '0rem' : '0rem'}}> {/* Adjust margin based on header */}
+            <div className="scrollable-content" style={{marginTop: selectedHospital ? '4rem' : '0rem'}}> {/* Adjust margin based on header */}
                  {!selectedHospital ? (
                      // --- Display List of Hospitals with Search ---
                      <>
                          {/* Hospital List Banner - Keep existing banner */}
-                          <div className="hbanner" style={{backgroundImage: `url('https://j6n3r3q2.delivery.rocketcdn.me/wp-content/uploads/2020/11/ICU_1.jpg')`, height: '250px' }}> {/* Generic Hospital Banner */}
+                          <div className="hbanner" style={{backgroundImage: `url('https://j6n3r3q2.delivery.rocketcdn.me/wp-content/uploads/2020/11/ICU_1.jpg')`, height: '250px', marginTop : '2%' }}> {/* Generic Hospital Banner */}
                              <div className="banner-overlay"></div>
                              <div className="hbanner-content">
                                  <h1 className="banner-title">Find a Hospital</h1>
@@ -300,8 +308,9 @@ function HospitalPage() {
 
                          {/* Search Bar for Hospitals (moved above title) */}
                          <div className="search-bar-container" style={{margin: '.5rem',   boxShadow: '0 2px 4px rgba(0, 0, 0, .1)', width: '100%', marginLeft: 0, marginTop: 0, borderRadius: 0, height: '10%'}}> {/* Container for search bar, added margin */}
-                             <Search className="icon search-icon" /> {/* Search icon inside the bar */}
+                             <Search className="icon search-icon"/> {/* Search icon inside the bar */}
                             <input
+                            style = {{paddingLeft: '10%'}}
                                  type="text"
                                  placeholder="Search for hospitals..." // Specific placeholder for hospital search
                                 className="search-input" // Use search-input class from SearchPage
@@ -312,7 +321,7 @@ function HospitalPage() {
 
 
                          {/* Hospital List - Use search-results-list and search-result-item styling for hospital items */}
-                         <div className="search-results-list"> {/* Use search-results-list class from SearchPage */}
+                         <div className="search-results-list" style = {{paddingLeft: '3%', paddingRight: '3%'}}> {/* Use search-results-list class from SearchPage */}
                              {isLoadingHospitals && <p style={{textAlign: 'center'}}>Loading hospitals...</p>}
                              {hospitalError && <p style={{textAlign: 'center', color: 'red'}}>Error loading hospitals: {hospitalError}</p>}
                               {!isLoadingHospitals && !hospitalError && filteredHospitals.length === 0 && (
@@ -323,7 +332,8 @@ function HospitalPage() {
                                       <div className="result-content"> {/* Use result-content class */}
                                          <img src={hospital.imageUrl || 'https://via.placeholder.com/150'} alt={hospital.name} className="result-image" /> {/* Use result-image class */}
                                           <div className="result-details"> {/* Use result-details class */}
-                                              <h3 className="result-name">{hospital.name}</h3> {/* Use result-name class */}
+                                              <h3 className="result-name" style = {{ width: '90%'}}>{hospital.name}
+                                              {hospital.free && <span className="free-tag"> #FREE</span>}</h3> {/* Use result-name class */}
                                               <p className="result-location">{hospital.location}</p> {/* Use result-location class */}
                                          </div>
                                       </div>
@@ -372,6 +382,7 @@ function HospitalPage() {
                                 placeholder={`Search services at ${selectedHospital.name}...`} // Original specific placeholder
                                className="search-input" // Keep original search-input class
                                 value={searchTerm}
+                                style = {{paddingLeft: '10%'}}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                            />
                        </div>

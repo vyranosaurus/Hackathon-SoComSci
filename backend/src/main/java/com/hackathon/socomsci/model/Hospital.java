@@ -13,19 +13,22 @@ public class Hospital {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    private String hospitalId; 
+    private String hospitalId;
     @Column(nullable = false)
     private String name;
     private String location;
-    private String imageUrl; 
-    
+    private String imageUrl;
+
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isFree = false; 
+    private boolean isFree = false;
 
     @ManyToMany
-    @JoinTable(name = "hospital_services", 
-            joinColumns = @JoinColumn(name = "hospital_id"), 
-            inverseJoinColumns = @JoinColumn(name = "service_id") // Column in join table referencing Service
+    @JoinTable(name = "hospital_services", joinColumns = @JoinColumn(name = "hospital_id"), inverseJoinColumns = @JoinColumn(name = "service_id") // Column
+                                                                                                                                                  // in
+                                                                                                                                                  // join
+                                                                                                                                                  // table
+                                                                                                                                                  // referencing
+                                                                                                                                                  // Service
     )
     @JsonIgnore // Avoid infinite recursion when serializing Hospital -> Services -> Hospitals
     private Set<OfferedService> services = new HashSet<>();
@@ -71,7 +74,7 @@ public class Hospital {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-    
+
     public boolean isFree() {
         return isFree;
     }

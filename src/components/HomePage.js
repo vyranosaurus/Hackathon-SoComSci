@@ -17,14 +17,14 @@ const HomePage = () => {
           className="cta-button"
           onClick={() => navigate("/search")}
         >
-          Find Hospital
+          Check Availability
         </button>
       </div>
 
-      <div className="search-bar" onClick={() => navigate("/search")}>
+      <div className="search-bar" onClick={() => navigate("/hospital")}>
         <div className="search-input">
           <FaSearch className="search-icon" />
-          <span className="placeholder-text">What symptoms do you have?</span>
+          <span className="placeholder-text" style = {{paddingLeft: '2rem'}}>What symptoms do you have?</span>
         </div>
       </div>
 

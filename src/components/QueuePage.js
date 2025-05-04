@@ -178,7 +178,7 @@ const QueuePage = () => {
                      {/* Back arrow */}
                      {/* Navigate back to the specific hospital page if possible, or just home */}
                      {/* If you want to go back to the specific hospital's service list, you'd need to navigate to `/hospital/${hospitalId}` if you had such a route */}
-                     <div className="back-arrow" onClick={() => navigate(`/`)}> {/* Simple back to home for now */}
+                     <div className="back-arrow" onClick={() => navigate(`/hospital`)}> {/* Simple back to home for now */}
                           <ArrowLeft size={20} color="white" />
                      </div>
                      {/* Queue Title */}
