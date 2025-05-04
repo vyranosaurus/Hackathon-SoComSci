@@ -300,7 +300,7 @@ function HospitalPage() {
                          </div>
 
                          {/* Search Bar for Hospitals (moved above title) */}
-                         <div className="search-bar-container" style={{margin: '1rem',   boxShadow: '0 2px 4px rgba(0, 0, 0, .1)', width: '100%', marginLeft: 0, marginTop: 0, borderRadius: 0, height: '10%'}}> {/* Container for search bar, added margin */}
+                         <div className="search-bar-container" style={{margin: '.5rem',   boxShadow: '0 2px 4px rgba(0, 0, 0, .1)', width: '100%', marginLeft: 0, marginTop: 0, borderRadius: 0, height: '10%'}}> {/* Container for search bar, added margin */}
                              <Search className="icon search-icon" /> {/* Search icon inside the bar */}
                             <input
                                  type="text"
