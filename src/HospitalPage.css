@@ -16,8 +16,8 @@ body {
     height: 100vh; /* Set the height to full viewport height */
     margin: 0 auto; /* Center the container horizontally */
     display: flex; /* Use flexbox for layout */
+    overflow: visible;
     flex-direction: column; /* Stack children vertically */
-    overflow: hidden; /* Hide overflow to prevent content spilling out */
     position: relative; /* Needed for fixed bottom navigation */
 }
 
@@ -139,12 +139,15 @@ body {
     scrollbar-width: none; /* Firefox */
 }
 
-
+.search-header{
+    height: 9%;
+}
 /* Search Bar Styling - Moved down by parent's margin */
-.search-bar {
+.hsearch-bar {
     padding: 1rem; /* Padding */
     background-color: #ffffff; /* White background */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+  z-index: 2;
     display: flex; /* Use flexbox */
     align-items: center; /* Vertically center items */
     flex-shrink: 0; /* Prevent search bar from shrinking */
@@ -181,6 +184,7 @@ body {
 .service-list {
     padding: 1rem; /* Padding */
     display: flex; /* Use flexbox */
+    z-index: 1;
     flex-direction: column; /* Stack items vertically */
     gap: 1rem; /* Space between items */
     background-color: #ffffff; /* White background */

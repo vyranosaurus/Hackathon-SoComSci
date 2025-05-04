@@ -62,7 +62,7 @@ function SearchPage() {
                 setServiceError(null);
                 setServices([]);
                 try {
-                    const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services`);
+                    const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}`);
                     if (!response.ok) {
                         const errorBody = await response.text();
                         let errorDetail = { message: `HTTP Error: ${response.status}` };
