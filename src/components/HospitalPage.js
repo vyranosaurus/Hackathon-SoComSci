@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../HospitalPage.css'; // Make sure your CSS file is in the correct path
 import BottomNavigation from './BottomNavigation'; // Assuming this component exists
-import { ArrowLeft, Search, Menu, ChevronRight } from "lucide-react"; // Import icons including ChevronRight
+import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; // Import icons including ChevronRight
 
 // *** Define your backend API base URL ***
 // !!! IMPORTANT: Update this with your actual backend URL and port !!!
@@ -58,6 +58,7 @@ function HospitalPage() {
                     return;
                 }
                 const data = await response.json();
+                console.log("Fetched Hospitals Data:", data);
                 setHospitals(data);
             } catch (error) {
                 console.error("Error fetching hospitals:", error);
@@ -115,9 +116,7 @@ function HospitalPage() {
     const handleSelectHospital = (hospital) => {
            setSelectedHospital(hospital);
            setSearchTerm(''); // Clear search term when selecting a hospital
-           // Optionally scroll to the services section after selecting a hospital
-           // const servicesSection = document.getElementById('services-section');
-           // if(servicesSection) servicesSection.scrollIntoView({ behavior: 'smooth' });
+           window.scrollTo(0, 0);
     };
 
     const handleConsult = (service) => {
@@ -238,6 +237,7 @@ function HospitalPage() {
      const handleBackToHospitals = () => {
          setSelectedHospital(null); // Go back to hospital list view
          setSearchTerm(''); // Clear search when going back
+         window.scrollTo(0, 0);
      };
 
     // Filter hospitals based on search term when no hospital is selected
@@ -258,19 +258,26 @@ function HospitalPage() {
         <div className="hospital-container">
             {/* Header Section (Conditionally rendered) */}
             {!selectedHospital ? (
-                   <header className="search-header"> {/* Use search-header class from SearchPage */}
+                   <header className="search-header" style = {{position: 'absolute', zIndex: 1,
+                    width: '100%'
+                   }
+                   }> {/* Use search-header class from SearchPage */}
                        {/* Optional: Back button for the hospital list page if needed */}
                         {/* <div className="back-button" onClick={handleBackToPreviousPage}>
                            <ArrowLeft size={20} color="white" />
                         </div> */}
                        {/* Title in the header */}
-                        <div className="search-title">Search</div> {/* Use search-title class from SearchPage */}
+                       <div className="back-arrow" 
+          onClick={() => navigate("/home")} style={{ position: 'absolute', left: '1rem', marginRight: '2%' }}>
+                           <ArrowLeft size={20} color="white" />
+                        </div>
+                        <div className="search-title" style = {{marginLeft: '10%'}}>Find Hospitals</div> {/* Use search-title class from SearchPage */}
                         {/* Optional: Menu icon if needed */}
                        {/* <Menu className="icon menu-icon" /> */}
                    </header>
             ) : (
                 // Header for hospital+service view - Keep the original header structure
-                   <header className="queue-header mt-6" style={{ position: 'relative' }}>
+                   <header className="queue-header mt-6" style={{ position: 'absolute', zIndex: 1, width: '100%' }}>
                        {/* Back button */}
                         <div className="back-arrow" onClick={handleBackToHospitals} style={{ position: 'absolute', left: '1rem' }}>
                            <ArrowLeft size={20} color="white" />
@@ -286,12 +293,12 @@ function HospitalPage() {
             )}
 
 
-            <div className="scrollable-content" style={{marginTop: selectedHospital ? '0rem' : '0rem'}}> {/* Adjust margin based on header */}
+            <div className="scrollable-content" style={{marginTop: selectedHospital ? '4rem' : '0rem'}}> {/* Adjust margin based on header */}
                  {!selectedHospital ? (
                      // --- Display List of Hospitals with Search ---
                      <>
                          {/* Hospital List Banner - Keep existing banner */}
-                          <div className="hbanner" style={{backgroundImage: `url('https://j6n3r3q2.delivery.rocketcdn.me/wp-content/uploads/2020/11/ICU_1.jpg')`, height: '250px' }}> {/* Generic Hospital Banner */}
+                          <div className="hbanner" style={{backgroundImage: `url('https://j6n3r3q2.delivery.rocketcdn.me/wp-content/uploads/2020/11/ICU_1.jpg')`, height: '250px', marginTop : '2%' }}> {/* Generic Hospital Banner */}
                              <div className="banner-overlay"></div>
                              <div className="hbanner-content">
                                  <h1 className="banner-title">Find a Hospital</h1>
@@ -301,8 +308,9 @@ function HospitalPage() {
 
                          {/* Search Bar for Hospitals (moved above title) */}
                          <div className="search-bar-container" style={{margin: '.5rem',   boxShadow: '0 2px 4px rgba(0, 0, 0, .1)', width: '100%', marginLeft: 0, marginTop: 0, borderRadius: 0, height: '10%'}}> {/* Container for search bar, added margin */}
-                             <Search className="icon search-icon" /> {/* Search icon inside the bar */}
+                             <Search className="icon search-icon"/> {/* Search icon inside the bar */}
                             <input
+                            style = {{paddingLeft: '10%'}}
                                  type="text"
                                  placeholder="Search for hospitals..." // Specific placeholder for hospital search
                                 className="search-input" // Use search-input class from SearchPage
@@ -313,7 +321,7 @@ function HospitalPage() {
 
 
                          {/* Hospital List - Use search-results-list and search-result-item styling for hospital items */}
-                         <div className="search-results-list"> {/* Use search-results-list class from SearchPage */}
+                         <div className="search-results-list" style = {{paddingLeft: '3%', paddingRight: '3%'}}> {/* Use search-results-list class from SearchPage */}
                              {isLoadingHospitals && <p style={{textAlign: 'center'}}>Loading hospitals...</p>}
                              {hospitalError && <p style={{textAlign: 'center', color: 'red'}}>Error loading hospitals: {hospitalError}</p>}
                               {!isLoadingHospitals && !hospitalError && filteredHospitals.length === 0 && (
@@ -324,11 +332,12 @@ function HospitalPage() {
                                       <div className="result-content"> {/* Use result-content class */}
                                          <img src={hospital.imageUrl || 'https://via.placeholder.com/150'} alt={hospital.name} className="result-image" /> {/* Use result-image class */}
                                           <div className="result-details"> {/* Use result-details class */}
-                                              <h3 className="result-name">{hospital.name}</h3> {/* Use result-name class */}
+                                              <h3 className="result-name" style = {{ width: '98%'}}>{hospital.name}
+                                              {hospital.free && <span className="free-tag"> #FREE</span>}</h3> {/* Use result-name class */}
                                               <p className="result-location">{hospital.location}</p> {/* Use result-location class */}
                                          </div>
                                       </div>
-                                      <ChevronRight size={20} color="#6b7280" /> {/* Add ChevronRight icon */}
+                                      <ArrowLeft size={16} color="#6b7280" style={{transform: 'rotate(180deg)'}} /> {/* Add ChevronRight icon */}
                                   </div>
                               ))}
                          </div>
@@ -337,8 +346,9 @@ function HospitalPage() {
                      // --- Display Services for Selected Hospital (Keep original structure and search bar) ---
                      <>
                         {/* Hospital Image - Keep this */}
-                        <img
-                                src={selectedHospital.imageUrl}
+                        <div style={{position: 'relative'}}>
+                            <img
+                                src={selectedHospital.imageUrl || 'https://via.placeholder.com/500x250?text=Hospital'}
                                 alt={`${selectedHospital.name} Image`}
                                 className="hospital-detail-image" // Keep existing class or add one for specific styling
                                 style={{
@@ -349,6 +359,19 @@ function HospitalPage() {
                                     display: 'block', // Center the image
                                 }}
                             />
+                            <div style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+                                padding: '40px 16px 12px 16px',
+                            }}>
+                                <p style={{color: 'white', fontSize: '0.8rem', margin: 0}}>
+                                    <Clock size={12} className="inline mr-1" /> Open: 24/7
+                                </p>
+                            </div>
+                        </div>
                          {/* Original Search Bar for Services */}
                          <div className="hsearch-bar"> {/* Keep original hsearch-bar class for services search */}
                             {/* Assuming menu icon was for a side drawer, if not needed remove */}
@@ -359,6 +382,7 @@ function HospitalPage() {
                                 placeholder={`Search services at ${selectedHospital.name}...`} // Original specific placeholder
                                className="search-input" // Keep original search-input class
                                 value={searchTerm}
+                                style = {{paddingLeft: '10%'}}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                            />
                        </div>
@@ -414,61 +438,84 @@ function HospitalPage() {
             {isFormModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                         <h2 className="modal-title">Book Consultation for {selectedServiceToBook?.name} at {selectedHospital?.name}</h2>
-                         <form className="modal-form">
-                             <div className="form-group">
-                                  <label htmlFor="name" className="form-label">Name</label>
-                                  <input type="text" id="name" name="name" value={formData.name} onChange={handleFormChange} className="form-input" required />
-                             </div>
-                              <div className="form-group">
-                                  <label htmlFor="age" className="form-label">Age</label>
-                                 <input type="number" id="age" name="age" value={formData.age} onChange={handleFormChange} className="form-input" required min="0" max="120" /> {/* Added min/max */}
-                              </div>
-                              <div className="form-group">
-                                 <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
-                                  <input type="tel" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleFormChange} className="form-input" required />
-                              </div>
-                               <div className="form-group">
-                                   <label htmlFor="concern" className="form-label">Concern / Reason for Visit</label> {/* More descriptive label */}
-                                   <textarea id="concern" name="concern" value={formData.concern} onChange={handleFormChange} rows="3" className="form-input" required ></textarea>
-                                    <p className="text-sm text-gray-600 mt-1 mb-2">
-                                        (Urgency and queue position will be determined by AI upon submission)
-                                    </p>
-                               </div>
+                         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: '1px solid #e0e0e0'}}>
+                            <h2 style={{margin: 0, fontSize: '1.1rem', fontWeight: '600'}}>Book Consultation</h2>
+                            <button 
+                                onClick={closeModal} 
+                                style={{background: 'none', border: 'none', cursor: 'pointer', padding: '4px'}}
+                                aria-label="Close modal"
+                            >
+                                <X size={20} color="#555" />
+                            </button>
+                        </div>
+                        
+                        <div style={{padding: '12px 16px', backgroundColor: '#f8f8f8', borderBottom: '1px solid #e0e0e0'}}>
+                            <p style={{margin: '0 0 4px 0', fontSize: '0.9rem', fontWeight: '500'}}>{selectedServiceToBook?.name}</p>
+                            <p style={{margin: '0', fontSize: '0.8rem', color: '#666'}}>{selectedHospital?.name}</p>
+                        </div>
+                        
+                        <form className="modal-form">
+                            <div className="form-group">
+                                <label htmlFor="name" className="form-label">
+                                    <User size={14} className="inline mr-1" /> Full Name
+                                </label>
+                                <input type="text" id="name" name="name" value={formData.name} onChange={handleFormChange} className="form-input" required />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="age" className="form-label">Age</label>
+                                <input type="number" id="age" name="age" value={formData.age} onChange={handleFormChange} className="form-input" required min="0" max="120" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="phoneNumber" className="form-label">
+                                    <Phone size={14} className="inline mr-1" /> Phone Number
+                                </label>
+                                <input type="tel" id="phoneNumber" name="phoneNumber" value={formData.phoneNumber} onChange={handleFormChange} className="form-input" required />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="concern" className="form-label">
+                                    <AlertCircle size={14} className="inline mr-1" /> Concern / Symptoms
+                                </label>
+                                <textarea id="concern" name="concern" value={formData.concern} onChange={handleFormChange} rows="3" className="form-input" required></textarea>
+                                <p style={{margin: '4px 0 0 0', fontSize: '0.8rem', color: '#666', fontStyle: 'italic'}}>
+                                    Urgency will be determined by AI based on your symptoms
+                                </p>
+                            </div>
 
-                                <div className="form-group checkbox-group">
-                                    <input type="checkbox" id="hasMedicalCard" name="hasMedicalCard" checked={formData.hasMedicalCard} onChange={handleFormChange} className="form-checkbox" />
-                                   <label htmlFor="hasMedicalCard" className="checkbox-label">Have Medical Card?</label>
-                                </div>
+                            <div className="form-group checkbox-group">
+                                <input type="checkbox" id="hasMedicalCard" name="hasMedicalCard" checked={formData.hasMedicalCard} onChange={handleFormChange} className="form-checkbox" />
+                                <label htmlFor="hasMedicalCard" className="checkbox-label">
+                                    <CreditCard size={14} className="inline mr-1" /> I have a medical card
+                                </label>
+                            </div>
 
-                               {formData.hasMedicalCard && (
-                                    <div className="medical-card-fields">
-                                         <p style={{fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 'bold'}}>Medical Card Details:</p> {/* Added title */}
-                                         <div className="form-group">
-                                            <label htmlFor="medicalCardCompany" className="form-label">Medical Card Company</label>
-                                             <input type="text" id="medicalCardCompany" name="medicalCardCompany" value={formData.medicalCardCompany} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
-                                        </div>
-                                         <div className="form-group">
-                                             <label htmlFor="medicalCardNumber" className="form-label">Card Number</label>
-                                             <input type="text" id="medicalCardNumber" name="medicalCardNumber" value={formData.medicalCardNumber} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
-                                         </div>
-                                         <div className="form-group">
-                                             <label htmlFor="medicalCardName" className="form-label">Name on Card</label>
-                                            <input type="text" id="medicalCardName" name="medicalCardName" value={formData.medicalCardName} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
-                                         </div>
+                            {formData.hasMedicalCard && (
+                                <div className="medical-card-fields">
+                                    <p style={{fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: '500'}}>Medical Card Details</p>
+                                    <div className="form-group">
+                                        <label htmlFor="medicalCardCompany" className="form-label">Insurance Provider</label>
+                                        <input type="text" id="medicalCardCompany" name="medicalCardCompany" value={formData.medicalCardCompany} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
                                     </div>
-                                 )}
+                                    <div className="form-group">
+                                        <label htmlFor="medicalCardNumber" className="form-label">Card Number</label>
+                                        <input type="text" id="medicalCardNumber" name="medicalCardNumber" value={formData.medicalCardNumber} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="medicalCardName" className="form-label">Name on Card</label>
+                                        <input type="text" id="medicalCardName" name="medicalCardName" value={formData.medicalCardName} onChange={handleFormChange} className="form-input" required={formData.hasMedicalCard} />
+                                    </div>
+                                </div>
+                            )}
 
-                             <div className="modal-buttons">
-                                  <button type="button" className="button cancel-button" onClick={closeModal} disabled={isSubmitting}>Cancel</button>
-                                   <button type="button" className="button submit-button" onClick={handleSubmitBooking} disabled={isSubmitting}>
-                                        {isSubmitting ? 'Submitting...' : 'Submit Booking'}
-                                   </button>
-                              </div>
-                         </form>
-                     </div>
-                 </div>
-             )}
+                            <div className="modal-buttons">
+                                <button type="button" className="button cancel-button" onClick={closeModal} disabled={isSubmitting}>Cancel</button>
+                                <button type="button" className="button submit-button" onClick={handleSubmitBooking} disabled={isSubmitting}>
+                                    {isSubmitting ? 'Processing...' : 'Submit Booking'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
            <BottomNavigation/>
         </div>
     );

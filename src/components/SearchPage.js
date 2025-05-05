@@ -3,9 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../SearchPage.css'; // Import the SearchPage CSS file
 import BottomNavigation from './BottomNavigation'; // Import the BottomNavigation component
-import { Search, ArrowLeft, ChevronRight } from "lucide-react"; // Import icons
-
-// Backend API base URL - update this with your actual backend URL
+import { FaArrowLeft, FaSearch, FaChevronRight, FaClock, FaHospital } from "react-icons/fa"; // Import icons
+import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; 
 const BACKEND_API_URL = 'http://localhost:8080/api';
 
 function SearchPage() {
@@ -20,78 +19,132 @@ function SearchPage() {
     const [hospitalError, setHospitalError] = useState(null);
     const [serviceError, setServiceError] = useState(null);
 
-    // Fetch hospitals when component mounts
-    useEffect(() => {
-        const fetchHospitals = async () => {
-            setIsLoadingHospitals(true);
-            setHospitalError(null);
-            try {
-                const response = await fetch(`${BACKEND_API_URL}/hospitals`);
-                if (!response.ok) {
-                    const errorBody = await response.text();
-                    let errorDetail = { message: `HTTP Error: ${response.status}` };
-                    try {
-                        errorDetail = JSON.parse(errorBody);
-                    } catch (parseError) {
-                        errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
-                    }
-                    console.error("Backend API Error (Hospitals):", response.status, errorDetail);
-                    setHospitalError(`Failed to load hospitals: ${errorDetail.message || response.statusText}`);
-                    setHospitals([]);
-                    return;
-                }
-                const data = await response.json();
-                setHospitals(data);
-            } catch (error) {
-                console.error("Error fetching hospitals:", error);
-                setHospitalError(`Failed to connect to backend: ${error.message}`);
-                setHospitals([]);
-            } finally {
-                setIsLoadingHospitals(false);
-            }
-        };
-
-        fetchHospitals();
-    }, []);
-
-    // Fetch services when a hospital is selected
-    useEffect(() => {
-        if (selectedHospital) {
-            const fetchServices = async () => {
-                setIsLoadingServices(true);
-                setServiceError(null);
-                setServices([]);
-                try {
-                    const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}`);
-                    if (!response.ok) {
-                        const errorBody = await response.text();
-                        let errorDetail = { message: `HTTP Error: ${response.status}` };
-                        try {
-                            errorDetail = JSON.parse(errorBody);
-                        } catch (parseError) {
-                            errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
-                        }
-                        console.error("Backend API Error (Services):", response.status, errorDetail);
-                        setServiceError(`Failed to load services: ${errorDetail.message || response.statusText}`);
-                        setServices([]);
-                        return;
-                    }
-                    const data = await response.json();
-                    setServices(data);
-                } catch (error) {
-                    console.error("Error fetching services:", error);
-                    setServiceError(`Failed to connect to service list: ${error.message}`);
-                    setServices([]);
-                } finally {
-                    setIsLoadingServices(false);
-                }
-            };
-
-            fetchServices();
-        } else {
-            setServices([]);
+    // Mock hospital data for testing
+    const mockHospitals = [
+        { 
+            id: 1, 
+            hospitalId: 1,
+            name: "General Hospital",
+            location: "123 Main St, City"
+        },
+        { 
+            id: 2, 
+            hospitalId: 2,
+            name: "Community Medical Center",
+            location: "456 Oak Ave, Town"
+        },
+        { 
+            id: 3, 
+            hospitalId: 3,
+            name: "University Hospital",
+            location: "789 Campus Dr, College"
         }
-    }, [selectedHospital]);
+    ];
+
+    // Mock service data for testing
+    const mockServices = [
+        {
+            id: 1,
+            serviceId: 1,
+            name: "Emergency Room",
+            description: "24/7 emergency care services",
+            queueSize: 12,
+            estimatedWaitTime: "30-45"
+        },
+        {
+            id: 2,
+            serviceId: 2,
+            name: "Cardiology",
+            description: "Heart health and cardiovascular care",
+            queueSize: 5,
+            estimatedWaitTime: "15-20"
+        },
+        {
+            id: 3,
+            serviceId: 3,
+            name: "Pediatrics",
+            description: "Medical care for children and infants",
+            queueSize: 3,
+            estimatedWaitTime: "10-15"
+        }
+    ];
+// Fetch hospitals when component mounts
+    useEffect(() => {
+            const fetchHospitals = async () => {
+                setIsLoadingHospitals(true);
+                setHospitalError(null);
+                try {
+                    // *** RESTORE actual API call ***
+                    const response = await fetch(`${BACKEND_API_URL}/hospitals`);
+    
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                        let errorDetail = { message: `HTTP Error: ${response.status}` };
+                        try {
+                            errorDetail = JSON.parse(errorBody);
+                        } catch (parseError) {
+                            errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
+                        }
+                        console.error("Backend API Error (Hospitals):", response.status, errorDetail);
+                        setHospitalError(`Failed to load hospitals: ${errorDetail.message || response.statusText}`);
+                        setHospitals([]); // Clear hospitals on error
+                        return;
+                    }
+                    const data = await response.json();
+                    // console.log("Fetched Hospitals Data:", data); // Optional: Keep for verification
+                    setHospitals(data);
+                } catch (error) {
+                    console.error("Error fetching hospitals:", error);
+                    setHospitalError(`Failed to connect to backend: ${error.message}`);
+                    setHospitals([]); // Clear hospitals on error
+                } finally {
+                    setIsLoadingHospitals(false);
+                }
+            };
+    
+            fetchHospitals();
+        }, [BACKEND_API_URL]); // Add dependency if not already there
+
+ // Fetch services when a hospital is selected
+     useEffect(() => {
+            if (selectedHospital) {
+                const fetchServices = async () => {
+                    setIsLoadingServices(true);
+                    setServiceError(null);
+                    setServices([]); // Clear previous services
+                    try {
+                        // *** RESTORE actual API call (corrected endpoint) ***
+                        const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services`); // Use hospitalId from selectedHospital
+    
+                        if (!response.ok) {
+                            const errorBody = await response.text();
+                            let errorDetail = { message: `HTTP Error: ${response.status}` };
+                            try {
+                                errorDetail = JSON.parse(errorBody);
+                            } catch (parseError) {
+                                errorDetail.message = `HTTP Error: ${response.status} - ${errorBody}`;
+                            }
+                            console.error("Backend API Error (Services):", response.status, errorDetail);
+                            setServiceError(`Failed to load services: ${errorDetail.message || response.statusText}`);
+                            setServices([]); // Clear services on error
+                            return;
+                        }
+                        const data = await response.json();
+                        setServices(data);
+                    } catch (error) {
+                        console.error("Error fetching services:", error);
+                        setServiceError(`Failed to connect to service list: ${error.message}`);
+                        setServices([]); // Clear services on error
+                    } finally {
+                        setIsLoadingServices(false);
+                    }
+                };
+    
+                fetchServices();
+            } else {
+                setServices([]); // Clear services if no hospital is selected
+            }
+        }, [selectedHospital, BACKEND_API_URL]); // Add dependencies if not already there
 
     // Handle hospital selection
     const handleSelectHospital = (hospital) => {
@@ -105,10 +158,9 @@ function SearchPage() {
         setSearchTerm('');
     };
 
-    // Handle view service details - UPDATED to use the correct routing format
+    // Handle view service details
     const handleViewService = (service) => {
         if (!selectedHospital) return;
-        // Updated to use the format: /queue/{hospitalId}/{serviceId}
         navigate(`/queue/${selectedHospital.hospitalId}/${service.serviceId}`);
     };
 
@@ -124,30 +176,41 @@ function SearchPage() {
         service.description?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Determine capacity level for a service
+    const getCapacityLevel = (queueSize) => {
+        if (queueSize < 5) return 'low';
+        if (queueSize < 10) return 'medium';
+        return 'high';
+    };
+
     return (
         <div className="search-container">
             {/* Header Section */}
             <header className="search-header">
                 {selectedHospital && (
                     <div className="back-button" onClick={handleBackToHospitals}>
-                        <ArrowLeft size={20} color="#f4f4f4" />
+                        <FaArrowLeft size={16} />
                     </div>
                 )}
-                <h1 className="search-title">
-                    {selectedHospital ? `Search ${selectedHospital.name}` : 'Search Hospitals'}
+                <h1 className="search-title" style= {{display: 'flex', width: '90%',}}>
+        
+                     
+                    {selectedHospital ? `Services` : 'Check Queues'}
                 </h1>
             </header>
 
-            {/* Search Bar - Added margin-top to fix z-overlap issue */}
-            <div className="search-bar" style={{ marginTop: '20px' }}>
-                <Search className="search-icon" size={20} color="#6b7280" />
+            {/* Search Bar */}
+            <div className="search-bar">
                 <input
                     type="text"
                     className="search-input"
+                    style = {{paddingLeft: '10%'
+                    }}
                     placeholder={selectedHospital ? "Search services..." : "Search hospitals..."}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                <FaSearch className="search-icon" />
             </div>
 
             {/* Main Content Area */}
@@ -155,7 +218,7 @@ function SearchPage() {
                 {!selectedHospital ? (
                     // Hospital Search Results
                     <div className="search-results">
-                        <h2 className="results-title">Hospitals</h2>
+                        <h2 className="results-title">Available Hospitals</h2>
                         
                         {isLoadingHospitals && (
                             <div className="loading-message">Loading hospitals...</div>
@@ -176,17 +239,16 @@ function SearchPage() {
                                 onClick={() => handleSelectHospital(hospital)}
                             >
                                 <div className="result-content">
-                                    <img 
-                                        src={hospital.imageUrl || 'https://via.placeholder.com/80'} 
-                                        alt={hospital.name} 
-                                        className="result-image"
-                                    />
+                                    <div className="result-image">
+                                        <FaHospital size={20} />
+                                    </div>
                                     <div className="result-details">
-                                        <h3 className="result-name">{hospital.name}</h3>
+                                        <h3 className="result-name" style = {{width : '90%'}}>{hospital.name}{hospital.free && <span className="free-tag">#Free</span>}</h3>
+
                                         <p className="result-location">{hospital.location}</p>
                                     </div>
                                 </div>
-                                <ChevronRight size={20} color="#6b7280" />
+                                <FaChevronRight size={16} color="#8B0000" />
                             </div>
                         ))}
                     </div>
@@ -212,35 +274,46 @@ function SearchPage() {
                             </div>
                         )}
                         
-                        {filteredServices.map(service => (
-                            <div 
-                                key={service.id} 
-                                className="search-result-item service-item"
-                                onClick={() => handleViewService(service)}
-                            >
-                                <div className="result-content">
-                                    <img 
-                                        src={service.imageUrl || 'https://via.placeholder.com/80'} 
-                                        alt={service.name} 
-                                        className="result-image"
-                                    />
-                                    <div className="result-details">
-                                        <div className="service-rating">
-                                            <span className="star-icon">★</span>
-                                            <span className="rating-value">{service.rating?.toFixed(1) || 'N/A'}</span>
+                        {filteredServices.map(service => {
+                            const capacityLevel = getCapacityLevel(service.queueSize || 0);
+                            return (
+                                <div 
+                                    key={service.id} 
+                                    className="search-result-item service-item"
+                                    onClick={() => handleViewService(service)}
+                                >
+                                    <div className="result-content">
+                                        <div className="result-image">
+                                            {service.icon || service.name.charAt(0)}
                                         </div>
-                                        <h3 className="result-name">{service.name}</h3>
-                                        <p className="result-description">{service.description}</p>
+                                        <div className="result-details">
+                                            <h3 className="result-name">{service.name}</h3>
+                                            <p className="result-description">{service.description || "No description available"}</p>
+                                            
+                                            <div className="service-capacity">
+                                                <div className="capacity-bar">
+                                                    <div className={`capacity-fill capacity-${capacityLevel}`}></div>
+                                                </div>
+                                                <span className="capacity-text">
+                                                    {capacityLevel === 'low' ? 'Low wait' : 
+                                                    capacityLevel === 'medium' ? 'Medium wait' : 'High wait'}
+                                                </span>
+                                            </div>
+                                            
+                                            <div className="wait-time">
+                                                <FaClock className="wait-time-icon" />
+                                                {service.estimatedWaitTime || "15-30"} mins wait
+                                            </div>
+                                        </div>
                                     </div>
+                                    <FaChevronRight size={16} color="#8B0000" />
                                 </div>
-                                <ChevronRight size={20} color="#6b7280" />
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </div>
 
-            {/* Bottom Navigation */}
             <BottomNavigation />
         </div>
     );

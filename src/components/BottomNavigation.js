@@ -1,25 +1,37 @@
-import { useNavigate } from "react-router-dom";
-import { Home, Search, PlusSquare, User } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaHome, FaHospital, FaUser } from "react-icons/fa";
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
   
   return (
     <div className="bottom-nav">
-      <button onClick={() => navigate("/")} className="nav-item">
-        <Home className="nav-icon" />
+      <button 
+        onClick={() => navigate("/")} 
+        className={`nav-item ${isActive("/") ? "active" : ""}`}
+      >
+        <FaHome className="nav-icon" size={18} />
         <span>Home</span>
       </button>
-      <button onClick={() => navigate("/search")} className="nav-item">
-        <Search className="nav-icon" />
-        <span>Search</span>
-      </button>
-      <button onClick={() => navigate("/hospital")} className="nav-item">
-        <PlusSquare className="nav-icon" />
+      
+      <button 
+        onClick={() => navigate("/hospital")} 
+        className={`nav-item ${isActive("/hospital") ? "active" : ""}`}
+      >
+        <FaHospital className="nav-icon" size={18} />
         <span>Hospital</span>
       </button>
-      <button onClick={() => navigate("/")} className="nav-item">
-        <User className="nav-icon" />
+      
+      <button 
+        onClick={() => navigate("/profile")} 
+        className={`nav-item ${isActive("/profile") ? "active" : ""}`}
+      >
+        <FaUser className="nav-icon" size={18} />
         <span>Profile</span>
       </button>
     </div>
