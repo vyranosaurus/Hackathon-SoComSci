@@ -63,21 +63,71 @@ public class GeminiServiceImpl implements GeminiService {
         if (webClient != null) {
             try {
                 String prompt = """
+                        You are a medical triage assistant classifying patient concerns for appointment scheduling urgency.
                         Analyze the following patient concern and classify its urgency into one of these categories:
                         'Critical', 'Urgent', 'Not urgent', 'Not specified'.
 
+                        'Critical': Requires immediate, life-saving intervention (e.g., severe uncontrolled bleeding, signs of stroke/heart attack, difficulty breathing, sudden loss of consciousness).
+                        'Urgent': Requires prompt medical attention, but not immediately life-threatening (e.g., moderate bleeding that won't stop, severe pain not controlled by medication, sudden severe symptoms, suspected infection).
+                        'Not urgent': Routine care, follow-up, mild or chronic symptoms (e.g., general check-up, medication refill, stable chronic condition concerns, mild rash).
+                        'Not specified': Concern is too vague, lacks information to determine urgency, or is outside of typical medical urgency (e.g., "just checking in", administrative questions).
+
                         If the urgency is 'Urgent', also provide a numerical priority score between 1 and 10
                         (1 being least urgent within the 'Urgent' category, 10 being most urgent within 'Urgent').
-                        Do not provide a score for other urgency levels.
+                        Do not provide a score for 'Critical', 'Not urgent', or 'Not specified'.
 
-                        Respond in a JSON format like this:
+                        Respond ONLY in a JSON format like this:
                         {
-                          "urgency": "Classification Here",
-                          "urgentPriorityScore": ScoreHere (number, only if Urgent, can be null otherwise)
+                          "urgency": "Classification Here", // Must be one of 'Critical', 'Urgent', 'Not urgent', 'Not specified'
+                          "urgentPriorityScore": ScoreHere // Integer 1-10 if Urgent, null otherwise
+                        }
+
+                        Examples:
+                        Patient Concern: "I have a runny nose."
+                        {
+                          "urgency": "Not urgent",
+                          "urgentPriorityScore": null
+                        }
+
+                        Patient Concern: "Severe chest pain suddenly started."
+                        {
+                          "urgency": "Critical",
+                          "urgentPriorityScore": null
+                        }
+
+                        Patient Concern: "I cut my hand and it's bleeding quite a bit, I can't get it to stop."
+                        {
+                          "urgency": "Urgent",
+                          "urgentPriorityScore": 7
+                        }
+
+                        Patient Concern: "My chronic back pain is a little worse today."
+                        {
+                          "urgency": "Not urgent",
+                          "urgentPriorityScore": null
+                        }
+
+                        Patient Concern: "I need to talk about my cancer treatment options."
+                         {
+                          "urgency": "Not urgent", // Or maybe "Urgent" if context implies acute issue? Needs careful example design. For chronic diagnosis, 'Not urgent' for initial booking is often correct unless acute symptoms occur. Let's stick to 'Not urgent' for the diagnosis itself.
+                          "urgentPriorityScore": null
+                        }
+
+                        Patient Concern: "I am bleeding heavily from a wound."
+                        {
+                          "urgency": "Critical",
+                          "urgentPriorityScore": null
+                        }
+
+                        Patient Concern: "I have had a fever and cough for three days."
+                        {
+                          "urgency": "Urgent",
+                          "urgentPriorityScore": 5
                         }
 
                         Patient Concern: %s
-                        """.formatted(concern);
+                        """
+                        .formatted(concern);
 
                 Map<String, Object> part = new HashMap<>();
                 part.put("text", prompt);
