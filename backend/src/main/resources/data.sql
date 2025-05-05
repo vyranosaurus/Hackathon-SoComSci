@@ -5,7 +5,7 @@ INSERT INTO hospitals (hospital_id, name, location, image_url)
 VALUES
 ('h001', 'Philippine General Hospital (PGH)', 'Taft Avenue, Ermita, Manila', 'https://journal.com.ph/wp-content/uploads/2021/01/pgh-1200x800.jpg'),
 ('h002', 'St. Luke''s Medical Center', 'E. Rodriguez Sr. Ave, Quezon City', 'https://upload.wikimedia.org/wikipedia/en/thumb/e/e3/St._Luke%27s_Medical_Center_logo.svg/1200px-St._Luke%27s_Medical_Center_logo.svg.png'),
-('h003', 'Makati Medical Center', 'Amorsolo St, Makati City', 'https://example.com/images/makati.jpg'),
+('h003', 'Makati Medical Center', 'Amorsolo St, Makati City', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwbq29KTbpeQXeLEYpou9kue6_KZWaz-lo_g&s'),
 ('h004', 'The Medical City', 'Ortigas Avenue, Pasig City', 'https://cdn.manilastandard.net/wp-content/uploads/2020/12/8b939_medical-city.jpg'),
 ('h005', 'Cardinal Santos Medical Center', 'Wilson St, San Juan, Metro Manila', 'https://rcam.org/wp-content/uploads/2021/03/0105.png'),
 ('h006', 'Asian Hospital and Medical Center', 'Civic Drive, Alabang, Muntinlupa', 'https://www.megabites.com.ph/wp-content/uploads/2023/11/Hospital-and-Medical-Center-KV2-copy.jpg'),
