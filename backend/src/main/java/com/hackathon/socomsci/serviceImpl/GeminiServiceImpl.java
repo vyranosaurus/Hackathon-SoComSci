@@ -107,9 +107,9 @@ public class GeminiServiceImpl implements GeminiService {
                           "urgentPriorityScore": null
                         }
 
-                        Patient Concern: "I need to talk about my cancer treatment options."
+                        Patient Concern: "I have cancer i need treatment options."
                          {
-                          "urgency": "Not urgent", // Or maybe "Urgent" if context implies acute issue? Needs careful example design. For chronic diagnosis, 'Not urgent' for initial booking is often correct unless acute symptoms occur. Let's stick to 'Not urgent' for the diagnosis itself.
+                          "urgency": "Urgent", // Or maybe "Urgent" if context implies acute issue? Needs careful example design. For chronic diagnosis, 'Not urgent' for initial booking is often correct unless acute symptoms occur. Let's stick to 'Not urgent' for the diagnosis itself.
                           "urgentPriorityScore": null
                         }
 

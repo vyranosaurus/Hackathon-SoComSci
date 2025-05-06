@@ -354,7 +354,7 @@ function HospitalPage() {
                                 style={{
                                     width: '100%', // Make image responsive
                                     height: 'auto',
-                                    maxHeight: '250px',
+                                    maxHeight: '260px',
                                     objectFit: 'cover',
                                     display: 'block', // Center the image
                                 }}

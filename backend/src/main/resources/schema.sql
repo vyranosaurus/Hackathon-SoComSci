@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS hospitals (
     hospital_id VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
     location VARCHAR(255),
-    image_url VARCHAR(255)
+    image_url VARCHAR(255),
+    is_free BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS services (
