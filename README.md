@@ -4,7 +4,9 @@ Ever waited hours at a hospital just because you arrived later than someone with
 
 weAId is a medical triage and queue management platform that rethinks the traditional "first come, first served" approach. Using AI to evaluate symptom severity, we ensure patients with urgent needs get seen faster, while giving everyone realistic wait time estimates.
 
-![weAId Main Banner](./images/main-banner.png)
+
+https://github.com/user-attachments/assets/77b66a0f-2943-4a89-86dd-b7381ee50995
+
 
 ## The Problem We're Solving
 
