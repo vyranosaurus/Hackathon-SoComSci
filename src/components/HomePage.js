@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from "./BottomNavigation";
-import { FaHospital, FaSearch, FaUserMd, FaCalendarAlt, FaAmbulance } from "react-icons/fa";
+import { FaHospital, FaSearch, FaUserMd, FaCalendarAlt, FaAmbulance, FaArrowLeft } from "react-icons/fa";
 
 //EME LANG MUNA
 //NDE PA SURE KULANG KULANG PA!!!!
@@ -9,9 +9,16 @@ const HomePage = () => {
   
   return (
     <div className="container">
+      {/* Back Button - positioned as overlay */}
+      <div className="back-button-container">
+        <button className="back-button" onClick={() => navigate("/")}>
+          <FaArrowLeft size={14} />
+        </button>
+      </div>
+      
       {/* Hero Banner */}
-      <div className="hero-section">
-        <h1>Patient Care Queue</h1>
+      <div className="hero-section" style={{ paddingTop: "50px" }}>
+        <h1 className="app-title">We<span className="ai-highlight">AI</span>d</h1>
         <p>Smart healthcare waiting system for efficient patient management</p>
         <button 
           className="cta-button"
@@ -24,16 +31,14 @@ const HomePage = () => {
       <div className="search-bar" onClick={() => navigate("/hospital")}>
         <div className="search-input">
           <FaSearch className="search-icon" />
-          <span className="placeholder-text" style = {{paddingLeft: '2rem'}}>What symptoms do you have?</span>
+          <span className="placeholder-text">What symptoms do you have?</span>
         </div>
       </div>
 
       <div className="features-section">
         <h2>Our Services</h2>
         <div className="features-container">
-          <div className="feature-card" 
-          //onClick={() => navigate("/search")}
-          >
+          <div className="feature-card">
             <div className="feature-icon">
               <FaUserMd size={24} />
             </div>
@@ -41,9 +46,7 @@ const HomePage = () => {
             <p>Priority based on urgency</p>
           </div>
           
-          <div className="feature-card" 
-          //onClick={() => navigate("/search")}
-          >
+          <div className="feature-card">
             <div className="feature-icon">
               <FaHospital size={24} />
             </div>
@@ -51,9 +54,7 @@ const HomePage = () => {
             <p>Find closest hospitals</p>
           </div>
           
-          <div className="feature-card" 
-          //onClick={() => navigate("/search")}
-          >
+          <div className="feature-card">
             <div className="feature-icon">
               <FaCalendarAlt size={24} />
             </div>
@@ -61,9 +62,7 @@ const HomePage = () => {
             <p>Schedule doctor visits</p>
           </div>
           
-          <div className="feature-card" 
-          //onClick={() => navigate("/search")}
-          >
+          <div className="feature-card">
             <div className="feature-icon">
               <FaAmbulance size={24} />
             </div>

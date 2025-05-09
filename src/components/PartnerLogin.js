@@ -74,7 +74,7 @@ const PartnerLogin = () => {
           </div>
           
           <h2 className={styles.loginTitle}>
-            We<span className={styles.highlight}>AI</span>d Partner Portal
+            WeAId Partner Portal
           </h2>
           
           {error && (

@@ -1,5 +1,5 @@
 .container {
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -17,7 +17,7 @@
   border-radius: 0 0 1.5rem 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  height: 40vh;
+  height: 50vh;
   min-height: 250px;
   width: 100%;
 }
@@ -87,43 +87,54 @@
 }
 
 .logoSection {
+  position: relative;
+  margin-top: -50px;
+  margin-bottom: 20px;
+  z-index: 10;
   display: flex;
   justify-content: center;
-  margin-top: -2.5rem;
-  position: relative;
-  z-index: 20;
 }
 
 .logoContainer {
-  background-color: white;
-  border-radius: 9999px;
-  padding: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 3px solid #ffffff;
 }
 
 .logoCircle {
-  width: 4.5rem;
-  height: 4.5rem;
   background-color: #800000;
-  border-radius: 9999px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .logoIcon {
-  color: white;
-  font-size: 1.75rem;
+  color: #ffffff;
+  font-size: 32px;
 }
 
 .mainContent {
+  background-color: #ffffff;
+  border-radius: 30px 30px 0 0;
+  margin-top: -50px;
+  padding-top: 70px;
+  position: relative;
+  z-index: 5;
   flex-grow: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 1rem 1.25rem 2rem;
-  margin-top: -0.5rem;
   width: 100%;
 }
 
@@ -146,81 +157,73 @@
   font-size: 0.9rem;
 }
 
-.userButton {
-  width: 100%;
-  margin-bottom: 1rem;
-  background-color: #800000;
-  color: white;
-  border-radius: 0.75rem;
-  padding: 1rem 1.25rem;
+.userButtons {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 20px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.userButton:hover, .userButton:active {
-  background-color: #600000;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
+.userButton,
 .partnerButton {
   width: 100%;
-  background-color: white;
-  color: #800000;
-  border: 2px solid #800000;
-  border-radius: 0.75rem;
-  padding: 1rem 1.25rem;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  align-items: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.partnerButton:hover, .partnerButton:active {
-  background-color: #f9f9f9;
+.userButton:hover,
+.partnerButton:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .buttonContent {
   display: flex;
   align-items: center;
+  gap: 12px;
+}
+
+.buttonIcon,
+.partnerButtonIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 18px;
 }
 
 .buttonIcon {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 0.5rem;
-  border-radius: 9999px;
-  margin-right: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: #800000;
 }
 
 .partnerButtonIcon {
-  background-color: rgba(128, 0, 0, 0.1);
-  padding: 0.5rem;
-  border-radius: 9999px;
-  margin-right: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: #800000;
 }
 
 .buttonText {
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 500;
+  color: #333333;
 }
 
 .rightArrow {
-  font-size: 1rem;
+  color: #800000;
+  font-size: 16px;
 }
 
 .infoSections {
@@ -323,4 +326,227 @@
   .infoText {
     font-size: 0.85rem;
   }
+}
+
+.iconBadge {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.heartbeatIcon {
+  font-size: 1.75rem;
+  color: white;
+  z-index: 1;
+}
+
+.pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+.slideIndicators {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.activeIndicator {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+.featuresContainer {
+  padding: 2rem 1.25rem 1rem;
+}
+
+.featuresTitle {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.featuresTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3rem;
+  height: 0.25rem;
+  background-color: #800000;
+  border-radius: 0.25rem;
+}
+
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.featureItem {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+  text-align: center;
+  border: 1px solid #f3f4f6;
+}
+
+.featureItem:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.featureIcon {
+  background-color: #800000;
+  color: white;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  font-size: 1.25rem;
+}
+
+.featureItem h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.featureItem p {
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.infoIconContainer {
+  background-color: rgba(128, 0, 0, 0.1);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.infoIcon {
+  color: #800000;
+  font-size: 1.25rem;
+}
+
+.footerLogo {
+  margin-bottom: 0.75rem;
+}
+
+.footerLogoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #800000;
+}
+
+.footerLogoHighlight {
+  position: relative;
+  font-weight: 900;
+}
+
+.footerLogoHighlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -0.2rem;
+  height: 0.15rem;
+  width: 100%;
+  background-color: #800000;
+  border-radius: 0.1rem;
+  opacity: 0.5;
+}
+
+.heroContainer {
+  background-color: #800000;
+  color: #ffffff;
+  padding: 2.5rem 1.5rem 5rem;
+  border-radius: 0 0 30px 30px;
+  text-align: center;
+}
+
+.heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.roleSelectContainer {
+  text-align: center;
+  padding: 0 1.5rem 1.5rem;
+}
+
+.roleHeading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.roleDescription {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
 } 

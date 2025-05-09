@@ -1173,4 +1173,152 @@
 
 .prioritizeButton:hover {
   background-color: #600000;
+}
+
+.notificationsPanel {
+  position: absolute;
+  top: 70px;
+  right: 10px;
+  width: 350px;
+  max-height: 400px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.notificationsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.notificationsTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.clearAllButton {
+  background: none;
+  border: none;
+  color: #800000;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.clearAllButton:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.notificationsList {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.notificationItem {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+}
+
+.notificationItem:last-child {
+  border-bottom: none;
+}
+
+.unreadNotification {
+  background-color: rgba(128, 0, 0, 0.05);
+}
+
+.notificationItem.critical {
+  border-left: 3px solid #dc3545;
+}
+
+.notificationItem.ai {
+  border-left: 3px solid #0d6efd;
+}
+
+.notificationItem.info {
+  border-left: 3px solid #28a745;
+}
+
+.notificationItem.system {
+  border-left: 3px solid #6c757d;
+}
+
+.notificationTitle {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.notificationMessage {
+  margin: 0 0 5px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.notificationTime {
+  font-size: 12px;
+  color: #888;
+}
+
+.removeNotification {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.removeNotification:hover {
+  color: #555;
+}
+
+.emptyNotifications {
+  padding: 20px;
+  text-align: center;
+  color: #888;
+}
+
+/* Notification type styling */
+.notification-critical {
+  border-left: 3px solid #ef4444;
+}
+
+.notification-ai {
+  border-left: 3px solid #8b5cf6;
+}
+
+.notification-info {
+  border-left: 3px solid #3b82f6;
+}
+
+.notification-system {
+  border-left: 3px solid #10b981;
+}
+
+.notificationIndicator {
+  position: absolute;
+  min-width: 16px;
+  height: 16px;
+  background-color: #ef4444;
+  border-radius: 9999px;
+  top: 0.25rem;
+  right: 0.25rem;
+  font-size: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  padding: 0 0.125rem;
 } 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import '../HospitalPage.css'; // Make sure your CSS file is in the correct path
 import BottomNavigation from './BottomNavigation'; // Assuming this component exists
 import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; // Import icons including ChevronRight
+import { Link } from 'react-router-dom';
 
 // *** Define your backend API base URL ***
 // !!! IMPORTANT: Update this with your actual backend URL and port !!!

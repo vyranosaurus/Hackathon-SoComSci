@@ -1,49 +1,81 @@
-# SoComSci Hackathon Project
+# weAId - Smart Healthcare Waiting System
 
-This is a full-stack application built with React, Spring Boot, and PostgreSQL for the SoComSci Hackathon.
+Ever waited hours at a hospital just because you arrived later than someone with a minor issue? We built weAId to solve this frustrating problem that affects millions of patients daily.
 
-## Project Structure
+weAId is a medical triage and queue management platform that rethinks the traditional "first come, first served" approach. Using AI to evaluate symptom severity, we ensure patients with urgent needs get seen faster, while giving everyone realistic wait time estimates.
 
-- `/backend` - Spring Boot backend
-- `/src` - React frontend
+## The Problem We're Solving
+
+Traditional hospital waiting systems are inefficient and sometimes dangerous:
+- Patients with urgent conditions might wait too long
+- People have no idea how long they'll be waiting
+- Medical staff lack tools to prioritize effectively
+- Communication between patients and providers is limited
+
+## Key Features
+
+- **Smart Triage**: Our AI analyzes symptoms to assign priority levels - no more waiting based solely on arrival time
+- **Real-time Updates**: See your place in line and how long until you're seen
+- **Hospital Dashboard**: Gives medical staff the big picture with AI insights to manage resources
+- **Patient Portal**: Easy way to message your doctor or the hospital
+- **Emergency Button**: One-tap access to emergency services when seconds count
 
 ## Tech Stack
 
-### Frontend
-- React 19.1
-- React Router 7.5
-- Tailwind CSS 4.1
+We built weAId using:
+- React.js with React Router for a smooth single-page experience
+- CSS Modules for component-specific styling
+- Custom color theming with CSS variables
+- React Icons (Font Awesome) for consistent visuals
+- Context API with hooks for state management
+- Mobile-first responsive design (it works great on phones!)
 
-### Backend
-- Spring Boot 3.2.4
-- Spring Data JPA
-- PostgreSQL
+## Application Views
 
-### Tools
-- pgAdmin 4 (PostgreSQL management)
-- Maven (Java build tool)
-- npm (JavaScript package manager)
+### Landing Page
+Your first stop in the app - choose whether you're a patient or hospital staff. We added a sliding background of real hospitals to create a sense of place and trust.
 
-## Setup and Running
+### Hospital Partner Login
+Secure authentication for medical professionals. Select your hospital, enter credentials, and access the powerful hospital dashboard.
 
-### Prerequisites
-- Node.js and npm
-- Java 17+
-- Maven
-- PostgreSQL
-- pgAdmin 4
+### Hospital Dashboard
+The command center for medical staff with:
+- AI insights that help allocate staff where needed
+- Patient queue that updates in real-time
+- Detailed info cards with symptom severity scores
+- Smart notifications about critical patients
+- Add patients with our AI analyzing their symptoms automatically
 
-### Database Setup
-1. Install PostgreSQL and pgAdmin 4
-2. Open pgAdmin 4 and create a new database named `patientqueue`
-3. Default credentials are set in `backend/src/main/resources/application.properties`
+### Patient Dashboard
+Personalized patient view showing:
+- Your current place in line with expected wait time
+- Personal profile details
+- Message history with your healthcare team
+- Emergency call button for urgent situations
 
-### Backend Setup
-1. Navigate to the backend directory: `cd backend`
-2. Run the Spring Boot application: `mvn spring-boot:run`
-3. The backend server will start on port 8080
+### Patient Portal
+The communication hub between patients and providers:
+- Send messages to either the hospital or your specific doctor
+- Check your current queue status
+- Access emergency services when needed
 
-### Frontend Setup
-1. From the project root, install dependencies: `npm install`
-2. Start the React development server: `npm start`
-3. The frontend will be available at `http://localhost:3000`
+## Our Journey
+
+We built weAId during an intense hackathon focused on applying social computing to healthcare problems. Our team identified the waiting room experience as a critical pain point that technology could solve.
+
+The application shows how AI doesn't need to replace healthcare workers - it can make them more effective and improve patient experiences dramatically.
+
+Check out the `/images` directory for screenshots of our interface in action!
+
+## Where We're Headed
+
+We're just getting started! Future plans include:
+- Integrating with hospital electronic medical record systems
+- Improving our triage algorithm with more training data
+- Adding support for multiple languages
+- Making the app fully accessible to all users
+- Building dedicated mobile apps
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

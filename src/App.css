@@ -27,6 +27,7 @@ body {
   margin: 0 auto;
   background-color: var(--white);
   min-height: 100vh;
+  position: relative;
 }
 
 .queue-header {
@@ -495,12 +496,13 @@ body {
 .search-icon {
   color: var(--primary-maroon);
   font-size: 16px;
-  margin-right: 10px;
+  margin-right: 12px;
 }
 
 .placeholder-text {
   color: var(--dark-gray);
   font-size: 0.9rem;
+  padding-left: 5px;
 }
 
 .categories-container {
@@ -725,4 +727,87 @@ code {font-family: 'Montserrat', sans-serif;
 /* Example active state for the first item */
 .nav-item:first-child {
    color: #3b82f6;
+}
+
+.back-button-container {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+}
+
+.back-button {
+  background-color: var(--primary-maroon);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 0.9rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  margin: 0;
+}
+
+.back-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.5px;
+}
+
+.ai-highlight {
+  font-weight: 900;
+  color: #ffffff;
+  position: relative;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  animation: glow 3s infinite;
+  letter-spacing: 1px;
+  padding: 0 3px;
+}
+
+.ai-highlight::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  border-radius: 50%;
+  z-index: -1;
+  animation: pulse-glow 3s infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 25px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
 }
