@@ -4,6 +4,8 @@ Ever waited hours at a hospital just because you arrived later than someone with
 
 weAId is a medical triage and queue management platform that rethinks the traditional "first come, first served" approach. Using AI to evaluate symptom severity, we ensure patients with urgent needs get seen faster, while giving everyone realistic wait time estimates.
 
+![weAId Main Banner](./images/main-banner.png)
+
 ## The Problem We're Solving
 
 Traditional hospital waiting systems are inefficient and sometimes dangerous:
@@ -14,7 +16,7 @@ Traditional hospital waiting systems are inefficient and sometimes dangerous:
 
 ## Key Features
 
-- **Smart Triage**: Our AI analyzes symptoms to assign priority levels - no more waiting based solely on arrival time
+- **Smart Triage**: Our AI analyzes symptoms to assign priority levels - no more waiting based solely on arrival time!
 - **Real-time Updates**: See your place in line and how long until you're seen
 - **Hospital Dashboard**: Gives medical staff the big picture with AI insights to manage resources
 - **Patient Portal**: Easy way to message your doctor or the hospital
@@ -35,8 +37,12 @@ We built weAId using:
 ### Landing Page
 Your first stop in the app - choose whether you're a patient or hospital staff. We added a sliding background of real hospitals to create a sense of place and trust.
 
+![Landing Page](./images/landing-page.png)
+
 ### Hospital Partner Login
 Secure authentication for medical professionals. Select your hospital, enter credentials, and access the powerful hospital dashboard.
+
+![Hospital Login](./images/hospital-login.png)
 
 ### Hospital Dashboard
 The command center for medical staff with:
@@ -46,6 +52,8 @@ The command center for medical staff with:
 - Smart notifications about critical patients
 - Add patients with our AI analyzing their symptoms automatically
 
+![Hospital Dashboard](./images/hospital-dashboard.png)
+
 ### Patient Dashboard
 Personalized patient view showing:
 - Your current place in line with expected wait time
@@ -53,19 +61,21 @@ Personalized patient view showing:
 - Message history with your healthcare team
 - Emergency call button for urgent situations
 
+![Patient Dashboard](./images/patient-dashboard.png)
+
 ### Patient Portal
 The communication hub between patients and providers:
 - Send messages to either the hospital or your specific doctor
 - Check your current queue status
 - Access emergency services when needed
 
+![Patient Portal](./images/patient-portal.png)
+
 ## Our Journey
 
 We built weAId during an intense hackathon focused on applying social computing to healthcare problems. Our team identified the waiting room experience as a critical pain point that technology could solve.
 
 The application shows how AI doesn't need to replace healthcare workers - it can make them more effective and improve patient experiences dramatically.
-
-Check out the `/images` directory for screenshots of our interface in action!
 
 ## Where We're Headed
 
@@ -79,3 +89,5 @@ We're just getting started! Future plans include:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
