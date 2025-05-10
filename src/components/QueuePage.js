@@ -264,56 +264,56 @@ const QueuePage = () => {
                 )}
             </div>
             <div className="hmodal-overlay">
-                {/* --- Booking Detail Modal --- */}
-            {isDetailModalOpen && ( // Conditionally render the entire modal overlay
-                <div className="hmodal-overlay"> {/* Original modal overlay class */}
-                    {/* Add a check for selectedBookingForDetails here before showing content */}
+                {}
+            {isDetailModalOpen && ( 
+                <div className="hmodal-overlay"> {}
+                    {}
                     {selectedBookingForDetails && (
-                        <div className="modal-content"> {/* Original modal content class */}
-                            {/* Modal Header - Using original simple title and close button */}
-                            <h2 className="modal-title">Booking Details</h2> {/* Original modal title class */}
-                            <button type="button" className="close-modal-button" onClick={closeDetailModal}> {/* Original close button class */}
-                                <FaTimes /> {/* FaTimes icon */}
+                        <div className="modal-content"> {}
+                            {}
+                            <h2 className="modal-title">Booking Details</h2> {}
+                            <button type="button" className="close-modal-button" onClick={closeDetailModal}> {}
+                                <FaTimes /> {}
                             </button>
 
-                            {/* Modal Body - Displaying details */}
-                            <div className="modal-details-body"> {/* New div for modal body content */}
-                                {/* Display Urgency/Severity */}
+                            {}
+                            <div className="modal-details-body"> {}
+                                {}
                                 <p><strong>Urgency:</strong> {selectedBookingForDetails.urgency || 'Not specified'}</p>
 
-                                {/* Display Booked Time and Date */}
+                                {}
                                 {selectedBookingForDetails.timestamp && (
                                     <p><strong>Booked At:</strong> {formatTimestamp(selectedBookingForDetails.timestamp)} on {formatDate(selectedBookingForDetails.timestamp)}</p> 
                                 )}
 
-                                {/* Display Concern */}
+                                {}
                                 <p><strong>Concern:</strong> {selectedBookingForDetails.concern || 'No concern specified'}</p>
 
-                                {/* Display Age if available */}
+                                {}
                                 {selectedBookingForDetails.age && (
                                     <p><strong>Age:</strong> {selectedBookingForDetails.age} years</p>
                                 )}
 
-                                {/* Display Booking Type if available */}
+                                {}
                                 {selectedBookingForDetails.bookingType && (
                                     <p><strong>Booking Type:</strong> {selectedBookingForDetails.bookingType}</p>
                                 )}
 
-                                {/* Display Estimated Wait Time if available */}
+                                {}
                                 {selectedBookingForDetails.waitTime && (
                                     <p><strong>Estimated Wait:</strong> {selectedBookingForDetails.waitTime}</p>
                                 )}
 
 
-                                {/* Display AI Urgency Score if available */}
+                                {}
                                 {selectedBookingForDetails.aiScore != null && (
                                     <div>
                                         <p><strong>AI Urgency Score:</strong> {selectedBookingForDetails.aiScore}%</p>
-                                        {/* Optional: Add a simple bar here if desired, or keep it simple */}
+                                        {}
                                     </div>
                                 )}
 
-                                {/* Display AI Analysis Notes if available */}
+                                {}
                                 {selectedBookingForDetails.aiNotes && (
                                     <div>
                                         <p><strong>AI Analysis Notes:</strong></p>
@@ -322,27 +322,27 @@ const QueuePage = () => {
                                 )}
 
 
-                                {/* Optional: Display Medical Card Details if they exist and you want them visible in the detail view */}
+                                {}
                                 {selectedBookingForDetails.hasMedicalCard && (
-                                    <div className="medical-card-details-modal"> {/* Original class */}
+                                    <div className="medical-card-details-modal"> {}
                                         <p><strong>Medical Card:</strong> Yes</p>
-                                        {/* You might choose to display company/number/name here or keep them truly private */}
-                                        {/* <p>Company: {selectedBookingForDetails.medicalCardCompany}</p> */}
-                                        {/* <p>Number: {selectedBookingForDetails.medicalCardNumber}</p> */}
-                                        {/* <p>Name on Card: {selectedBookingForDetails.medicalCardName}</p> */}
+                                        {}
+                                        {}
+                                        {}
+                                        {}
                                     </div>
                                 )}
 
                             </div>
 
 
-                            {/* Button to close the modal - Original button class */}
-                            <button type="button" className="button close-modal-button" onClick={closeDetailModal}>Close</button> {/* Original classes */}
+                            {}
+                            <button type="button" className="button close-modal-button" onClick={closeDetailModal}>Close</button> {}
                         </div>
-                    )} {/* Close conditional render for modal content */}
+                    )} {}
                 </div>
-            )} {/* Close conditional render for modal overlay */}
-            {/* --- End Booking Detail Modal --- */}
+            )} {}
+            {}
             </div>
             <BottomNavigation />
         </div>

@@ -242,7 +242,7 @@
     margin-right: 5px;
 }
 
-/* For tablets and larger screens, maintain max-width */
+
 @media (min-width: 640px) {
     .search-container {
         border-left: 1px solid #e5e7eb;
@@ -377,16 +377,16 @@
     width: 70px;
     height: 70px;
 }
-/* Add this to your SearchPage.css file */
+
 
 .free-tag {
-    font-size: 0.7em; /* Smaller font size relative to the hospital name */
-    font-weight: normal; /* Less bold than the name */
-    color: #28a745; /* Green color */
-    background-color: #e9f7ef; /* Light green background */
-    padding: 2px 6px; /* Some padding around the text */
-    border-radius: 12px; /* Rounded corners */
-    margin-left: 8px; /* Space between name and tag */
-    vertical-align: middle; /* Align vertically with the text */
-    white-space: nowrap; /* Prevent the tag from wrapping */
+    font-size: 0.7em; 
+    font-weight: normal; 
+    color: #28a745; 
+    background-color: #e9f7ef; 
+    padding: 2px 6px; 
+    border-radius: 12px; 
+    margin-left: 8px; 
+    vertical-align: middle; 
+    white-space: nowrap; 
 }

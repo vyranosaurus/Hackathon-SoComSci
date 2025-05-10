@@ -1,5 +1,4 @@
 
-// HospitalController.java
 package com.hackathon.socomsci.controller;
 
 import com.hackathon.socomsci.model.*;
@@ -26,10 +25,7 @@ public class HospitalController {
     @GetMapping("/hospitals")
     public ResponseEntity<List<Hospital>> getAllHospitals() {
         List<Hospital> hospitals = hospitalService.getAllHospitals();
-        // Services are Lazy loaded by default unless configured otherwise or fetched.
-        // If you need services returned with hospitals in this endpoint, you might need
-        // to change FetchType or use a DTO.
-        // For now, frontend fetches services separately when a hospital is selected.
+
         return new ResponseEntity<>(hospitals, HttpStatus.OK);
     }
 
@@ -44,12 +40,9 @@ public class HospitalController {
     public ResponseEntity<Set<OfferedService>> getServicesByHospital(@PathVariable String hospitalId) {
         try {
             Set<OfferedService> services = hospitalService.getServicesByHospitalId(hospitalId);
-            // Services relationship is eagerly loaded by default here due to the explicit
-            // fetch,
-            // but @JsonIgnore is on Hospital side to prevent recursion. Returning a
-            // Set<Service> should be fine.
+
             return new ResponseEntity<>(services, HttpStatus.OK);
-        } catch (RuntimeException e) { // e.g., Hospital not found
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,5 +50,4 @@ public class HospitalController {
         }
     }
 
-    // You might add endpoints for creating hospitals, etc.
 }

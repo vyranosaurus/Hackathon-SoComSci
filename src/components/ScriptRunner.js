@@ -9,7 +9,7 @@ const ScriptRunner = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Define preset scripts that users can run
+  
   const presetScripts = [
     {
       name: "Initialize PostgreSQL Schema",
@@ -66,7 +66,7 @@ const ScriptRunner = () => {
 
   return (
     <div className="container">
-      {/* Header */}
+      {}
       <header className="queue-header" style={{ backgroundColor: "#8B0000", color: "white", padding: "16px" }}>
         <div className="back-arrow" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
           <ArrowLeft size={24} color="white" />
@@ -77,7 +77,7 @@ const ScriptRunner = () => {
       <div className="script-runner" style={{
         padding: "20px",
       }}>
-        {/* Preset Scripts Section */}
+        {}
         <div style={{ marginBottom: "24px" }}>
           <h3 style={{ marginBottom: "16px", color: "#333", fontSize: "18px" }}>Preset Scripts</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -117,7 +117,7 @@ const ScriptRunner = () => {
           </div>
         </div>
         
-        {/* Command Input Section */}
+        {}
         <div style={{ marginBottom: "16px" }}>
           <h3 style={{ marginBottom: "16px", color: "#333", fontSize: "18px" }}>Custom Command</h3>
           <div style={{ marginBottom: "16px" }}>
@@ -159,7 +159,7 @@ const ScriptRunner = () => {
           </button>
         </div>
         
-        {/* Results Section */}
+        {}
         {error && (
           <div style={{
             marginTop: "16px",

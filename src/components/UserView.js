@@ -7,13 +7,13 @@ function ContactForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [messageType, setMessageType] = useState("hospital"); // "hospital" or "doctor"
+  const [messageType, setMessageType] = useState("hospital"); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Submit the form data
+    
     setShowConfirmation(true);
-    // Reset form
+    
     setTimeout(() => {
       setName("");
       setEmail("");
@@ -193,15 +193,15 @@ function QueueStatus() {
   const handleRefresh = () => {
     setIsRefreshing(true);
     
-    // Simulate an API call with a timeout
+    
     setTimeout(() => {
-      // Update the last updated time
+      
       setLastUpdated(new Date());
       setIsRefreshing(false);
     }, 1500);
   };
   
-  // Format the last updated time
+  
   const formattedTime = lastUpdated.toLocaleTimeString([], { 
     hour: '2-digit', 
     minute: '2-digit' 

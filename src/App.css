@@ -1,4 +1,4 @@
-/* Custom CSS Variables */
+
 :root {
   --primary-maroon: #800000;
   --primary-maroon-light: #9A1919;
@@ -10,7 +10,7 @@
   --black: #333333;
 }
 
-/* Base styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -669,33 +669,33 @@ body {
   background-repeat: no-repeat;
 }
 
-/* src/App.css or src/index.css */
+
 
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f0f2f5; /* Match the container background */
+  background-color: #f0f2f5; 
 }
 
 code {font-family: 'Montserrat', sans-serif;
 }
 
-/* Basic style for the root App div */
+
 .App {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure app takes at least full height */
+  min-height: 100vh; 
 }
 
 
-/* Bottom Navigation Styles (using the .bottom-navigation class defined in HospitalPage.css) */
-/* These styles will apply if BottomNavigation is rendered inside a flex container that allows it to take up space */
+
+
 .bottom-navigation {
-  width: 100%; /* Full width of parent */
-  max-width: 500px; /* Match the container's max-width */
-  margin: 0 auto; /* Center horizontally */
+  width: 100%; 
+  max-width: 500px; 
+  margin: 0 auto; 
   background-color: #ffffff;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   height: 3.5rem;
@@ -704,7 +704,7 @@ code {font-family: 'Montserrat', sans-serif;
   justify-content: space-around;
   border-top: 1px solid #e5e7eb;
   flex-shrink: 0;
-  z-index: 40; /* Ensure it's above main content but below modals */
+  z-index: 40; 
 }
 
 .nav-item {
@@ -721,10 +721,10 @@ code {font-family: 'Montserrat', sans-serif;
   width: 1.5rem;
   height: 1.5rem;
   margin-bottom: 0.125rem;
-  stroke-width: 2; /* Default stroke for lucide icons */
+  stroke-width: 2; 
 }
 
-/* Example active state for the first item */
+
 .nav-item:first-child {
    color: #3b82f6;
 }

@@ -92,7 +92,7 @@
   gap: 1rem;
 }
 
-/* Card Styles */
+
 .card-title {
   font-size: 1.25rem;
   font-weight: 600;
@@ -100,7 +100,7 @@
   color: #333333;
 }
 
-/* Profile Section */
+
 .profile-card {
   background-color: white;
   border-radius: 0.5rem;
@@ -251,7 +251,7 @@
   margin: 0.5rem 0 0 0;
 }
 
-/* Message History */
+
 .message-card {
   background-color: white;
   border-radius: 0.5rem;
@@ -358,7 +358,7 @@
   cursor: not-allowed;
 }
 
-/* Emergency Call */
+
 .emergency-card {
   background-color: white;
   border-radius: 0.5rem;
@@ -406,7 +406,7 @@
   margin-right: 0.5rem;
 }
 
-/* Modal */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -531,7 +531,7 @@
   border: 2px solid #e5e7eb;
 }
 
-/* Update message bubble styling to match the design */
+
 .message-bubble {
   max-width: 80%;
   padding: 0.75rem 1rem;
@@ -543,7 +543,7 @@
   color: #800000;
 }
 
-/* Combined Portal Styles */
+
 .tabs-container {
   display: flex;
   border-bottom: 1px solid #e5e7eb;

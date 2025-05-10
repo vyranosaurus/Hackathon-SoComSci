@@ -19,10 +19,10 @@ function MessageInbox({ cases, onStatusChange }) {
   const handleSendReply = () => {
     if (!replyText.trim() || !activeConversation) return
     
-    // In a real app, this would be an API call to send the reply
+    
     alert(`Reply sent to Patient #${activeConversation.patientId}: ${replyText}`)
     
-    // Mark as in-progress if it's new
+    
     if (activeConversation.status === 'new') {
       onStatusChange(activeConversation.id, 'in-progress')
     }
@@ -40,7 +40,7 @@ function MessageInbox({ cases, onStatusChange }) {
   
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-96">
-      {/* Message list */}
+      {}
       <div className="border border-gray-200 rounded-lg overflow-y-auto bg-white md:col-span-1">
         <div className="p-3 border-b border-gray-200">
           <h3 className="font-medium text-gray-700">Conversations</h3>
@@ -73,7 +73,7 @@ function MessageInbox({ cases, onStatusChange }) {
         </ul>
       </div>
       
-      {/* Conversation view */}
+      {}
       <div className="border border-gray-200 rounded-lg bg-white flex flex-col md:col-span-2">
         {activeConversation ? (
           <>
@@ -94,7 +94,7 @@ function MessageInbox({ cases, onStatusChange }) {
                 <p className="text-gray-800">{activeConversation.message}</p>
               </div>
               
-              {/* Here you would map through message history */}
+              {}
             </div>
             
             <div className="p-3 border-t border-gray-200">

@@ -212,7 +212,7 @@
   text-decoration: underline;
 }
 
-/* Responsive styles for smaller devices */
+
 @media (max-width: 360px) {
   .loginCard {
     padding: 1.25rem;
@@ -236,7 +236,7 @@
   }
 }
 
-/* Add free services styles but keep them compatible with original design */
+
 .freeServicesBadge {
   display: inline-flex;
   align-items: center;

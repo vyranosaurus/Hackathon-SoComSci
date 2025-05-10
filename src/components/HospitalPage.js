@@ -1,21 +1,21 @@
-// HospitalPage.js
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import '../HospitalPage.css'; // Make sure your CSS file is in the correct path
-import BottomNavigation from './BottomNavigation'; // Assuming this component exists
-import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; // Import icons including ChevronRight
+import '../HospitalPage.css'; 
+import BottomNavigation from './BottomNavigation'; 
+import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; 
 import { Link } from 'react-router-dom';
 
-// *** Define your backend API base URL ***
-// !!! IMPORTANT: Update this with your actual backend URL and port !!!
-const BACKEND_API_URL = 'http://localhost:8080/api'; // Default Spring Boot port
+
+
+const BACKEND_API_URL = 'http://localhost:8080/api'; 
 
 function HospitalPage() {
     const navigate = useNavigate();
 
     const [hospitals, setHospitals] = useState([]);
     const [selectedHospital, setSelectedHospital] = useState(null);
-    const [services, setServices] = useState([]); // Services for the selected hospital
+    const [services, setServices] = useState([]); 
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [selectedServiceToBook, setSelectedServiceToBook] = useState(null);
     const [formData, setFormData] = useState({
@@ -28,8 +28,8 @@ function HospitalPage() {
         medicalCardNumber: '',
         medicalCardName: '',
     });
-    // Use separate search terms for hospitals and services if needed,
-    // but for simplicity, we'll use one and clear it on hospital selection.
+    
+    
     const [searchTerm, setSearchTerm] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoadingHospitals, setIsLoadingHospitals] = useState(true);
@@ -37,7 +37,7 @@ function HospitalPage() {
     const [hospitalError, setHospitalError] = useState(null);
     const [serviceError, setServiceError] = useState(null);
 
-    // Effect to fetch the list of hospitals when the component mounts
+    
     useEffect(() => {
         const fetchHospitals = async () => {
             setIsLoadingHospitals(true);
@@ -71,17 +71,17 @@ function HospitalPage() {
         };
 
         fetchHospitals();
-    }, [BACKEND_API_URL]); // Add BACKEND_API_URL to dependencies
+    }, [BACKEND_API_URL]); 
 
-    // Effect to fetch services when a hospital is selected
+    
     useEffect(() => {
         if (selectedHospital) {
             const fetchServices = async () => {
                 setIsLoadingServices(true);
                 setServiceError(null);
-                 setServices([]); // Clear previous services
+                 setServices([]); 
                 try {
-                    // Fetch services using the hospitalId from the selected hospital
+                    
                     const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services`);
                     if (!response.ok) {
                           const errorBody = await response.text();
@@ -109,14 +109,14 @@ function HospitalPage() {
 
             fetchServices();
         } else {
-            setServices([]); // Clear services if no hospital is selected
+            setServices([]); 
         }
-    }, [selectedHospital, BACKEND_API_URL]); // Rerun when selectedHospital or BACKEND_API_URL changes
+    }, [selectedHospital, BACKEND_API_URL]); 
 
-    // Handle selecting a hospital from the list
+    
     const handleSelectHospital = (hospital) => {
            setSelectedHospital(hospital);
-           setSearchTerm(''); // Clear search term when selecting a hospital
+           setSearchTerm(''); 
            window.scrollTo(0, 0);
     };
 
@@ -126,7 +126,7 @@ function HospitalPage() {
             return;
         }
         setSelectedServiceToBook(service);
-        // Reset form data for a new booking
+        
         setFormData({
             name: '', age: '', phoneNumber: '', concern: '',
             hasMedicalCard: false, medicalCardCompany: '', medicalCardNumber: '', medicalCardName: '',
@@ -139,7 +139,7 @@ function HospitalPage() {
              alert("Please select a hospital first.");
              return;
            }
-        // Navigate to the queue page, passing hospital and service IDs in the URL
+        
         navigate(`/queue/${selectedHospital.hospitalId}/${service.serviceId}`);
     };
 
@@ -151,11 +151,11 @@ function HospitalPage() {
         });
     };
 
-    // Handle submitting the booking form and sending data to the backend
+    
     const handleSubmitBooking = async () => {
-        if (!selectedHospital || !selectedServiceToBook) return; // Should not happen if modal is opened correctly
+        if (!selectedHospital || !selectedServiceToBook) return; 
 
-        // Basic form validation
+        
         if (!formData.name || !formData.age || !formData.concern || !formData.phoneNumber) {
             alert("Please fill in all required fields (Name, Age, Phone Number, Concern).");
             return;
@@ -168,23 +168,23 @@ function HospitalPage() {
 
         setIsSubmitting(true);
         console.log("Submitting booking data to backend:", formData);
-        // Prepare the booking data to send to the backend
+        
         const bookingDataToSend = {
-            ...formData, // Includes name, age, phoneNumber, concern, medical card details
-            // Hospital and Service are linked on the backend using the IDs from the path
-            // timestamp is set server-side, no need to send from client
-            // urgency and urgentPriorityScore are set by AI on backend
+            ...formData, 
+            
+            
+            
         };
 
-        // --- Call your backend API endpoint to add the booking ---
-        // Use hospitalId and serviceId from the selected items in the URL path
+        
+        
         const addBookingEndpoint = `${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services/${selectedServiceToBook.serviceId}/bookings`;
         try {
             const response = await fetch(addBookingEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Include any necessary authentication headers for your backend
+                    
                 },
                 body: JSON.stringify(bookingDataToSend),
             });
@@ -205,7 +205,7 @@ function HospitalPage() {
 
             const result = await response.json();
             console.log("Booking successfully submitted:", result);
-             // Optionally, navigate to the queue page after successful booking
+             
              alert("Booking submitted successfully! Urgency classified and queue updated.");
              navigate(`/queue/${selectedHospital.hospitalId}/${selectedServiceToBook.serviceId}`);
 
@@ -215,7 +215,7 @@ function HospitalPage() {
             alert(`Failed to connect to booking service: ${error.message}`);
         } finally {
             setIsSubmitting(false);
-            // Close the modal and reset the form regardless of backend success/failure
+            
             setIsFormModalOpen(false);
             setFormData({
                 name: '', age: '', phoneNumber: '', concern: '',
@@ -225,7 +225,7 @@ function HospitalPage() {
         }
     };
 
-    // Handle closing the modal
+    
     const closeModal = () => {
         setIsFormModalOpen(false);
         setFormData({
@@ -236,19 +236,19 @@ function HospitalPage() {
     };
 
      const handleBackToHospitals = () => {
-         setSelectedHospital(null); // Go back to hospital list view
-         setSearchTerm(''); // Clear search when going back
+         setSelectedHospital(null); 
+         setSearchTerm(''); 
          window.scrollTo(0, 0);
      };
 
-    // Filter hospitals based on search term when no hospital is selected
+    
     const filteredHospitals = hospitals.filter(hospital =>
         hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         hospital.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-     // Filter services based on search term when a hospital is selected
-     // This filtering was already present in your original code for the services view.
+     
+     
     const filteredServices = services.filter(service =>
         service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         service.description?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -257,48 +257,48 @@ function HospitalPage() {
 
     return (
         <div className="hospital-container">
-            {/* Header Section (Conditionally rendered) */}
+            {}
             {!selectedHospital ? (
                    <header className="search-header" style = {{position: 'absolute', zIndex: 1,
                     width: '100%'
                    }
-                   }> {/* Use search-header class from SearchPage */}
-                       {/* Optional: Back button for the hospital list page if needed */}
+                   }> {}
+                       {}
                         {/* <div className="back-button" onClick={handleBackToPreviousPage}>
                            <ArrowLeft size={20} color="white" />
                         </div> */}
-                       {/* Title in the header */}
+                       {}
                        <div className="back-arrow" 
           onClick={() => navigate("/home")} style={{ position: 'absolute', left: '1rem', marginRight: '2%' }}>
                            <ArrowLeft size={20} color="white" />
                         </div>
-                        <div className="search-title" style = {{marginLeft: '10%'}}>Find Hospitals</div> {/* Use search-title class from SearchPage */}
-                        {/* Optional: Menu icon if needed */}
-                       {/* <Menu className="icon menu-icon" /> */}
+                        <div className="search-title" style = {{marginLeft: '10%'}}>Find Hospitals</div> {}
+                        {}
+                       {}
                    </header>
             ) : (
-                // Header for hospital+service view - Keep the original header structure
+                
                    <header className="queue-header mt-6" style={{ position: 'absolute', zIndex: 1, width: '100%' }}>
-                       {/* Back button */}
+                       {}
                         <div className="back-arrow" onClick={handleBackToHospitals} style={{ position: 'absolute', left: '1rem' }}>
                            <ArrowLeft size={20} color="white" />
                         </div>
                        <div style={{textAlign: 'center', flexGrow: 1}}>
                             <h1 style={{color: 'white', fontSize: '1.5rem', margin: 0}}>{selectedHospital.name}</h1>
-                            {/* Location below name for clarity */}
+                            {}
                             <p style={{color: 'white', fontSize: '0.9rem', margin: '5px 0 0 0'}}>{selectedHospital.location}</p>
                        </div>
-                        {/* Optional: Menu icon if needed */}
-                       {/* <Menu className="icon menu-icon" /> */}
+                        {}
+                       {}
                    </header>
             )}
 
 
-            <div className="scrollable-content" style={{marginTop: selectedHospital ? '4rem' : '0rem'}}> {/* Adjust margin based on header */}
+            <div className="scrollable-content" style={{marginTop: selectedHospital ? '4rem' : '0rem'}}> {}
                  {!selectedHospital ? (
-                     // --- Display List of Hospitals with Search ---
+                     
                      <>
-                         {/* Hospital List Banner - Keep existing banner */}
+                         {}
                           <div className="hbanner" style={{backgroundImage: `url('https://j6n3r3q2.delivery.rocketcdn.me/wp-content/uploads/2020/11/ICU_1.jpg')`, height: '250px', marginTop : '2%' }}> {/* Generic Hospital Banner */}
                              <div className="banner-overlay"></div>
                              <div className="hbanner-content">
@@ -307,57 +307,57 @@ function HospitalPage() {
                              </div>
                          </div>
 
-                         {/* Search Bar for Hospitals (moved above title) */}
-                         <div className="search-bar-container" style={{margin: '.5rem',   boxShadow: '0 2px 4px rgba(0, 0, 0, .1)', width: '100%', marginLeft: 0, marginTop: 0, borderRadius: 0, height: '10%'}}> {/* Container for search bar, added margin */}
-                             <Search className="icon search-icon"/> {/* Search icon inside the bar */}
+                         {}
+                         <div className="search-bar-container" style={{margin: '.5rem',   boxShadow: '0 2px 4px rgba(0, 0, 0, .1)', width: '100%', marginLeft: 0, marginTop: 0, borderRadius: 0, height: '10%'}}> {}
+                             <Search className="icon search-icon"/> {}
                             <input
                             style = {{paddingLeft: '10%'}}
                                  type="text"
-                                 placeholder="Search for hospitals..." // Specific placeholder for hospital search
-                                className="search-input" // Use search-input class from SearchPage
+                                 placeholder="Search for hospitals..." 
+                                className="search-input" 
                                  value={searchTerm}
                                  onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
 
 
-                         {/* Hospital List - Use search-results-list and search-result-item styling for hospital items */}
-                         <div className="search-results-list" style = {{paddingLeft: '3%', paddingRight: '3%'}}> {/* Use search-results-list class from SearchPage */}
+                         {}
+                         <div className="search-results-list" style = {{paddingLeft: '3%', paddingRight: '3%'}}> {}
                              {isLoadingHospitals && <p style={{textAlign: 'center'}}>Loading hospitals...</p>}
                              {hospitalError && <p style={{textAlign: 'center', color: 'red'}}>Error loading hospitals: {hospitalError}</p>}
                               {!isLoadingHospitals && !hospitalError && filteredHospitals.length === 0 && (
                                   <p style={{textAlign: 'center'}}>No hospitals found matching your search.</p>
                               )}
                              {!isLoadingHospitals && !hospitalError && filteredHospitals.map(hospital => (
-                                  <div key={hospital.id} className="search-result-item hospital-item" style = {{margin: 0}} onClick={() => handleSelectHospital(hospital)}> {/* Use search-result-item and hospital-item class */}
-                                      <div className="result-content"> {/* Use result-content class */}
+                                  <div key={hospital.id} className="search-result-item hospital-item" style = {{margin: 0}} onClick={() => handleSelectHospital(hospital)}> {}
+                                      <div className="result-content"> {}
                                          <img src={hospital.imageUrl || 'https://via.placeholder.com/150'} alt={hospital.name} className="result-image" /> {/* Use result-image class */}
-                                          <div className="result-details"> {/* Use result-details class */}
+                                          <div className="result-details"> {}
                                               <h3 className="result-name" style = {{ width: '98%'}}>{hospital.name}
-                                              {hospital.free && <span className="free-tag"> #FREE</span>}</h3> {/* Use result-name class */}
-                                              <p className="result-location">{hospital.location}</p> {/* Use result-location class */}
+                                              {hospital.free && <span className="free-tag"> #FREE</span>}</h3> {}
+                                              <p className="result-location">{hospital.location}</p> {}
                                          </div>
                                       </div>
-                                      <ArrowLeft size={16} color="#6b7280" style={{transform: 'rotate(180deg)'}} /> {/* Add ChevronRight icon */}
+                                      <ArrowLeft size={16} color="#6b7280" style={{transform: 'rotate(180deg)'}} /> {}
                                   </div>
                               ))}
                          </div>
                      </>
                  ) : (
-                     // --- Display Services for Selected Hospital (Keep original structure and search bar) ---
+                     
                      <>
-                        {/* Hospital Image - Keep this */}
+                        {}
                         <div style={{position: 'relative'}}>
                             <img
                                 src={selectedHospital.imageUrl || 'https://via.placeholder.com/500x250?text=Hospital'}
                                 alt={`${selectedHospital.name} Image`}
-                                className="hospital-detail-image" // Keep existing class or add one for specific styling
+                                className="hospital-detail-image" 
                                 style={{
-                                    width: '100%', // Make image responsive
+                                    width: '100%', 
                                     height: 'auto',
                                     maxHeight: '260px',
                                     objectFit: 'cover',
-                                    display: 'block', // Center the image
+                                    display: 'block', 
                                 }}
                             />
                             <div style={{
@@ -373,43 +373,43 @@ function HospitalPage() {
                                 </p>
                             </div>
                         </div>
-                         {/* Original Search Bar for Services */}
-                         <div className="hsearch-bar"> {/* Keep original hsearch-bar class for services search */}
-                            {/* Assuming menu icon was for a side drawer, if not needed remove */}
-                            {/* <Menu className="icon menu-icon" /> */}
-                            <Search className="icon search-icon" /> {/* Keep Search icon */}
+                         {}
+                         <div className="hsearch-bar"> {}
+                            {}
+                            {}
+                            <Search className="icon search-icon" /> {}
                            <input
                                 type="text"
-                                placeholder={`Search services at ${selectedHospital.name}...`} // Original specific placeholder
-                               className="search-input" // Keep original search-input class
+                                placeholder={`Search services at ${selectedHospital.name}...`} 
+                               className="search-input" 
                                 value={searchTerm}
                                 style = {{paddingLeft: '10%'}}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                            />
                        </div>
 
-                         {/* Services List for selected hospital - Keep original service-list styling */}
-                         <div className="service-list" id="services-section"> {/* Original service-list class */}
+                         {}
+                         <div className="service-list" id="services-section"> {}
                              {isLoadingServices && <p style={{textAlign: 'center'}}>Loading services...</p>}
                              {serviceError && <p style={{textAlign: 'center', color: 'red'}}>Error loading services: {serviceError}</p>}
                               {!isLoadingServices && !serviceError && filteredServices.length === 0 ? (
                                  <p style={{textAlign: 'center'}}>No services found matching your search or available at this hospital.</p>
                              ) : (
                                  !isLoadingServices && !serviceError && filteredServices.map(service => (
-                                      <div key={service.id} className="service-card" style={{cursor: 'default'}}> {/* Original service-card class */}
+                                      <div key={service.id} className="service-card" style={{cursor: 'default'}}> {}
                                           <img src={service.imageUrl || 'https://via.placeholder.com/100'} alt={service.name} className="service-image" /> {/* Original service-image class */}
-                                           <div className="service-details"> {/* Original service-details class */}
+                                           <div className="service-details"> {}
                                                <div>
-                                                    {/* Rating and Name */}
+                                                    {}
                                                     <div className="service-rating">
                                                          <span className="star-icon">★</span>
                                                          <span className="rating-value">{service.rating?.toFixed(1) || 'N/A'}</span>
-                                                         <h3 className="service-name">{service.name}</h3> {/* Original service-name class */}
+                                                         <h3 className="service-name">{service.name}</h3> {}
                                                     </div>
-                                                    {/* Description */}
-                                                   <p className="service-description">{service.description}</p> {/* Original service-description class */}
+                                                    {}
+                                                   <p className="service-description">{service.description}</p> {}
                                                </div>
-                                                {/* Buttons */}
+                                                {}
                                                 <div className="service-buttons">
                                                      <button
                                                           className="button queue-button"
@@ -435,7 +435,7 @@ function HospitalPage() {
                     )}
             </div>
 
-            {/* Booking Modal (remains similar, but uses selectedServiceToBook and selectedHospital) */}
+            {}
             {isFormModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">

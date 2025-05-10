@@ -8,7 +8,7 @@ function ContactForm() {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [selectedHospital, setSelectedHospital] = useState('obstetrics')
   
-  // List of hospitals the patient is queued in
+  
   const queuedHospitals = [
     { id: 'obstetrics', name: 'Obstetrics & Gynecology - Dr. Renato Causing' },
     { id: 'cardiology', name: 'Cardiology Department - Dr. Maria Santos' },
@@ -25,7 +25,7 @@ function ContactForm() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000))
       
-      // Here you would typically send the message to the selected hospital
+      
       console.log(`Sending message to hospital: ${selectedHospital}`)
       console.log(`Message: ${message}`)
       
@@ -324,9 +324,9 @@ function MessageHistory() {
     setIsLoading(true);
     
     try {
-      // Simulate API call delay for realism
+      
       setTimeout(() => {
-        // Generate AI response based on user's message
+        
         const aiResponse = generateAIResponse(newMessage);
         
         const aiMessage = {
@@ -413,7 +413,7 @@ function MessageHistory() {
 }
 
 function ProfileSection() {
-  // Mock data
+  
   const profile = {
     name: "John Nathan Ramos",
     patientId: "PAT-1001",
@@ -513,7 +513,7 @@ function QueueStatus() {
 }
 
 function PatientDashboard() {
-  const [activeTab, setActiveTab] = useState('profile'); // 'profile', 'messages', 'contact'
+  const [activeTab, setActiveTab] = useState('profile'); 
   const [showEmergencyConfirmation, setShowEmergencyConfirmation] = useState(false);
   
   const handleEmergencyClick = () => {

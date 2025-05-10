@@ -11,7 +11,7 @@ function HospitalView() {
   const { width } = useWindowSize()
   const isMobile = width < 768
 
-  // Mock data - in a real app this would come from an API
+  
   useEffect(() => {
     const mockCases = [
       {
@@ -83,7 +83,7 @@ function HospitalView() {
       
       <main className="container mx-auto p-4">
         <div className={`${isMobile ? 'space-y-6' : 'grid grid-cols-12 gap-6'}`}>
-          {/* Sidebar with filters - hidden in mobile view or shown at top */}
+          {}
           <div className={isMobile ? 'w-full' : 'col-span-3'}>
             <CaseFilters 
               activeFilter={activeFilter} 
@@ -91,7 +91,7 @@ function HospitalView() {
             />
           </div>
           
-          {/* Main content area */}
+          {}
           <div className={isMobile ? 'w-full' : 'col-span-9'}>
             <div className="bg-white rounded-lg shadow-md p-4 mb-6">
               <h2 className="text-xl font-semibold mb-4">Live Case Feed</h2>

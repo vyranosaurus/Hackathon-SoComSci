@@ -1,4 +1,4 @@
-// GeminiServiceImpl.java (Implementation)
+
 package com.hackathon.socomsci.serviceImpl;
 
 import com.hackathon.socomsci.service.GeminiService;
@@ -10,38 +10,32 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
-import com.fasterxml.jackson.databind.ObjectMapper; // Needed for JSON parsing
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random; // For the stub's random score
+import java.util.Random;
 
 @Service
 public class GeminiServiceImpl implements GeminiService {
 
-    // !!! IMPORTANT: Configure these in your application.properties or
-    // application.yml !!!
-    // Example:
-    // gemini.api.key=YOUR_GEMINI_API_KEY
-    // gemini.api.url=YOUR_GEMINI_API_URL (e.g.,
-    // https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent)
     @Value("${gemini.api.key}")
     private String apiKey;
     @Value("${gemini.api.url}")
     private String apiUrl;
 
     private WebClient webClient;
-    private final ObjectMapper objectMapper = new ObjectMapper(); 
-    private final Random random = new Random(); 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Random random = new Random();
 
     @PostConstruct
     public void init() {
         if (apiUrl == null || apiUrl.isEmpty() || apiKey == null || apiKey.isEmpty()) {
             System.err.println("Gemini API URL or Key is not configured. GeminiService will use stub logic.");
-            this.webClient = null; 
+            this.webClient = null;
         } else {
             this.webClient = WebClient.builder()
                     .baseUrl(apiUrl)
@@ -75,8 +69,8 @@ public class GeminiServiceImpl implements GeminiService {
 
                         Respond ONLY in a JSON format like this:
                         {
-                          "urgency": "Classification Here", // Must be one of 'Critical', 'Urgent', 'Not urgent', 'Not specified'
-                          "urgentPriorityScore": ScoreHere // Integer 1-10 if Urgent, null otherwise
+                          "urgency": "Classification Here",
+                          "urgentPriorityScore": ScoreHere
                         }
 
                         Examples:
@@ -106,7 +100,7 @@ public class GeminiServiceImpl implements GeminiService {
 
                         Patient Concern: "I have cancer i need treatment options."
                          {
-                          "urgency": "Urgent", // Or maybe "Urgent" if context implies acute issue? Needs careful example design. For chronic diagnosis, 'Not urgent' for initial booking is often correct unless acute symptoms occur. Let's stick to 'Not urgent' for the diagnosis itself.
+                          "urgency": "Urgent",
                           "urgentPriorityScore": null
                         }
 
@@ -136,8 +130,7 @@ public class GeminiServiceImpl implements GeminiService {
                                 Map.of("category", "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold", "BLOCK_NONE"),
                                 Map.of("category", "HARM_CATEGORY_HARASSMENT", "threshold", "BLOCK_NONE"),
                                 Map.of("category", "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold", "BLOCK_NONE")),
-                        "generationConfig", Map.of("temperature", 0.1, "responseMimeType", "application/json")
-                );
+                        "generationConfig", Map.of("temperature", 0.1, "responseMimeType", "application/json"));
 
                 Mono<Map> responseMono = webClient.post()
                         .uri(uriBuilder -> uriBuilder.queryParam("key", apiKey).build())
@@ -219,7 +212,7 @@ public class GeminiServiceImpl implements GeminiService {
                     || concern.toLowerCase().contains("cannot wait quickly")
                     || concern.toLowerCase().contains("severe symptoms")) {
                 extractedUrgency = "Urgent";
-                extractedScore = random.nextInt(10) + 1; // Score 1-10
+                extractedScore = random.nextInt(10) + 1;
             } else if (concern.toLowerCase().contains("routine check") || concern.toLowerCase().contains("follow up")
                     || concern.toLowerCase().contains("mild symptoms")
                     || concern.toLowerCase().contains("general consultation")) {

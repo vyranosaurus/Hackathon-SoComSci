@@ -13,20 +13,20 @@ function ContactForm() {
     setIsSubmitting(true)
     
     try {
-      // In a real app, this would be an API call
-      // await fetch('/api/messages', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ message })
-      // })
       
-      // Simulate API delay
+      
+      
+      
+      
+      
+      
+      
       await new Promise(resolve => setTimeout(resolve, 1000))
       
       setShowConfirmation(true)
       setMessage('')
       
-      // Hide confirmation after 5 seconds
+      
       setTimeout(() => {
         setShowConfirmation(false)
       }, 5000)

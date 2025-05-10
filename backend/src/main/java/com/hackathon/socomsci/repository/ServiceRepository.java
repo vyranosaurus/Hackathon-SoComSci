@@ -1,5 +1,4 @@
 
-// ServiceRepository.java
 package com.hackathon.socomsci.repository;
 
 import com.hackathon.socomsci.model.*;

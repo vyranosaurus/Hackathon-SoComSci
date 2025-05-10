@@ -1,5 +1,4 @@
 
-// Booking.java
 package com.hackathon.socomsci.model;
 
 import jakarta.persistence.*;
@@ -12,13 +11,13 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // Many-to-One relationship with Hospital
+
     @ManyToOne
-    @JoinColumn(name = "hospital_id_fk", nullable = false) // Foreign key column name
+    @JoinColumn(name = "hospital_id_fk", nullable = false)
     private Hospital hospital;
-    // Many-to-One relationship with Service
+
     @ManyToOne
-    @JoinColumn(name = "service_id_fk", nullable = false) // Foreign key column name
+    @JoinColumn(name = "service_id_fk", nullable = false)
     private OfferedService service;
     @Column(nullable = false)
     private String name;
@@ -29,16 +28,14 @@ public class Booking {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String concern;
-    // AI-classified urgency: 'Not urgent', 'Urgent', 'Critical', 'Not specified'
-    @Column(nullable = false)
-    private String urgency = "Not specified"; // Default to "Not specified"
 
-    // AI-provided score for 'Urgent' cases (higher score means higher priority)
-    // Can be null for other urgency types
+    @Column(nullable = false)
+    private String urgency = "Not specified";
+
     private Integer urgentPriorityScore;
 
     @Column(nullable = false)
-    private LocalDateTime timestamp; // Original booking creation time (for FCFS)
+    private LocalDateTime timestamp;
 
     private Boolean hasMedicalCard;
     private String medicalCardCompany;
@@ -52,15 +49,13 @@ public class Booking {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         if (this.timestamp == null) {
-            this.timestamp = LocalDateTime.now(); // Ensure timestamp is set if not provided
+            this.timestamp = LocalDateTime.now();
         }
-        // Urgency defaults to "Not specified" if not set before persist
+
         if (this.urgency == null || this.urgency.isEmpty()) {
             this.urgency = "Not specified";
         }
     }
-
-    // --- Getters and Setters ---
 
     public Long getId() {
         return id;

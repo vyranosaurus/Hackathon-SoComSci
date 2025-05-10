@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import font */
+
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
-/* Base styles */
+
 :root {
   --maroon: #800000;
   --maroon-light: #9A1919;

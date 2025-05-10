@@ -290,7 +290,7 @@ const HospitalDashboard = () => {
         
         const now = new Date();
         const hours = now.getHours();
-        const minutes = Math.floor(now.getMinutes() / 15) * 15; // Round to nearest 15 min
+        const minutes = Math.floor(now.getMinutes() / 15) * 15; 
         const time = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}`;
         
         const today = new Date().toISOString().split('T')[0];
@@ -468,7 +468,7 @@ const HospitalDashboard = () => {
                 <span className={styles.headerHighlight}>We</span><span className="ai-highlight">AI</span><span className={styles.headerHighlight}>d</span> Hospital
               </h1>
               <p className={styles.headerSubtitle}>{hospitalName}</p>
-              {/* Free services indicator */}
+              {}
               {isFree ? (
                 <span className={styles.freeServicesBadge}>
                   <FaHandHoldingHeart className={styles.freeServicesIcon} />
@@ -495,7 +495,7 @@ const HospitalDashboard = () => {
         </div>
       </header>
 
-      {/* Notifications Panel */}
+      {}
       {showNotifications && (
         <div className={styles.notificationsPanel}>
           <div className={styles.notificationsHeader}>
@@ -536,7 +536,7 @@ const HospitalDashboard = () => {
         </div>
       )}
 
-      {/* AI Insight Section */}
+      {}
       <div className={styles.aiInsightSection}>
         <div className={styles.aiInsightHeader}>
           <div className={styles.aiLogo}>
@@ -569,7 +569,7 @@ const HospitalDashboard = () => {
         </div>
       </div>
 
-      {/* Quick Stats Section */}
+      {}
       <div className={styles.statsSection}>
         <div className={styles.statsGrid}>
           <button 
@@ -596,7 +596,7 @@ const HospitalDashboard = () => {
         </div>
       </div>
 
-      {/* Search and Filter */}
+      {}
       <div className={styles.searchContainer}>
         <div className={styles.searchInputWrapper}>
           <input
@@ -625,7 +625,7 @@ const HospitalDashboard = () => {
         </div>
       </div>
 
-      {/* Patient List */}
+      {}
       <div className={styles.patientsSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>
@@ -718,7 +718,7 @@ const HospitalDashboard = () => {
         )}
       </div>
 
-      {/* Floating Action Button */}
+      {}
       <button 
         className={styles.fab}
         onClick={() => setShowAddPatientModal(true)}
@@ -726,7 +726,7 @@ const HospitalDashboard = () => {
         <FaUserPlus size={20} />
       </button>
 
-      {/* Add Patient Modal */}
+      {}
       {showAddPatientModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
@@ -856,7 +856,7 @@ const HospitalDashboard = () => {
         </div>
       )}
 
-      {/* Patient Details Modal */}
+      {}
       {showPatientDetailsModal && selectedPatient && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>

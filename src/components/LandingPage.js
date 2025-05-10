@@ -31,7 +31,7 @@ const LandingPage = () => {
 
   return (
     <div className={styles.container}>
-      {/* Hero Section */}
+      {}
       <div className={styles.heroSection}>
         <div className={styles.overlay}></div>
         <img src={slides[currentSlide]} alt="Healthcare" className={styles.backgroundImage} />
@@ -58,7 +58,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Logo Section */}
+      {}
       <div className={styles.logoSection}>
         <div className={styles.logoContainer}>
           <div className={styles.logoCircle}>
@@ -67,7 +67,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Role Selection */}
+      {}
       <div className={styles.roleSelectContainer}>
         <h2 className={styles.roleHeading}>Please select your role to continue</h2>
         <p className={styles.roleDescription}>
@@ -104,7 +104,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Features Section */}
+      {}
       <div className={styles.featuresContainer}>
         <h3 className={styles.featuresTitle}>Features</h3>
         <div className={styles.featuresGrid}>
@@ -139,7 +139,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Informational Sections */}
+      {}
       <div className={styles.infoSections}>
         <div className={styles.infoSection}>
           <div className={styles.infoIconContainer}>
@@ -172,7 +172,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* Footer */}
+      {}
       <div className={styles.footer}>
         <div className={styles.footerLogo}>
           <span className={styles.footerLogoText}>
