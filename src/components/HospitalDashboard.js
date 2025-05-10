@@ -28,7 +28,7 @@ const HospitalDashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const hospitalName = location.state?.hospitalName || 'Hospital Dashboard';
-  const isFree = location.state?.isFree || false; // Get isFree status from location state
+  const isFree = location.state?.isFree || false; 
   
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,6 +48,9 @@ const HospitalDashboard = () => {
   });
   const [addingPatient, setAddingPatient] = useState(false);
   const [processingAI, setProcessingAI] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const mockPatients = [
     {
@@ -152,12 +155,46 @@ const HospitalDashboard = () => {
     "Queue optimization has reduced average critical patient wait time by 12 minutes."
   ];
 
-  // Common conditions that might be considered critical
   const criticalConditions = [
     'chest pain', 'heart attack', 'stroke', 'difficulty breathing', 'severe bleeding',
     'trauma', 'head injury', 'seizure', 'unconscious', 'unresponsive', 'severe pain',
     'overdose', 'poisoning', 'severe allergic', 'anaphylaxis', 'broken bone',
     'fracture', 'severe burn', 'labor', 'pregnancy complication'
+  ];
+
+  const sampleNotifications = [
+    {
+      id: 1,
+      title: "Critical Patient Alert",
+      message: "New critical patient added: Juan Dela Cruz",
+      timestamp: "Just now",
+      isRead: false,
+      type: "critical"
+    },
+    {
+      id: 2,
+      title: "AI Insight Update",
+      message: "Gemini AI recommends allocating additional staff today",
+      timestamp: "5 min ago",
+      isRead: false,
+      type: "ai"
+    },
+    {
+      id: 3,
+      title: "Queue Update",
+      message: "3 new patients added to queue in the last hour",
+      timestamp: "30 min ago",
+      isRead: true,
+      type: "info"
+    },
+    {
+      id: 4,
+      title: "System Update",
+      message: "Hospital Dashboard has been updated to v2.0",
+      timestamp: "1 hour ago",
+      isRead: true,
+      type: "system"
+    }
   ];
 
   useEffect(() => {
@@ -166,6 +203,13 @@ const HospitalDashboard = () => {
       setLoading(false);
       generateAiInsight();
     }, 800);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNotifications(sampleNotifications);
+      setUnreadCount(sampleNotifications.filter(n => !n.isRead).length);
+    }, 1000);
   }, []);
 
   const generateAiInsight = () => {
@@ -177,6 +221,13 @@ const HospitalDashboard = () => {
       const randomIndex = Math.floor(Math.random() * mockAiInsights.length);
       const randomInsight = mockAiInsights[randomIndex];
       setAiInsight(randomInsight);
+      
+      addNotification({
+        title: "New AI Insight",
+        message: randomInsight,
+        type: "ai"
+      });
+      
       setAiInsightLoading(false);
     }, 1200);
   };
@@ -191,43 +242,33 @@ const HospitalDashboard = () => {
     setNewPatient(prev => ({ ...prev, [name]: value }));
   };
 
-  // AI processing for new patient
   const processPatientWithAI = (patientData) => {
     setProcessingAI(true);
     
     return new Promise((resolve) => {
       setTimeout(() => {
-        // Simulated AI analysis
         const condition = patientData.condition.toLowerCase();
         const age = parseInt(patientData.age);
         
-        // Determine if condition matches any critical keywords
         const isCriticalCondition = criticalConditions.some(cc => condition.includes(cc));
         
-        // Age factors (older patients and very young patients get higher priority)
         const ageFactor = age > 65 ? 20 : (age < 12 ? 15 : 0);
         
-        // Booking type factor
         const bookingTypeFactor = 
           patientData.bookingType === 'Emergency' ? 40 :
           patientData.bookingType === 'Urgent Care' ? 25 :
           patientData.bookingType === 'Walk-in' ? 10 : 5;
         
-        // Calculate AI score (0-100)
         let aiScore = bookingTypeFactor + ageFactor + (isCriticalCondition ? 35 : 0);
         
-        // Ensure score is within bounds
         aiScore = Math.min(Math.max(aiScore, 30), 98);
         
-        // Generate status based on score
         const status = aiScore > 75 ? 'Critical' : 'Normal';
         
-        // Generate wait time based on score (inversely proportional)
         const waitMinutes = status === 'Critical' ? 
           Math.floor(Math.random() * 15) + 5 : 
           Math.floor(Math.random() * 60) + 30;
         
-        // Create AI notes based on condition and factors
         let aiNotes = '';
         if (status === 'Critical') {
           if (age > 65) {
@@ -247,10 +288,9 @@ const HospitalDashboard = () => {
           }
         }
         
-        // Generate current time and add 15-minute increment for appointment time
         const now = new Date();
         const hours = now.getHours();
-        const minutes = Math.floor(now.getMinutes() / 15) * 15; // Round to nearest 15 min
+        const minutes = Math.floor(now.getMinutes() / 15) * 15; 
         const time = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}`;
         
         const today = new Date().toISOString().split('T')[0];
@@ -267,38 +307,96 @@ const HospitalDashboard = () => {
         
         setProcessingAI(false);
         resolve(processedPatient);
-      }, 2000); // Simulate 2 second AI processing
+      }, 2000); 
     });
   };
+
+  const toggleNotifications = () => {
+    console.log("Toggling notifications", { current: showNotifications });
+    
+    setShowNotifications(prevState => {
+      console.log("Setting showNotifications to:", !prevState);
+      return !prevState;
+    });
+    
+    if (!showNotifications) {
+      console.log("Marking all notifications as read");
+      const updatedNotifications = notifications.map(notification => ({
+        ...notification,
+        isRead: true
+      }));
+      
+      setNotifications(updatedNotifications);
+      setUnreadCount(0);
+    }
+  };
+
+  const addNotification = (notification) => {
+    const newNotification = {
+      id: notifications.length + 1,
+      timestamp: "Just now",
+      isRead: false,
+      ...notification
+    };
+    
+    setNotifications(prevNotifications => 
+      [newNotification, ...prevNotifications]
+    );
+    
+    setUnreadCount(prev => prev + 1);
+  };
+
+  const clearAllNotifications = () => {
+    setNotifications([]);
+    setUnreadCount(0);
+  };
+
+  const removeNotification = (id) => {
+    const updatedNotifications = notifications.filter(
+      notification => notification.id !== id
+    );
+    
+    setNotifications(updatedNotifications);
+    setUnreadCount(updatedNotifications.filter(n => !n.isRead).length);
+  };
+
 
   const handleAddPatient = async (e) => {
     e.preventDefault();
     setAddingPatient(true);
     
     try {
-      // Validate form
       if (!newPatient.name || !newPatient.age || !newPatient.condition) {
         alert("Please fill in all required fields");
         setAddingPatient(false);
         return;
       }
       
-      // Process with AI
       const processedPatient = await processPatientWithAI(newPatient);
       
-      // Add new patient with AI-generated data
       const newPatientWithId = {
         ...processedPatient,
         id: patients.length + 1,
       };
       
-      // Update patients list
       setPatients(prev => [...prev, newPatientWithId]);
       
-      // Generate new AI insight to reflect the addition
+      if (processedPatient.status === 'Critical') {
+        addNotification({
+          title: "Critical Patient Alert",
+          message: `New critical patient added: ${processedPatient.name}`,
+          type: "critical"
+        });
+      } else {
+        addNotification({
+          title: "New Patient Added",
+          message: `${processedPatient.name} has been added to the queue`,
+          type: "info"
+        });
+      }
+      
       generateAiInsight();
       
-      // Reset form and close modal
       setNewPatient({
         name: '',
         age: '',
@@ -315,7 +413,9 @@ const HospitalDashboard = () => {
   };
 
   const sortedPatients = [...patients].sort((a, b) => {
-    // AI-powered sorting based on aiScore first, then status
+
+
+
     if (a.aiScore > b.aiScore) return -1;
     if (a.aiScore < b.aiScore) return 1;
     
@@ -350,7 +450,6 @@ const HospitalDashboard = () => {
     setTimeDisplayMode(prev => prev === 'waiting' ? 'schedule' : 'waiting');
   };
 
-  // Function to handle viewing patient details
   const viewPatientDetails = (patient) => {
     setSelectedPatient(patient);
     setShowPatientDetailsModal(true);
@@ -366,10 +465,10 @@ const HospitalDashboard = () => {
             </button>
             <div>
               <h1 className={styles.headerTitle}>
-                <span className={styles.headerHighlight}>WeAId</span> Hospital
+                <span className={styles.headerHighlight}>We</span><span className="ai-highlight">AI</span><span className={styles.headerHighlight}>d</span> Hospital
               </h1>
               <p className={styles.headerSubtitle}>{hospitalName}</p>
-              {/* Free services indicator */}
+              {}
               {isFree ? (
                 <span className={styles.freeServicesBadge}>
                   <FaHandHoldingHeart className={styles.freeServicesIcon} />
@@ -384,15 +483,60 @@ const HospitalDashboard = () => {
             </div>
           </div>
           <div className={styles.headerRight}>
-            <button className={styles.iconButton}>
+            <button className={styles.iconButton} onClick={toggleNotifications}>
               <FaBell />
-              <span className={styles.notificationIndicator}></span>
+              {unreadCount > 0 && (
+                <span className={styles.notificationIndicator}>
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
       </header>
 
-      {/* AI Insight Section */}
+      {}
+      {showNotifications && (
+        <div className={styles.notificationsPanel}>
+          <div className={styles.notificationsHeader}>
+            <h3 className={styles.notificationsTitle}>Notifications</h3>
+            <button 
+              className={styles.clearAllButton}
+              onClick={clearAllNotifications}
+              disabled={notifications.length === 0}
+            >
+              Clear All
+            </button>
+          </div>
+          
+          {notifications.length === 0 ? (
+            <div className={styles.emptyNotifications}>
+              No notifications at this time
+            </div>
+          ) : (
+            <ul className={styles.notificationsList}>
+              {notifications.map(notification => (
+                <li 
+                  key={notification.id} 
+                  className={`${styles.notificationItem} ${!notification.isRead ? styles.unreadNotification : ''} ${styles[notification.type]}`}
+                >
+                  <h4 className={styles.notificationTitle}>{notification.title}</h4>
+                  <p className={styles.notificationMessage}>{notification.message}</p>
+                  <span className={styles.notificationTime}>{notification.timestamp}</span>
+                  <button 
+                    className={styles.removeNotification} 
+                    onClick={() => removeNotification(notification.id)}
+                  >
+                    <FaTimes />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {}
       <div className={styles.aiInsightSection}>
         <div className={styles.aiInsightHeader}>
           <div className={styles.aiLogo}>
@@ -425,7 +569,7 @@ const HospitalDashboard = () => {
         </div>
       </div>
 
-      {/* Quick Stats Section */}
+      {}
       <div className={styles.statsSection}>
         <div className={styles.statsGrid}>
           <button 
@@ -452,7 +596,7 @@ const HospitalDashboard = () => {
         </div>
       </div>
 
-      {/* Search and Filter */}
+      {}
       <div className={styles.searchContainer}>
         <div className={styles.searchInputWrapper}>
           <input
@@ -481,7 +625,7 @@ const HospitalDashboard = () => {
         </div>
       </div>
 
-      {/* Patient List */}
+      {}
       <div className={styles.patientsSection}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>
@@ -574,7 +718,7 @@ const HospitalDashboard = () => {
         )}
       </div>
 
-      {/* Floating Action Button */}
+      {}
       <button 
         className={styles.fab}
         onClick={() => setShowAddPatientModal(true)}
@@ -582,7 +726,7 @@ const HospitalDashboard = () => {
         <FaUserPlus size={20} />
       </button>
 
-      {/* Add Patient Modal */}
+      {}
       {showAddPatientModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
@@ -712,7 +856,7 @@ const HospitalDashboard = () => {
         </div>
       )}
 
-      {/* Patient Details Modal */}
+      {}
       {showPatientDetailsModal && selectedPatient && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>

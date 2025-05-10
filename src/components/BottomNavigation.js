@@ -12,8 +12,8 @@ const BottomNavigation = () => {
   return (
     <div className="bottom-nav">
       <button 
-        onClick={() => navigate("/")} 
-        className={`nav-item ${isActive("/") ? "active" : ""}`}
+        onClick={() => navigate("/home")} 
+        className={`nav-item ${isActive("/home") ? "active" : ""}`}
       >
         <FaHome className="nav-icon" size={18} />
         <span>Home</span>
@@ -28,11 +28,11 @@ const BottomNavigation = () => {
       </button>
       
       <button 
-        onClick={() => navigate("/profile")} 
-        className={`nav-item ${isActive("/profile") ? "active" : ""}`}
+        onClick={() => navigate("/medical-portal")} 
+        className={`nav-item ${isActive("/medical-portal") ? "active" : ""}`}
       >
         <FaUser className="nav-icon" size={18} />
-        <span>Profile</span>
+        <span>Portal</span>
       </button>
     </div>
   );

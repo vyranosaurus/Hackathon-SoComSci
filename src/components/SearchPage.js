@@ -1,9 +1,9 @@
-// SearchPage.js
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import '../SearchPage.css'; // Import the SearchPage CSS file
-import BottomNavigation from './BottomNavigation'; // Import the BottomNavigation component
-import { FaArrowLeft, FaSearch, FaChevronRight, FaClock, FaHospital } from "react-icons/fa"; // Import icons
+import '../SearchPage.css'; 
+import BottomNavigation from './BottomNavigation'; 
+import { FaArrowLeft, FaSearch, FaChevronRight, FaClock, FaHospital } from "react-icons/fa"; 
 import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; 
 const BACKEND_API_URL = 'http://localhost:8080/api';
 
@@ -19,7 +19,7 @@ function SearchPage() {
     const [hospitalError, setHospitalError] = useState(null);
     const [serviceError, setServiceError] = useState(null);
 
-    // Mock hospital data for testing
+    
     const mockHospitals = [
         { 
             id: 1, 
@@ -41,7 +41,7 @@ function SearchPage() {
         }
     ];
 
-    // Mock service data for testing
+    
     const mockServices = [
         {
             id: 1,
@@ -68,13 +68,13 @@ function SearchPage() {
             estimatedWaitTime: "10-15"
         }
     ];
-// Fetch hospitals when component mounts
+
     useEffect(() => {
             const fetchHospitals = async () => {
                 setIsLoadingHospitals(true);
                 setHospitalError(null);
                 try {
-                    // *** RESTORE actual API call ***
+                    
                     const response = await fetch(`${BACKEND_API_URL}/hospitals`);
     
                     if (!response.ok) {
@@ -87,34 +87,34 @@ function SearchPage() {
                         }
                         console.error("Backend API Error (Hospitals):", response.status, errorDetail);
                         setHospitalError(`Failed to load hospitals: ${errorDetail.message || response.statusText}`);
-                        setHospitals([]); // Clear hospitals on error
+                        setHospitals([]); 
                         return;
                     }
                     const data = await response.json();
-                    // console.log("Fetched Hospitals Data:", data); // Optional: Keep for verification
+                    
                     setHospitals(data);
                 } catch (error) {
                     console.error("Error fetching hospitals:", error);
                     setHospitalError(`Failed to connect to backend: ${error.message}`);
-                    setHospitals([]); // Clear hospitals on error
+                    setHospitals([]); 
                 } finally {
                     setIsLoadingHospitals(false);
                 }
             };
     
             fetchHospitals();
-        }, [BACKEND_API_URL]); // Add dependency if not already there
+        }, [BACKEND_API_URL]); 
 
- // Fetch services when a hospital is selected
+ 
      useEffect(() => {
             if (selectedHospital) {
                 const fetchServices = async () => {
                     setIsLoadingServices(true);
                     setServiceError(null);
-                    setServices([]); // Clear previous services
+                    setServices([]); 
                     try {
-                        // *** RESTORE actual API call (corrected endpoint) ***
-                        const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services`); // Use hospitalId from selectedHospital
+                        
+                        const response = await fetch(`${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services`); 
     
                         if (!response.ok) {
                             const errorBody = await response.text();
@@ -126,7 +126,7 @@ function SearchPage() {
                             }
                             console.error("Backend API Error (Services):", response.status, errorDetail);
                             setServiceError(`Failed to load services: ${errorDetail.message || response.statusText}`);
-                            setServices([]); // Clear services on error
+                            setServices([]); 
                             return;
                         }
                         const data = await response.json();
@@ -134,7 +134,7 @@ function SearchPage() {
                     } catch (error) {
                         console.error("Error fetching services:", error);
                         setServiceError(`Failed to connect to service list: ${error.message}`);
-                        setServices([]); // Clear services on error
+                        setServices([]); 
                     } finally {
                         setIsLoadingServices(false);
                     }
@@ -142,41 +142,41 @@ function SearchPage() {
     
                 fetchServices();
             } else {
-                setServices([]); // Clear services if no hospital is selected
+                setServices([]); 
             }
-        }, [selectedHospital, BACKEND_API_URL]); // Add dependencies if not already there
+        }, [selectedHospital, BACKEND_API_URL]); 
 
-    // Handle hospital selection
+    
     const handleSelectHospital = (hospital) => {
         setSelectedHospital(hospital);
-        setSearchTerm(''); // Reset search when changing hospitals
+        setSearchTerm(''); 
     };
 
-    // Handle going back to hospital list
+    
     const handleBackToHospitals = () => {
         setSelectedHospital(null);
         setSearchTerm('');
     };
 
-    // Handle view service details
+    
     const handleViewService = (service) => {
         if (!selectedHospital) return;
         navigate(`/queue/${selectedHospital.hospitalId}/${service.serviceId}`);
     };
 
-    // Filter hospitals based on search term
+    
     const filteredHospitals = hospitals.filter(hospital =>
         hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         hospital.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Filter services based on search term
+    
     const filteredServices = services.filter(service =>
         service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         service.description?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Determine capacity level for a service
+    
     const getCapacityLevel = (queueSize) => {
         if (queueSize < 5) return 'low';
         if (queueSize < 10) return 'medium';
@@ -185,7 +185,7 @@ function SearchPage() {
 
     return (
         <div className="search-container">
-            {/* Header Section */}
+            {}
             <header className="search-header">
                 {selectedHospital && (
                     <div className="back-button" onClick={handleBackToHospitals}>
@@ -199,7 +199,7 @@ function SearchPage() {
                 </h1>
             </header>
 
-            {/* Search Bar */}
+            {}
             <div className="search-bar">
                 <input
                     type="text"
@@ -213,10 +213,10 @@ function SearchPage() {
                 <FaSearch className="search-icon" />
             </div>
 
-            {/* Main Content Area */}
+            {}
             <div className="search-content">
                 {!selectedHospital ? (
-                    // Hospital Search Results
+                    
                     <div className="search-results">
                         <h2 className="results-title">Available Hospitals</h2>
                         
@@ -253,7 +253,7 @@ function SearchPage() {
                         ))}
                     </div>
                 ) : (
-                    // Service Search Results for Selected Hospital
+                    
                     <div className="search-results">
                         <h2 className="results-title">Services at {selectedHospital.name}</h2>
                         

@@ -17,7 +17,7 @@ public class ScriptController {
     @PostMapping("/run")
     public Map<String, Object> runScript(@RequestBody Map<String, String> request) {
         Map<String, Object> response = new HashMap<>();
-        
+
         try {
             String scriptCommand = request.get("command");
             if (scriptCommand == null || scriptCommand.isEmpty()) {
@@ -25,47 +25,42 @@ public class ScriptController {
                 response.put("error", "No command provided");
                 return response;
             }
-            
-            // For security, you might want to validate/sanitize the command
-            // This is a simple example - in production you'd want more checks
+
             if (scriptCommand.contains("rm") || scriptCommand.contains("format")) {
                 response.put("success", false);
                 response.put("error", "Potentially dangerous command rejected");
                 return response;
             }
-            
+
             Process process = Runtime.getRuntime().exec(scriptCommand);
-            
-            // Read the output
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             StringBuilder output = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
-            
-            // Read any errors
+
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             StringBuilder error = new StringBuilder();
             while ((line = errorReader.readLine()) != null) {
                 error.append(line).append("\n");
             }
-            
-            // Wait for the process to complete
+
             int exitCode = process.waitFor();
-            
+
             response.put("success", exitCode == 0);
             response.put("output", output.toString());
             if (exitCode != 0) {
                 response.put("error", error.toString());
                 response.put("exitCode", exitCode);
             }
-            
+
         } catch (Exception e) {
             response.put("success", false);
             response.put("error", e.getMessage());
         }
-        
+
         return response;
     }
-} 
+}

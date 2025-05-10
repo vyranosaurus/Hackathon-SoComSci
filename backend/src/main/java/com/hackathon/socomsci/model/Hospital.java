@@ -3,7 +3,7 @@ package com.hackathon.socomsci.model;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonIgnore; // Import JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "hospitals")
@@ -23,17 +23,11 @@ public class Hospital {
     private boolean isFree = false;
 
     @ManyToMany
-    @JoinTable(name = "hospital_services", joinColumns = @JoinColumn(name = "hospital_id"), inverseJoinColumns = @JoinColumn(name = "service_id") // Column
-                                                                                                                                                  // in
-                                                                                                                                                  // join
-                                                                                                                                                  // table
-                                                                                                                                                  // referencing
-                                                                                                                                                  // Service
-    )
-    @JsonIgnore // Avoid infinite recursion when serializing Hospital -> Services -> Hospitals
-    private Set<OfferedService> services = new HashSet<>();
+    @JoinTable(name = "hospital_services", joinColumns = @JoinColumn(name = "hospital_id"), inverseJoinColumns = @JoinColumn(name = "service_id")
 
-    // --- Getters and Setters ---
+    )
+    @JsonIgnore
+    private Set<OfferedService> services = new HashSet<>();
 
     public Long getId() {
         return id;

@@ -1,5 +1,4 @@
 
-// GeminiService.java (Interface)
 package com.hackathon.socomsci.service;
 
 import com.hackathon.socomsci.model.*;

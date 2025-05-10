@@ -34,7 +34,7 @@ const PartnerLogin = () => {
     
     setLoading(true);
     
-    // Find the selected hospital from our mock data
+    
     const hospitalData = hospitals.find(h => h.name === selectedHospital) || 
       { name: selectedHospital, isFree: Math.random() > 0.5 };
     
@@ -51,7 +51,7 @@ const PartnerLogin = () => {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
+      {}
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <button 
@@ -64,7 +64,7 @@ const PartnerLogin = () => {
         </div>
       </div>
       
-      {/* Main Content */}
+      {}
       <div className={styles.mainContent}>
         <div className={styles.loginCard}>
           <div className={styles.logoContainer}>
@@ -74,7 +74,7 @@ const PartnerLogin = () => {
           </div>
           
           <h2 className={styles.loginTitle}>
-            We<span className={styles.highlight}>AI</span>d Partner Portal
+            WeAId Partner Portal
           </h2>
           
           {error && (

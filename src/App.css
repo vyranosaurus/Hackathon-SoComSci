@@ -1,4 +1,4 @@
-/* Custom CSS Variables */
+
 :root {
   --primary-maroon: #800000;
   --primary-maroon-light: #9A1919;
@@ -10,7 +10,7 @@
   --black: #333333;
 }
 
-/* Base styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -27,6 +27,7 @@ body {
   margin: 0 auto;
   background-color: var(--white);
   min-height: 100vh;
+  position: relative;
 }
 
 .queue-header {
@@ -495,12 +496,13 @@ body {
 .search-icon {
   color: var(--primary-maroon);
   font-size: 16px;
-  margin-right: 10px;
+  margin-right: 12px;
 }
 
 .placeholder-text {
   color: var(--dark-gray);
   font-size: 0.9rem;
+  padding-left: 5px;
 }
 
 .categories-container {
@@ -667,33 +669,33 @@ body {
   background-repeat: no-repeat;
 }
 
-/* src/App.css or src/index.css */
+
 
 body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f0f2f5; /* Match the container background */
+  background-color: #f0f2f5; 
 }
 
 code {font-family: 'Montserrat', sans-serif;
 }
 
-/* Basic style for the root App div */
+
 .App {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure app takes at least full height */
+  min-height: 100vh; 
 }
 
 
-/* Bottom Navigation Styles (using the .bottom-navigation class defined in HospitalPage.css) */
-/* These styles will apply if BottomNavigation is rendered inside a flex container that allows it to take up space */
+
+
 .bottom-navigation {
-  width: 100%; /* Full width of parent */
-  max-width: 500px; /* Match the container's max-width */
-  margin: 0 auto; /* Center horizontally */
+  width: 100%; 
+  max-width: 500px; 
+  margin: 0 auto; 
   background-color: #ffffff;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   height: 3.5rem;
@@ -702,7 +704,7 @@ code {font-family: 'Montserrat', sans-serif;
   justify-content: space-around;
   border-top: 1px solid #e5e7eb;
   flex-shrink: 0;
-  z-index: 40; /* Ensure it's above main content but below modals */
+  z-index: 40; 
 }
 
 .nav-item {
@@ -719,10 +721,93 @@ code {font-family: 'Montserrat', sans-serif;
   width: 1.5rem;
   height: 1.5rem;
   margin-bottom: 0.125rem;
-  stroke-width: 2; /* Default stroke for lucide icons */
+  stroke-width: 2; 
 }
 
-/* Example active state for the first item */
+
 .nav-item:first-child {
    color: #3b82f6;
+}
+
+.back-button-container {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+}
+
+.back-button {
+  background-color: var(--primary-maroon);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 0.9rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  padding: 0;
+  margin: 0;
+}
+
+.back-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.5px;
+}
+
+.ai-highlight {
+  font-weight: 900;
+  color: #ffffff;
+  position: relative;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  animation: glow 3s infinite;
+  letter-spacing: 1px;
+  padding: 0 3px;
+}
+
+.ai-highlight::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  border-radius: 50%;
+  z-index: -1;
+  animation: pulse-glow 3s infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 25px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
 }

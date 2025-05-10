@@ -3,7 +3,7 @@ package com.hackathon.socomsci.model;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonIgnore; // Import JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "services")
@@ -13,20 +13,17 @@ public class OfferedService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, unique = true)
-    private String serviceId; // Use a friendly ID like 'cardiology'
+    private String serviceId;
 
     @Column(nullable = false)
     private String name;
     private String description;
-    private Double rating; // Optional: For display purposes
-    private String imageUrl; // Optional: For display purposes
+    private Double rating;
+    private String imageUrl;
 
-    // Many-to-Many relationship with Hospital
     @ManyToMany(mappedBy = "services")
-    @JsonIgnore // Avoid infinite recursion when serializing Service -> Hospitals -> Services
+    @JsonIgnore
     private Set<Hospital> hospitals = new HashSet<>();
-
-    // --- Getters and Setters ---
 
     public Long getId() {
         return id;

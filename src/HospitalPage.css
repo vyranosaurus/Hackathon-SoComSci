@@ -559,7 +559,7 @@ body {
     background-color: var(--primary-maroon-dark);
 }
 
-/* Add responsive adjustments for very small screens */
+
 @media (max-width: 360px) {
     .banner-title {
         font-size: 1.5rem;
