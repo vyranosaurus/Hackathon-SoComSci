@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "https://weaid-production.up.railway.app")
 public class UserController {
 
     private final UserService userService;

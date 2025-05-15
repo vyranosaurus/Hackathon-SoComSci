@@ -56,6 +56,7 @@ public class BookingService {
         return bookingRepository.save(newBookingData);
     }
 
+    @Transactional
     public List<Booking> getQueue(String hospitalId, String serviceId) {
 
         Hospital hospital = hospitalRepository.findByHospitalId(hospitalId)

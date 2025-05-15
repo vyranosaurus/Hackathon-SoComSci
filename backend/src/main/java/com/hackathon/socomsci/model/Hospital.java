@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "hospitals")
@@ -23,10 +24,10 @@ public class Hospital {
     private boolean isFree = false;
 
     @ManyToMany
-    @JoinTable(name = "hospital_services", joinColumns = @JoinColumn(name = "hospital_id"), inverseJoinColumns = @JoinColumn(name = "service_id")
-
-    )
-    @JsonIgnore
+    @JoinTable(name = "hospital_services", 
+            joinColumns = @JoinColumn(name = "hospital_id"), 
+            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    @JsonManagedReference
     private Set<OfferedService> services = new HashSet<>();
 
     public Long getId() {

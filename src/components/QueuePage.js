@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { FaExclamationTriangle, FaCheckCircle, FaClock, FaCalendarAlt, FaUserMd, FaBrain, FaRobot, FaLightbulb, FaTimes } from 'react-icons/fa';
 import BottomNavigation from './BottomNavigation';
 
-const BACKEND_API_URL = 'http://localhost:8080/api';
+const BACKEND_API_URL = '/api';
 
 const QueuePage = () => {
     const navigate = useNavigate();

@@ -39,7 +39,7 @@ const ScriptRunner = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:8080/api/scripts/run', {
+      const response = await fetch('/api/scripts/run', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

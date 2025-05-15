@@ -26,51 +26,116 @@ VALUES
 ('srv009', 'Dermatology', 'Skin health and treatment of skin conditions', 4.3, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiBwE1vosLg_GMRpugTBL7io4co-ziAjn6bA&s'),
 ('srv010', 'Diagnostic Imaging', 'X-rays, MRI, CT scans and other imaging services', 4.7, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV0afCIQnMdP-gqJnJE4LcNFcTMwgiTCU4vg&s');
 
--- Hospital-Service relationships
+-- Hospital-Service relationships using primary key ids
+-- We need to use separate SELECT-based inserts for each relationship
+
+-- PGH (h001) offers all services
 INSERT INTO hospital_services (hospital_id, service_id)
-VALUES
--- PGH offers all services
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10),
--- St. Luke's offers all services
-(2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
--- Makati Medical offers most services
-(3, 1), (3, 2), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (3, 9),
--- The Medical City
-(4, 1), (4, 2), (4, 3), (4, 4), (4, 5), (4, 6), (4, 10),
--- Cardinal Santos 
-(5, 1), (5, 2), (5, 3), (5, 6), (5, 10),
--- Asian Hospital
-(6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 8),
--- Lung Center
-(7, 1), (7, 2), (7, 10),
--- NKTI
-(8, 1), (8, 2), (8, 10);
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h001' AND s.service_id IN 
+('srv001', 'srv002', 'srv003', 'srv004', 'srv005', 'srv006', 'srv007', 'srv008', 'srv009', 'srv010');
 
--- Sample Bookings
+-- St. Luke's (h002) offers all services
+INSERT INTO hospital_services (hospital_id, service_id)
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h002' AND s.service_id IN 
+('srv001', 'srv002', 'srv003', 'srv004', 'srv005', 'srv006', 'srv007', 'srv008', 'srv009', 'srv010');
+
+-- Makati Medical (h003) offers most services
+INSERT INTO hospital_services (hospital_id, service_id)
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h003' AND s.service_id IN 
+('srv001', 'srv002', 'srv003', 'srv004', 'srv005', 'srv006', 'srv007', 'srv009');
+
+-- The Medical City (h004)
+INSERT INTO hospital_services (hospital_id, service_id)
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h004' AND s.service_id IN 
+('srv001', 'srv002', 'srv003', 'srv004', 'srv005', 'srv006', 'srv010');
+
+-- Cardinal Santos (h005)
+INSERT INTO hospital_services (hospital_id, service_id)
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h005' AND s.service_id IN 
+('srv001', 'srv002', 'srv003', 'srv006', 'srv010');
+
+-- Asian Hospital (h006)
+INSERT INTO hospital_services (hospital_id, service_id)
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h006' AND s.service_id IN 
+('srv001', 'srv002', 'srv003', 'srv004', 'srv005', 'srv008');
+
+-- Lung Center (h007)
+INSERT INTO hospital_services (hospital_id, service_id)
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h007' AND s.service_id IN 
+('srv001', 'srv002', 'srv010');
+
+-- NKTI (h008)
+INSERT INTO hospital_services (hospital_id, service_id)
+SELECT h.id, s.id FROM hospitals h, services s 
+WHERE h.hospital_id = 'h008' AND s.service_id IN 
+('srv001', 'srv002', 'srv010');
+
+-- Sample Bookings using dynamic relationships based on hospitalId and serviceId
 INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
-VALUES
--- Critical cases
-(1, 1, 'Marco Santos', 45, '09171234567', 'Severe chest pain and difficulty breathing', 'Critical', NULL, NOW(), false, NOW()),
-(2, 1, 'Elena Reyes', 78, '09189876543', 'Possible stroke, sudden facial drooping and confusion', 'Critical', NULL, NOW(), true, NOW()),
+SELECT h.id, s.id, 'Marco Santos', 45, '09171234567', 'Severe chest pain and difficulty breathing', 'Critical', NULL, NOW(), false, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h001' AND s.service_id = 'srv001';
 
--- Urgent cases with priority scores
-(3, 1, 'Ricardo Lim', 35, '09207654321', 'Deep laceration requiring stitches', 'Urgent', 8, NOW(), false, NOW()),
-(4, 1, 'Maricel Cruz', 42, '09152345678', 'High fever (39.5°C) for 3 days with severe cough', 'Urgent', 7, NOW(), true, NOW()),
-(5, 1, 'Gabriel Torres', 29, '09123456789', 'Suspected fracture after sports injury', 'Urgent', 6, NOW(), false, NOW()),
-(2, 3, 'Sophia Mendoza', 55, '09187654321', 'Abnormal heart rhythm and shortness of breath', 'Urgent', 9, NOW(), true, NOW()),
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Elena Reyes', 78, '09189876543', 'Possible stroke, sudden facial drooping and confusion', 'Critical', NULL, NOW(), true, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h002' AND s.service_id = 'srv001';
 
--- Non-urgent cases
-(6, 2, 'Miguel Bautista', 32, '09198765432', 'Persistent mild headache for the past week', 'Not urgent', NULL, NOW(), false, NOW()),
-(1, 2, 'Isabella Garcia', 27, '09165432198', 'Annual physical examination', 'Not urgent', NULL, NOW(), true, NOW()),
-(3, 9, 'Luis Villanueva', 19, '09123459876', 'Skin rash persisting for several days', 'Not urgent', NULL, NOW(), false, NOW()),
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Ricardo Lim', 35, '09207654321', 'Deep laceration requiring stitches', 'Urgent', 8, NOW(), false, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h003' AND s.service_id = 'srv001';
 
--- Not specified (will be determined by AI)
-(4, 4, 'Camila Rodriguez', 7, '09187654329', 'Mild fever and stomach discomfort', 'Not specified', NULL, NOW(), true, NOW()),
-(5, 6, 'Andres Reyes', 68, '09198763210', 'Joint pain in knees when walking', 'Not specified', NULL, NOW(), false, NOW());
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Maricel Cruz', 42, '09152345678', 'High fever (39.5°C) for 3 days with severe cough', 'Urgent', 7, NOW(), true, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h004' AND s.service_id = 'srv001';
+
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Gabriel Torres', 29, '09123456789', 'Suspected fracture after sports injury', 'Urgent', 6, NOW(), false, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h005' AND s.service_id = 'srv001';
+
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Sophia Mendoza', 55, '09187654321', 'Abnormal heart rhythm and shortness of breath', 'Urgent', 9, NOW(), true, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h002' AND s.service_id = 'srv003';
+
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Miguel Bautista', 32, '09198765432', 'Persistent mild headache for the past week', 'Not urgent', NULL, NOW(), false, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h006' AND s.service_id = 'srv002';
+
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Isabella Garcia', 27, '09165432198', 'Annual physical examination', 'Not urgent', NULL, NOW(), true, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h001' AND s.service_id = 'srv002';
+
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Luis Villanueva', 19, '09123459876', 'Skin rash persisting for several days', 'Not urgent', NULL, NOW(), false, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h003' AND s.service_id = 'srv009';
+
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Camila Rodriguez', 7, '09187654329', 'Mild fever and stomach discomfort', 'Not specified', NULL, NOW(), true, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h004' AND s.service_id = 'srv004';
+
+INSERT INTO bookings (hospital_id_fk, service_id_fk, name, age, phone_number, concern, urgency, urgent_priority_score, "timestamp", has_medical_card, created_at)
+SELECT h.id, s.id, 'Andres Reyes', 68, '09198763210', 'Joint pain in knees when walking', 'Not specified', NULL, NOW(), false, NOW()
+FROM hospitals h, services s
+WHERE h.hospital_id = 'h005' AND s.service_id = 'srv006';
 
 -- Sample Users
 INSERT INTO users (email, name)
 VALUES
 ('admin@patientqueue.com', 'Admin User'),
 ('doctor@patientqueue.com', 'Doctor Account'),
-('nurse@patientqueue.com', 'Nurse Account'); 
+('nurse@patientqueue.com', 'Nurse Account');

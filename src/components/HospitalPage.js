@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../HospitalPage.css'; 
@@ -8,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 
 
-const BACKEND_API_URL = 'http://localhost:8080/api'; 
+const BACKEND_API_URL = '/api'; // Use relative URL for deployment compatibility
 
 function HospitalPage() {
     const navigate = useNavigate();
@@ -176,15 +175,19 @@ function HospitalPage() {
             
         };
 
-        
-        
         const addBookingEndpoint = `${BACKEND_API_URL}/hospitals/${selectedHospital.hospitalId}/services/${selectedServiceToBook.serviceId}/bookings`;
+
+        console.log("Request URL:", addBookingEndpoint);
+        console.log("Request headers:", {'Content-Type': 'application/json', 'Accept': 'application/json'});
+        console.log("Request body:", JSON.stringify(bookingDataToSend));
+        
+        
         try {
             const response = await fetch(addBookingEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(bookingDataToSend),
             });

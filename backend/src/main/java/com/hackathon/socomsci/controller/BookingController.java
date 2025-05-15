@@ -8,11 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import com.hackathon.socomsci.dto.BookingDTO;
+import java.util.stream.Collectors;
 
 import java.util.List;
+import com.hackathon.socomsci.dto.BookingRequestDTO;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "https://weaid-production.up.railway.app")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -22,20 +27,30 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    @PostMapping("/hospitals/{hospitalId}/services/{serviceId}/bookings")
-    public ResponseEntity<Booking> createBooking(
+    @PostMapping(
+    value = "/hospitals/{hospitalId}/services/{serviceId}/bookings", 
+    consumes = "application/json", 
+    produces = "application/json"
+    )
+    public ResponseEntity<BookingDTO> createBooking(
             @PathVariable String hospitalId,
             @PathVariable String serviceId,
-            @RequestBody Booking booking) {
+            @RequestBody BookingRequestDTO bookingRequest) {
         try {
-            // The service will find the Hospital and Service entities and set them on the
-            // booking and call AI for urgency classification
+            // Manually map BookingRequestDTO to Booking entity
+            Booking booking = new Booking();
+            booking.setName(bookingRequest.getName());
+            booking.setAge(bookingRequest.getAge());
+            booking.setPhoneNumber(bookingRequest.getPhoneNumber());
+            booking.setConcern(bookingRequest.getConcern());
+            booking.setHasMedicalCard(bookingRequest.getHasMedicalCard());
+            booking.setMedicalCardCompany(bookingRequest.getMedicalCardCompany());
+            booking.setMedicalCardNumber(bookingRequest.getMedicalCardNumber());
+            booking.setMedicalCardName(bookingRequest.getMedicalCardName());
+            // Let the service handle hospital/service association and AI logic
             Booking createdBooking = bookingService.addBooking(hospitalId, serviceId, booking);
-            return new ResponseEntity<>(createdBooking, HttpStatus.CREATED);
-        } catch (RuntimeException e) { // Catch exceptions from service if hospital/service not found or AI issue
-            e.printStackTrace(); // Log the error
-            // Consider more specific error responses based on the exception type
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST); // 400 for invalid request (e.g., not found IDs)
+            BookingDTO bookingDTO = new BookingDTO(createdBooking);
+            return new ResponseEntity<>(bookingDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace(); // Log unexpected errors
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR); // Return 500 for other errors
@@ -43,22 +58,16 @@ public class BookingController {
     }
 
     @GetMapping("/queue/{hospitalId}/{serviceId}")
-    public ResponseEntity<List<Booking>> getQueue(
+    public ResponseEntity<List<BookingDTO>> getQueue(
             @PathVariable String hospitalId,
             @PathVariable String serviceId) {
         try {
             // The service fetches and sorts the queue
             List<Booking> queue = bookingService.getQueue(hospitalId, serviceId);
-            // Note: By default, JPA might lazy-load the Hospital and Service entities in
-            // the Booking list. Your frontend expects nested hospital/service objects
-            // (based on QueuePage.js).
-            // Ensure your JPA configuration allows this or configure FetchType.EAGER (with
-            // caution)
-            // or use a DTO in the service/controller to fetch necessary fields explicitly.
-            // Returning the Booking entity directly with default fetch behavior might work
-            // if
-            // Spring/Jackson initializes the proxies during serialization. Test this.
-            return new ResponseEntity<>(queue, HttpStatus.OK);
+            List<BookingDTO> queueDTOs = queue.stream()
+                .map(BookingDTO::new)
+                .collect(Collectors.toList());
+            return new ResponseEntity<>(queueDTOs, HttpStatus.OK);
         } catch (RuntimeException e) { // Catch exceptions from service if hospital/service not found
             e.printStackTrace(); // Log the error
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Return 404 if hospital/service not found

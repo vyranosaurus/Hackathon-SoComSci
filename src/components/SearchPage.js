@@ -5,7 +5,7 @@ import '../SearchPage.css';
 import BottomNavigation from './BottomNavigation'; 
 import { FaArrowLeft, FaSearch, FaChevronRight, FaClock, FaHospital } from "react-icons/fa"; 
 import { ArrowLeft, Search, MapPin, Phone, Clock, User, AlertCircle, CreditCard, X } from "lucide-react"; 
-const BACKEND_API_URL = 'http://localhost:8080/api';
+const BACKEND_API_URL = '/api';
 
 function SearchPage() {
     const navigate = useNavigate();
