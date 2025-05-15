@@ -45,6 +45,8 @@ public class HospitalController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Error fetching services for hospital ID: {}", hospitalId, e); // <-- Pass the exception 'e' as
+                                                                                        // the last argument
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
