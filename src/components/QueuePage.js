@@ -265,84 +265,85 @@ const QueuePage = () => {
             </div>
             <div className="hmodal-overlay">
                 {}
-            {isDetailModalOpen && ( 
-                <div className="hmodal-overlay"> {}
-                    {}
-                    {selectedBookingForDetails && (
-                        <div className="modal-content"> {}
-                            {}
-                            <h2 className="modal-title">Booking Details</h2> {}
-                            <button type="button" className="close-modal-button" onClick={closeDetailModal}> {}
+                {isDetailModalOpen && ( 
+                    <div className="hmodal-overlay"> {}
+                        {}
+                        {selectedBookingForDetails && (
+                            <div className="modal-content"> {}
+                                {}
+                                <h2 className="modal-title">Booking Details</h2> {}
+                                <button type="button" className="close-modal-button" onClick={closeDetailModal}> {}
                                 <FaTimes /> {}
-                            </button>
-
-                            {}
-                            <div className="modal-details-body"> {}
-                                {}
-                                <p><strong>Urgency:</strong> {selectedBookingForDetails.urgency || 'Not specified'}</p>
+                                </button>
 
                                 {}
-                                {selectedBookingForDetails.timestamp && (
-                                    <p><strong>Booked At:</strong> {formatTimestamp(selectedBookingForDetails.timestamp)} on {formatDate(selectedBookingForDetails.timestamp)}</p> 
-                                )}
+                                <div className="modal-details-body"> {}
+                                    {}
+                                    <p><strong>Urgency:</strong> {selectedBookingForDetails.urgency || 'Not specified'}</p>
+
+                                    {}
+                                    {selectedBookingForDetails.timestamp && (
+                                        <p><strong>Booked At:</strong> {formatTimestamp(selectedBookingForDetails.timestamp)} on {formatDate(selectedBookingForDetails.timestamp)}</p> 
+                                    )}
+
+                                    {}
+                                    <p><strong>Concern:</strong> {selectedBookingForDetails.concern || 'No concern specified'}</p>
+
+                                    {}
+                                    {selectedBookingForDetails.age && (
+                                        <p><strong>Age:</strong> {selectedBookingForDetails.age} years</p>
+                                    )}
+
+                                    {}
+                                    {selectedBookingForDetails.bookingType && (
+                                        <p><strong>Booking Type:</strong> {selectedBookingForDetails.bookingType}</p>
+                                    )}
+
+                                    {}
+                                    {selectedBookingForDetails.waitTime && (
+                                        <p><strong>Estimated Wait:</strong> {selectedBookingForDetails.waitTime}</p>
+                                    )}
+
+
+                                    {}
+                                    {selectedBookingForDetails.aiScore != null && (
+                                        <div>
+                                            <p><strong>AI Urgency Score:</strong> {selectedBookingForDetails.aiScore}%</p>
+                                            {}
+                                        </div>
+                                    )}
+
+                                    {}
+                                    {selectedBookingForDetails.aiNotes && (
+                                        <div>
+                                            <p><strong>AI Analysis Notes:</strong></p>
+                                            <p>{selectedBookingForDetails.aiNotes}</p>
+                                        </div>
+                                    )}
+
+
+                                    {}
+                                    {selectedBookingForDetails.hasMedicalCard && (
+                                        <div className="medical-card-details-modal"> {}
+                                            <p><strong>Medical Card:</strong> Yes</p>
+                                            {}
+                                            {}
+                                            {}
+                                            {}
+                                        </div>
+                                    )}
+
+
+                                </div>
+
 
                                 {}
-                                <p><strong>Concern:</strong> {selectedBookingForDetails.concern || 'No concern specified'}</p>
-
-                                {}
-                                {selectedBookingForDetails.age && (
-                                    <p><strong>Age:</strong> {selectedBookingForDetails.age} years</p>
-                                )}
-
-                                {}
-                                {selectedBookingForDetails.bookingType && (
-                                    <p><strong>Booking Type:</strong> {selectedBookingForDetails.bookingType}</p>
-                                )}
-
-                                {}
-                                {selectedBookingForDetails.waitTime && (
-                                    <p><strong>Estimated Wait:</strong> {selectedBookingForDetails.waitTime}</p>
-                                )}
-
-
-                                {}
-                                {selectedBookingForDetails.aiScore != null && (
-                                    <div>
-                                        <p><strong>AI Urgency Score:</strong> {selectedBookingForDetails.aiScore}%</p>
-                                        {}
-                                    </div>
-                                )}
-
-                                {}
-                                {selectedBookingForDetails.aiNotes && (
-                                    <div>
-                                        <p><strong>AI Analysis Notes:</strong></p>
-                                        <p>{selectedBookingForDetails.aiNotes}</p>
-                                    </div>
-                                )}
-
-
-                                {}
-                                {selectedBookingForDetails.hasMedicalCard && (
-                                    <div className="medical-card-details-modal"> {}
-                                        <p><strong>Medical Card:</strong> Yes</p>
-                                        {}
-                                        {}
-                                        {}
-                                        {}
-                                    </div>
-                                )}
-
+                                <button type="button" className="button close-modal-button" onClick={closeDetailModal}>Close</button> {}
                             </div>
-
-
-                            {}
-                            <button type="button" className="button close-modal-button" onClick={closeDetailModal}>Close</button> {}
-                        </div>
-                    )} {}
-                </div>
-            )} {}
-            {}
+                        )} {}
+                    </div>
+                )} {}
+                {}
             </div>
             <BottomNavigation />
         </div>

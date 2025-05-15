@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from "./BottomNavigation";
 import { FaHospital, FaSearch, FaUserMd, FaCalendarAlt, FaAmbulance, FaArrowLeft } from "react-icons/fa";
